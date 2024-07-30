@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen w-screen flex flex-col p-5">
-    <div class="mb-10"><AppLogo imgClass="w-[160px] lg:!w-[200px]" /></div>
+    <div class="mb-10"><AppLogo imgClass="w-[160px] lg:!w-[180px]" /></div>
     <div class="flex-1 flex items-center justify-center">
       <div
         class="w-[80vw] max-h-[714px] grid grid-cols-1 lg:grid-cols-2 gap-x-10 lg:gap-x-20 max-w-[1200px] mx-auto"
