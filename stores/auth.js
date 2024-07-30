@@ -44,7 +44,7 @@ export const useAuthStore = defineStore(
     const logOut = () => {
       localStorage.clear();
       setLoggedUser(null);
-      navigateTo("/");
+      navigateTo("/auth/login");
     };
     return {
       updateUser,
