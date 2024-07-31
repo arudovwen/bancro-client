@@ -1,8 +1,8 @@
 <template>
   <span
-    :class="`px-2 py-[2px] text-xs rounded-full flex gap-x-1 items-center border max-w-max font-semibold ${Stats[status]?.className}`"
+    :class="`px-2 py-[3px] text-xs rounded-full flex gap-x-1 items-center border max-w-max font-semibold ${Stats[status]?.className}`"
   >
-    <!-- <AppIcon icon="octicon:dot-fill-24" /> -->
+    <AppIcon icon="octicon:dot-fill-24" />
     <span class=""> {{ Stats[status]?.text }}</span>
   </span>
 </template>
@@ -45,7 +45,7 @@ const StatusText = {
     className: StatusClass[0],
   },
   1: {
-    text: "Completed",
+    text: "Successful",
     className: StatusClass[1],
   },
   2: {

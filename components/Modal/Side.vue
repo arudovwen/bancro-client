@@ -1,52 +1,67 @@
 <template>
   <TransitionRoot as="template" :show="isOpen">
-    <Dialog
-      as="div"
-      class="fixed z-[999] inset-0 overflow-y-auto"
-      @close="togglePopup"
-    >
-      <div
-        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    <Dialog as="div" class="relative z-[999]" @close="togglePopup()">
+      <TransitionChild
+        as="template"
+        enter="ease-in-out duration-500"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="ease-in-out duration-500"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
       >
-        <TransitionChild
-          as="div"
-          enter="ease-out duration-300"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="ease-in duration-200"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-        >
-          <DialogOverlay
-            class="fixed inset-0 bg-[#222222]/60 transition-opacity"
-          />
-        </TransitionChild>
+        <div class="fixed inset-0 bg-[#0C111D]/80 transition-opacity" />
+      </TransitionChild>
 
-        <!-- This element is to trick the browser into centering the modal contents. -->
-        <span
-          class="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-          >&#8203;</span
-        >
-        <TransitionChild
-          as="template"
-          enter="ease-out duration-300"
-          enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          enter-to="opacity-100 translate-y-0 sm:scale-100"
-          leave="ease-in duration-200"
-          leave-from="opacity-100 translate-y-0 sm:scale-100"
-          leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        >
+      <div class="fixed inset-0 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden">
           <div
-            class="absolute w-full bg-white lg:w-auto lg:min-w-[480px] h-screen top-0 py-6 right-0 align-bottom text-left shadow-xl transform transition-all sm:align-middle"
+            class="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-16 md:pr-10"
           >
-            <slot name="content"> </slot>
-            <span class="cursor-pointer" v-if="canClose" @click="togglePopup"
-              ><XMarkIcon
-                class="w-6 h-6 absolute top-3 text-gray-600 left-3 z-40"
-            /></span>
+            <TransitionChild
+              as="template"
+              enter="transform transition ease-in-out duration-500 sm:duration-700"
+              enter-from="-translate-x-full"
+              enter-to="-translate-x-0"
+              leave="transform transition ease-in-out duration-500 sm:duration-700"
+              leave-from="-translate-x-0"
+              leave-to="-translate-x-full"
+            >
+              <DialogPanel
+                class="pointer-events-auto relative w-screen max-w-md"
+              >
+                <TransitionChild
+                  as="template"
+                  enter="ease-in-out duration-500"
+                  enter-from="opacity-0"
+                  enter-to="opacity-100"
+                  leave="ease-in-out duration-500"
+                  leave-from="opacity-100"
+                  leave-to="opacity-0"
+                >
+                  <div class="absolute top-0 right-0 -mr-11 flex pt-4">
+                    <button
+                      type="button"
+                      class="rounded-md text-gray-300 hover:text-white outline-none"
+                      @click="togglePopup()"
+                    >
+                      <span class="sr-only">Close</span>
+                      <AppIcon icon="ph:x" class="text-xl" aria-hidden="true" />
+                    </button>
+                  </div>
+                </TransitionChild>
+                <div
+                  class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl pb-8"
+                >
+                  <div class="relative flex-1 px-4 sm:px-6">
+                    <!-- Replace with your content -->
+                    <slot name="content"> </slot>
+                  </div>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
           </div>
-        </TransitionChild>
+        </div>
       </div>
     </Dialog>
   </TransitionRoot>

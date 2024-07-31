@@ -124,7 +124,7 @@
         uploadDocumentDialog.close();
       },
       classes: {
-        root: 'border border-gray-800 text-black flex-grow-1 !w-full',
+        root: 'border border-gray-800 text-[#163300] flex-grow-1 !w-full',
       },
     }"
     :SecondaryActionProps="{
@@ -133,7 +133,7 @@
         uploadDocumentDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-black flex-grow-1 !w-full',
+        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
       },
     }"
   >

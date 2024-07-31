@@ -21,3 +21,7 @@
     scrollbar-width: initial; /* Firefox */
   }
 }
+
+#hugeicons:cloud-download{
+  font-weight:500;
+}

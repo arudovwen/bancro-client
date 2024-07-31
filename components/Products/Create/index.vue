@@ -198,7 +198,7 @@
                               <button
                                 :class="[
                                   active
-                                    ? 'bg-[#9FE870] text-black'
+                                    ? 'bg-[#9FE870] text-[#163300]'
                                     : 'text-gray-900',
                                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                 ]"
@@ -272,7 +272,7 @@
         createFeeDialog.close();
       },
       classes: {
-        root: 'border-2 border-black text-black flex-grow-1 !w-full',
+        root: 'border-2 border-black text-[#163300] flex-grow-1 !w-full',
       },
     }"
     :SecondaryActionProps="{
@@ -281,7 +281,7 @@
         createFeeDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-black flex-grow-1 !w-full',
+        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
       },
     }"
   >

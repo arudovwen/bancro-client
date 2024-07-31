@@ -1,8 +1,8 @@
 <template>
-  <ModalCenter v-if="isSigniningOut">
+  <ModalCenter v-if="isSigniningOut" :canClose="false">
     <template #default>
       <div
-        class="bg-white p-6 lg:p-10 sm:p-6 sm:pb-4 rounded-lg"
+        class="bg-white p-6 lg:p-10 sm:p-6 sm:pb-4 rounded-lg min-w-[300px]"
         v-if="isSigniningOut"
       >
         <div class="flex justify-between mb-5 items-center">

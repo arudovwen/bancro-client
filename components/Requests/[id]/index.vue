@@ -4,7 +4,7 @@
   </div>
   <div class="mb-6">
     <button
-      class="bg-none flex gap-x-2 items-center text-black"
+      class="bg-none flex gap-x-2 items-center text-[#163300]"
       @click="() => router.push('/requests')"
     >
       <AppIcon icon="heroicons:arrow-small-left-20-solid" />
@@ -28,7 +28,7 @@
         <span>Decline</span>
       </AppButtonV2>
       <AppButtonV2
-        :classes="{ root: 'bg-[#9FE870] text-black' }"
+        :classes="{ root: 'bg-[#9FE870] text-[#163300]' }"
         :size="'small'"
         :onClick="approveDialog.open"
       >
@@ -167,7 +167,7 @@
         approveDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-black flex-grow-1 !w-full',
+        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
       },
     }"
   >
@@ -261,7 +261,7 @@
         approveDialog.open();
       },
       classes: {
-        root: 'bg-[#9FE870] text-black flex-grow-1 !w-full',
+        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
       },
     }"
   >

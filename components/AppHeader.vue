@@ -2,171 +2,40 @@
   <nav
     :class="{
       relative: view.atTopOfPage,
-      'sticky top-0 opacity-95 fade-in-top pb-5 lg:pb-5 border-b border-[rgba(242, 242, 242, 1)] darks:border-gray-900':
+      'sticky top-0 opacity-95 fade-in-top ':
         !view.atTopOfPage,
     }"
-    class="relative pt-6 pb-6 w-full bg-white darks:bg-gray-800 z-[999] transition-all duration-500 ease-in-out"
+    class="bg-white border-b border-[#EDEFEB] flex justify-between py-4 px-[25px] items-center"
   >
-    <div class="container mx-auto">
-      <div class="flex justify-between items-center gap-x-5">
-        <div class="logo flex gap-x-10 items-center">
-          <NuxtLink :to="`/${authStore.vendorName}`">
-            <img
-              src="/images/logo.png"
-              alt="Bancro"
-              class="w-20 md:w-[100px] h-auto object-contain"
-          /></NuxtLink>
-        </div>
-        <div class="flex items-center gap-x-4 smd:gap-x-6 text-sm">
-          <!-- <span
-            :class="{
-              'hidden md:flex': view.atTopOfPage,
-              'hidden md:hidden': !view.atTopOfPage,
-            }"
-            class="gap-x-1 items-center"
-          >
-             <img
-              src="~/assets/images/nigeria.svg"
-              width="20"
-              height="20"
-              alt="Bancro"
-              class="w-5 h-auto"
-            />
-            NGN</span
-          > -->
-          <!--   <span
-            :class="{
-              'md:flex ': view.atTopOfPage,
-              'md:hidden': !view.atTopOfPage,
-            }"
-            class="hidden gap-x-1 items-center"
-          >
-            <AppIcon class="text-lg" icon="ion:globe-outline" />
-            <select class="appearance-none outline-none text-sm bg-transparent">
-              <option value="">English-NGN</option>
-            </select></span
-          > -->
-          <!-- <NuxtLink
-            :class="` items-center  relative ${
-              authStore.isLoggedIn ? 'flex' : 'hidden md:flex'
-            }`"
-          >
-            <span
-              class="relative h-8 w-8 rounded-full bg-[#F7F7F7] flex items-center justify-center"
-            >
-              <AppIcon
-                class="text-lg text-[#484848]"
-                icon="akar-icons:search"
-              />
-            </span>
-          </NuxtLink> -->
-          <!-- <span
-            v-if="authStore.isLoggedIn"
-            :class="` items-center  relative ${
-              authStore.isLoggedIn ? 'flex' : 'hidden md:flex'
-            }`"
-            @click="isOpen = true"
-          >
-            <span
-              class="relative h-8 w-8 rounded-full bg-[#F7F7F7] flex items-center justify-center cursor-pointer"
-            >
-              <AppIcon
-                class="text-lg text-[#484848]"
-                icon="mingcute:message-2-line"
-              />
-              <span
-                v-if="unreadnotifications > 0"
-                class="w-3 h-3 rounded-full bg-[#16F046] text-[8px] flex items-center justify-center absolute top-[4px] right-[4px]"
-                >{{ unreadnotifications }}</span
-              >
-            </span> -->
-          <!-- </span> -->
-          <NuxtLink to="/cart" class="flex items-center relative">
-            <span
-              class="relative h-8 w-8 rounded-full bg-[#F7F7F7] flex items-center justify-center"
-            >
-              <AppIcon
-                class="text-lg text-[#484848]"
-                icon="lucide:shopping-cart"
-              />
-              <span
-                v-if="cartStore?.cartTotal > 0"
-                class="w-3 h-3 rounded-full bg-[#16F046] text-[8px] flex items-center justify-center absolute top-[4px] right-[4px]"
-                >{{ cartStore?.cartTotal }}</span
-              >
-            </span>
-            <!-- <span class="text-xs sm:text-sm font-medium inline-flex text-[#333]"
-              >Cart</span
-            > -->
-          </NuxtLink>
-        </div>
-      </div>
+    <div class="logo flex gap-x-10 items-center">
+     <span class="lg:hidden"> <NuxtLink :to="`/`">
+        <img
+          src="/bancro-logo.png"
+          alt="Bancro"
+          class="w-[130px] h-auto object-contain"
+      /></NuxtLink></span>
+    </div>
+    <div class="flex gap-x-2 items-center">
+      <Notifications />
+      <span class="h-10 w-10 rounded-full flex items-center justify-center"
+        ><SvgSettings
+      /></span>
+     <span class="hidden lg:inline"> <ProfileMenu /></span>
+     <button class="lg:hidden outline-none" @click="isOpen= true"><AppIcon icon="mingcute:menu-fill" iconClass="text-3xl text-[#163300]" /></button>
     </div>
   </nav>
 
-  <div class="z-[999]" v-if="open">
-    <AppSideMenu />
-  </div>
 
-  <ModalCenter v-if="isSigniningOut">
-    <template #default>
-      <div
-        class="bg-white p-6 lg:p-10 sm:p-6 sm:pb-4 rounded-lg"
-        v-if="isSigniningOut"
-      >
-        <div class="flex justify-between mb-5 items-center">
-          <h4 class="font-medium text-matta-black text-xl">Sign Out</h4>
-          <i
-            class="uil uil-times cursor-pointer text-lg"
-            @click="isSigniningOut = false"
-          ></i>
-        </div>
-
-        <p class="text-sm text-matta-black mb-2">
-          Are you sure you want to sign out?
-        </p>
-
-        <div class="flex justify-between gap-x-2 items-center mt-8">
-          <button
-            type="button"
-            @click="isSigniningOut = false"
-            class="appearance-none border w-1/2 leading-none px-8 py-3 rounded-lg text-matta-black hover:bg-gray-100 text-[13px] uppercase"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="button"
-            @click="logOut"
-            class="appearance-none border w-1/2 border-primary-500 leading-none px-8 py-3 rounded-lg text-white bg-primary-500 hover:opacity-70 text-[13px] uppercase"
-          >
-            Yes
-          </button>
-        </div>
-      </div>
-    </template>
-  </ModalCenter>
   <ModalSide :isOpen="isOpen" @togglePopup="openModal" v-if="isOpen">
     <template #content>
-      <div class="h-full md:w-[480px] bg-white rounded-lg p-6 lg:p-10">
-        <NotificationComponent />
+      <div class="h-full bg-white rounded-lg py-10">
+       <AppSideBar />
       </div>
     </template>
   </ModalSide>
 </template>
 <script setup>
-import { ref } from "vue";
-import {
-  categories,
-  navigations,
-  mobileNavigation,
-  financeMenu,
-  mobileMenu,
-} from "~/utils/data";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { logOut } from "~/services/authservices";
-import { getnotification } from "@/services/notificationservice";
-import { NotificationBingIcon } from '@placetopay/iconsax-vue/bulk';
 
 const isOpen = ref(false);
 function openModal() {
@@ -174,22 +43,12 @@ function openModal() {
 }
 const { $pwa } = useNuxtApp();
 const isSigniningOut = ref(false);
-const cartStore = useCartStore();
 const authStore = useAuthStore();
-const appStore = useApplicationStore();
-const store = useMarketStore();
+
 const notifications = ref([]);
 const router = useRouter();
 const { currentRoute } = router;
-const filteredMenu = computed(() =>
-  mobileMenu.filter(
-    (i) =>
-      i.key === "account-settings" ||
-      i.key === "wallet-home" ||
-      i.key === "sign-out" ||
-      i.key === "procurement-my-orders"
-  )
-);
+
 const view = ref({
   atTopOfPage: true,
 });
@@ -216,9 +75,9 @@ const unreadnotifications = computed(() => {
   return notifications?.value?.filter((i) => !i.isViewed)?.length;
 });
 function getNotifications() {
-  getnotification(notifyParams).then((res) => {
-    notifications.value = res.data.data;
-  });
+  // getnotification(notifyParams).then((res) => {
+  //   notifications.value = res.data.data;
+  // });
 }
 
 function handleScroll() {
@@ -231,22 +90,10 @@ function handleScroll() {
     if (!view.value.atTopOfPage) view.value.atTopOfPage = true;
   }
 }
-function handleDropDown(val) {
-  if (val === "markets") {
-    return store?.marketsData;
-  }
-  if (val === "applications") {
-    return appStore?.applicationsData;
-  }
-  if (val === "finance") {
-    return financeMenu;
-  }
-}
+
 watch(currentRoute, () => {
   open.value = false;
 });
-
-
 
 provide("getNotifications", getNotifications);
 provide("notifications", notifications);

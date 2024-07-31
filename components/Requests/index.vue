@@ -43,7 +43,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     :class="[
-                      active ? 'bg-[#9FE870] text-black' : 'text-gray-900',
+                      active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                     @click="() => router.push(`/requests/${row.id}`)"

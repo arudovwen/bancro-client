@@ -109,9 +109,10 @@ body {
 }
 label,
 .input-label {
-  color: #6a6c6a !important;
+  color: #5F738C !important;
   font-size: 12px;
   font-weight: 400;
+  margin-bottom: 5px;
 }
 </style>
 

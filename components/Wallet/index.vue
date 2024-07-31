@@ -32,7 +32,7 @@
               </AppButton>
               <AppButton
                 :isLoading="false"
-                :btnClass="`bg-white text-black border`"
+                :btnClass="`bg-white text-[#163300] border`"
                 v-if="tab.secondaryAction"
               >
                 <span class="">

@@ -14,7 +14,7 @@
           leave-to="opacity-0"
         >
           <DialogOverlay
-            class="fixed inset-0 bg-[#222222]/60 transition-opacity"
+            class="fixed inset-0 bg-[#0C111D]/80 transition-opacity"
           />
         </TransitionChild>
 
@@ -34,7 +34,7 @@
           leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
           <div
-            class="inline-block relative align-bottom bg-white rounded-lg text-left invisible-scrollbar shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-[500px] max-h-[95vh] overflow-y-auto"
+            class="inline-block relative align-bottom bg-white rounded-lg text-left invisible-scrollbar shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-max max-h-[95vh] overflow-y-auto"
           >
             <slot> </slot>
             <span

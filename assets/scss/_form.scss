@@ -1,20 +1,20 @@
 .form-control {
-  @apply bg-transparent transition duration-300 ease-in-out border border-[#D6D6D6] 
+  @apply bg-transparent transition duration-300 ease-in-out border border-[#C8D2DF] 
     focus:ring-1 focus:ring-slate-600 focus:outline-none focus:ring-opacity-90 rounded-lg
     placeholder:text-[#CDD2DA] text-[#454745] text-sm px-[14px] py-[10px] placeholder:font-normal block w-full;
 }
 
 .form-label {
-  @apply mb-2 text-[#6A6C6A]  text-xs leading-6 capitalize cursor-pointer block w-full font-medium;
+  @apply mb-[5px] text-[#5F738C]  text-xs leading-6 capitalize cursor-pointer block w-full font-medium;
 }
 
 .input-control {
-  @apply bg-transparent  transition duration-300 ease-in-out border border-[#D6D6D6] 
+  @apply bg-transparent  transition duration-300 ease-in-out border border-[#C8D2DF] 
     focus:ring-0 focus:border-slate-400 focus:outline-none focus:ring-opacity-90 rounded-lg
     placeholder:text-[#CDD2DA] text-[#454745] text-sm px-[14px] py-[10px] placeholder:font-normal block w-full;
 }
 .input-label {
-  @apply mb-[6px] text-[#6A6C6A]  text-xs leading-6 capitalize cursor-pointer font-medium;
+  @apply mb-[5px] text-[#5F738C]  text-xs leading-6 capitalize cursor-pointer font-medium;
 }
 .formGroup {
   &.has-error {
@@ -61,5 +61,5 @@
 }
 
 label {
-  color: #454745 !important;
+  color: #5F738C !important;
 }

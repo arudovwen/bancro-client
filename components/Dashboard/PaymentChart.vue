@@ -1,13 +1,11 @@
 <template>
   <div
-    class="border-[#EAECF0] border rounded-lg w-full pt-11 pb-6 px-10 bg-white"
+    class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white"
   >
     <div class="flex items-start justify-between mb-4">
       <div>
-        <h2 class="text-sm font-medium text-[#475467] mb-1">Total revenue</h2>
-        <span class="text-[#101828] text-2xl font-semibold block">{{
-          currencyFormat(20000000)
-        }}</span>
+        <h2 class="text-[#101828] text-lg font-semibold block">Balance Trend</h2>
+       
       </div>
       <div
         class="border border-[#D0D5DD] rounded-lg text-xs lg:text-sm text-[#344054] max-w-max flex items-center"
@@ -35,8 +33,8 @@
     <div>
       <client-only>
         <apexchart
-          type="bar"
-          height="300"
+          type="area"
+          height="220"
           :options="chartOptions"
           :series="series"
         ></apexchart
@@ -51,26 +49,21 @@ import moment from "moment";
 
 const chartOptions = computed(() => {
   return {
-    plotOptions: {
-      bar: {
-        borderRadius: 10,
-        // borderRadiusApplication: 'end',
-        // borderRadiusWhenStacked: 'last',
-      },
-    },
-    colors: ["#EAECF0"],
+
+    colors: ["#9FE870"],
     yaxis: {
       show: true,
       title: {
-        text: "Amount",
+        text: "Balance",
         offsetX: 0,
         offsetY: 0,
         style: {
           color: undefined,
           fontSize: "12px",
           fontFamily: "Inter, Arial, sans-serif",
-          fontWeight: 600,
+          fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
+          color:"#475467"
         },
       },
     },
@@ -123,8 +116,9 @@ const chartOptions = computed(() => {
           color: undefined,
           fontSize: "12px",
           fontFamily: "Inter, Arial, sans-serif",
-          fontWeight: 600,
+          fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
+          color:"#475467"
         },
       },
     },

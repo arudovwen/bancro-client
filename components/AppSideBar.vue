@@ -1,9 +1,9 @@
 <template>
-  <h1 class="text-[#919EAB] text-[11px] mb-2 px-4 font-semibold uppercase">
-    <span class="px-[10px]">Overview</span>
+  <h1 class="text-[#919EAB] text-[11px] mb-2  lg:px-4 font-semibold uppercase">
+    <span class="lg:px-[16px]">Overview</span>
   </h1>
 
-  <ul class="grid grid-cols-1 gap-y-1 px-4">
+  <ul class="grid grid-cols-1 gap-y-1 lg:px-4">
     <li v-for="item in mappedNavigation" :key="item.name">
       <span v-if="!item.hasChildren">
         <NuxtLink

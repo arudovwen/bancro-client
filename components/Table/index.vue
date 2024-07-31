@@ -2,7 +2,13 @@
   <div class="border-[#EAECF0] border rounded-lg w-ful bg-white">
     <div
       class="pb-8 pt-8 border-[#EAECF0] border-b px-8"
-      v-if="hasSearch || hasFilter"
+      v-if="
+        hasSearch ||
+        hasFilter ||
+        hasDate ||
+        hasExport ||
+        hasFilterButton
+      "
     >
       <div class="flex gap-x-4 flex-col lg:flex-row gap-y-4 justify-between">
         <div class="relative flex items-center" v-if="hasSearch">
@@ -16,9 +22,12 @@
             @change="emits('onSearch', e.target.value)"
           />
         </div>
+        <h2 v-if="title" class="text-lg text-[#0E0F0C] font-semibold">
+          {{ title }}
+        </h2>
 
         <div class="flex gap-x-4 items-center">
-          <ClientOnly>
+          <ClientOnly v-if="hasDate">
             <VueDatePicker
               v-model="date"
               range
@@ -28,12 +37,29 @@
               input-class-name="!text-sm  placeholder:!text-[#344054] !h-11 !font-medium"
             />
           </ClientOnly>
+          <button
+            v-if="hasExport"
+            id="create-product-button"
+            class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+          >
+            <AppIcon icon="hugeicons:cloud-download" />
+            <span>Export</span>
+          </button>
           <FilterButton
             v-if="hasFilter"
             v-model="filter"
             :options="filterOptions"
             :title="filterTitle"
           />
+          <button
+            @click="emits('filter-click')"
+            v-if="hasFilterButton"
+            id="create-product-button"
+            class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+          >
+            <AppIcon icon="fluent:filter-28-filled" />
+            <span>Filter</span>
+          </button>
         </div>
       </div>
     </div>
@@ -63,7 +89,7 @@
             >
               <slot name="table-row" :row="row" :column="column">
                 <span v-if="!column.isHtml">
-                  {{ row[column.key] || "-"}}
+                  {{ row[column.key] || "-" }}
                 </span>
                 <span v-else v-html="row[column.key]"> </span>
               </slot>
@@ -90,7 +116,13 @@ import "@vuepic/vue-datepicker/dist/main.css";
 const date = ref(null);
 const filter = ref("");
 const props = defineProps({
+  title: {
+    default: "",
+  },
   isLoading: {
+    default: false,
+  },
+  hasFilterButton: {
     default: false,
   },
   emptyTitle: {
@@ -107,6 +139,9 @@ const props = defineProps({
   },
   emptyType: {
     default: "",
+  },
+  hasExport: {
+    default: true,
   },
   columns: {
     default: [
@@ -168,7 +203,12 @@ const props = defineProps({
     default: "Search by name",
   },
 });
-const emits = defineEmits(["onSearch", "onFilter", "onDateChange"]);
+const emits = defineEmits([
+  "onSearch",
+  "onFilter",
+  "onDateChange",
+  "filter-click",
+]);
 
 watch(filter, () => {
   emits("onFilter", filter.value);

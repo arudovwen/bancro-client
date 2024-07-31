@@ -164,7 +164,7 @@ export default {
 <style lang="scss">
 .formGroup {
   .vs__dropdown-toggle {
-    @apply bg-transparent placeholder:text-[#CDD2DA]  border border-[#D6D6D6] rounded-lg min-h-[44px] text-[#454745] text-sm placeholder:text-sm disabled:bg-white;
+    @apply bg-transparent placeholder:text-[#CDD2DA]  border border-[#C8D2DF] rounded-lg min-h-[44px] text-[#454745] text-sm placeholder:text-sm disabled:bg-white;
   }
   // .v-select {
   //   @apply darks:text-slate-300;

@@ -1,45 +1,29 @@
 <template>
-  <div>
-    <div>
-      <div class="grid grid-cols-4 gap-x-6 mb-6 w-full">
-        <div
-          v-for="tab in tabs"
-          :key="tab.title"
-          class="rounded-[12px] bg-white border border-[#EAECF0] p-6 shadow-[0px_1px_2px_0px_#1018280D]"
+  <div class="grid gap-y-3 h-full">
+    <div
+      class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white flex justify-between gap-x-4"
+    >
+      <button
+        v-for="n in tabs"
+        :key="n.title"
+        class="text-center flex flex-col gap-y-1 capitalize"
+      >
+        <span
+          class="h-14 w-14 rounded-full flex items-center justify-center bg-[#9FE87066]"
         >
-          <div class="flex gap-x-4 items-center mb-4">
-            <span
-              :class="tab.className"
-              class="rounded-full h-9 w-9 flex items-center justify-center"
-              ><AppIcon :icon="tab.icon" iconClass="text-base" />
-            </span>
-            <p class="text-sm font-medium text-[#6A6C6A]">
-              {{ tab.title }}
-            </p>
-          </div>
-          <div class="flex flex-col gap-y-3">
-            <span class="text-[#101828] font-semibold text-xl">{{
-              stats?.[tab.key]?.total || 0
-            }}</span>
-
-            <span
-              class="font-medium text-sm text-[#067647] flex gap-x-1 items-center"
-              ><AppIcon
-                icon="mingcute:arrow-up-fill"
-                iconClass="text-[#17B26A] text-lg"
-              />
-              <span> {{ stats?.[tab.key]?.percentChange || 0 }}%</span>
-              <span class="text-matta-black">vs last month</span></span
-            >
-          </div>
+          <SvgBuy v-if="n.icon === 'buy'" /> <SvgPay  v-if="n.icon === 'pay'"  /> <SvgSend  v-if="n.icon === 'send'"  /> <SvgPlus   v-if="n.icon === 'add'" />
+        </span>
+        <span class="font-medium text-[10px]">{{ n.title }}</span>
+      </button>
+    </div>
+    <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white">
+      <div>
+        <h2 class="text-[#101828] text-base font-semibold block mb-4">Active Loans</h2>
+        <div class="flex items-center justify-center">
+          <SvgEmpty />
         </div>
+       
       </div>
-    </div>
-    <div class="mb-11">
-      <DashboardLoanChart />
-    </div>
-    <div>
-      <DashboardLoanTransactions />
     </div>
   </div>
 </template>
@@ -47,32 +31,32 @@
 <script setup>
 const tabs = [
   {
-    title: "Registered customers",
+    title: "add money",
     count: "0",
     key: "numberofRequests",
     className: "bg-[#FFC091] text-[#260A2F]",
-    icon: "lucide:users",
+    icon: "add",
   },
   {
-    title: "Active Loans",
+    title: "send money",
     count: "0",
     key: "disbursedLoan",
     className: "bg-[#A0E1E1] text-[#21231D]",
-    icon: "lucide:users",
+    icon: "send",
   },
   {
-    title: "Repaid Loans",
+    title: "buy airtime",
     count: "0",
     key: "overDueLoan",
     className: "bg-[#FFEB69] text-[#3A341C]",
-    icon: "lucide:users",
+    icon: "buy",
   },
   {
-    title: "Abandoned Loans",
+    title: "pay bills",
     count: "0",
     key: "overDueLoan",
     className: "bg-[#9FE870] text-[#163300]",
-    icon: "lucide:users",
+    icon: "pay",
   },
 ];
 
