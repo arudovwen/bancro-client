@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="overflow-x-auto rounded-lg" v-if="!isLoading">
+    <div class="rounded-lg" v-if="!isLoading">
       <table class="table-auto w-full">
         <thead>
           <tr class="border-b border-[#EAECF0]">

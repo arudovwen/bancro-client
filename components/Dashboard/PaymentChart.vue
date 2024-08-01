@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white"
+    class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full"
   >
     <div class="flex items-start justify-between mb-4">
       <div>
@@ -34,7 +34,7 @@
       <client-only>
         <apexchart
           type="area"
-          height="220"
+          height="230"
           :options="chartOptions"
           :series="series"
         ></apexchart

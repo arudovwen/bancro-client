@@ -39,14 +39,10 @@
             <slot> </slot>
             <span
               v-if="canClose"
-              class="cursor-pointer hover:border w-8 h-8 absolute top-[30px] right-[30px] rounded-full bg-[#F5F5F5] flex items-center justify-center z-[999]"
+              class="cursor-pointer absolute top-[16px] right-[20px] flex items-center justify-center z-[999]"
               @click="isOpen = false"
             >
-              <AppIcon
-                icon="heroicons-solid:x"
-                class="text-lg text-[#8C8C8C]"
-                aria-hidden="true"
-              />
+              <SvgCancel />
             </span>
           </div>
         </TransitionChild>

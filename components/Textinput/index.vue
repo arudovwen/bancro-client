@@ -55,11 +55,11 @@
           class="cursor-pointer text-secondary-500"
         >
           <AppIcon
-            icon="la:eye"
+            icon="iconamoon:eye-duotone"
             class="text-[#666]"
             v-if="types === 'password'"
           />
-          <AppIcon icon="la:eye-slash" class="text-[#666]" v-else />
+          <AppIcon icon="iconamoon:eye-off-duotone" class="text-[#666]" v-else />
         </span>
 
         <span v-if="error && types !== 'date'" class="text-danger-500">

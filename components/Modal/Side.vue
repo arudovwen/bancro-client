@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="isOpen">
-    <Dialog as="div" class="relative z-[999]" @close="togglePopup()">
+    <Dialog as="div" class="relative z-[99999]" @close="togglePopup()">
       <TransitionChild
         as="template"
         enter="ease-in-out duration-500"
@@ -16,16 +16,16 @@
       <div class="fixed inset-0 overflow-hidden">
         <div class="absolute inset-0 overflow-hidden">
           <div
-            class="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-16 md:pr-10"
+            class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-16 md:pl-10"
           >
             <TransitionChild
               as="template"
               enter="transform transition ease-in-out duration-500 sm:duration-700"
-              enter-from="-translate-x-full"
-              enter-to="-translate-x-0"
+              enter-from="translate-x-full"
+              enter-to="translate-x-0"
               leave="transform transition ease-in-out duration-500 sm:duration-700"
-              leave-from="-translate-x-0"
-              leave-to="-translate-x-full"
+              leave-from="translate-x-0"
+              leave-to="translate-x-full"
             >
               <DialogPanel
                 class="pointer-events-auto relative w-screen max-w-md"
@@ -39,14 +39,14 @@
                   leave-from="opacity-100"
                   leave-to="opacity-0"
                 >
-                  <div class="absolute top-0 right-0 -mr-11 flex pt-4">
+                  <div class="absolute top-0 left-0 -ml-11 flex pt-4">
                     <button
                       type="button"
-                      class="rounded-md text-gray-300 hover:text-white outline-none"
+                      class=" outline-none"
                       @click="togglePopup()"
                     >
-                      <span class="sr-only">Close</span>
-                      <AppIcon icon="ph:x" class="text-xl" aria-hidden="true" />
+                    
+                    <SvgCancel />
                     </button>
                   </div>
                 </TransitionChild>
@@ -75,6 +75,7 @@ import {
   TransitionChild,
   Dialog,
   DialogOverlay,
+  DialogPanel,
 } from "@headlessui/vue";
 
 defineProps({
