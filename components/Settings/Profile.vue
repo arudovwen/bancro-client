@@ -1,4 +1,7 @@
 <template>
+  <div class="mb-7">
+    <PageHeader title="Profile" />
+  </div>
   <section class="rounded-lg bg-white border border-[#EAECF0] overflow-hidden">
     <div
       class="h-[140px] relative w-full mb-24"

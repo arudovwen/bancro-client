@@ -1,4 +1,7 @@
 <template>
+  <div class="mb-7">
+    <PageHeader title="Security" />
+  </div>
   <section class="rounded-lg bg-white border border-[#EAECF0] overflow-hidden grid gap-y-6">
     <div
       class="flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12 max-w-[960px]"

@@ -1,6 +1,9 @@
 <template>
+  <div class="mb-7">
+    <PageHeader title="Account Verifications" />
+  </div>
   <section
-    class="rounded-lg bg-white border border-[#EAECF0] py-[40px] px-6 md:px-12"
+    class="rounded-lg bg-white border border-[#EAECF0] pb-20"
   >
     <div
       class="w-full flex gap-x-10 flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12 max-w-[1064px]"
@@ -42,7 +45,7 @@
         </div>
 
         <div
-          class="mb-5 bg-[#182230] py-2 px-9 rounded-lg text-xs text-white text-center"
+          class="mb-5 bg-[#182230] py-2 px-8 rounded-lg text-xs text-white text-center"
         >
           You are currently on a
           <span class="font-bold underline">Tier 2</span> account. Upgrade your

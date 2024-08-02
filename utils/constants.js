@@ -1,11 +1,10 @@
-
 export const navigation = [
   {
     name: "Home",
     url: "/",
     icon: "solar:buildings-2-outline",
     key: "home",
-    disabled:false,
+    disabled: false,
     roles: [
       "superadmin",
       "admin",
@@ -17,13 +16,13 @@ export const navigation = [
       "finance",
     ],
   },
- 
+
   {
     name: "Loans ",
     url: "/loans",
     icon: "mingcute:transfer-fill",
     key: "loan",
-    disabled:false,
+    disabled: false,
     roles: [
       "superadmin",
       "admin",
@@ -40,7 +39,7 @@ export const navigation = [
     icon: "fluent:data-pie-24-regular",
     key: "payment",
     hasChildren: true,
-    disabled:false,
+    disabled: false,
     roles: [
       "superadmin",
       "admin",
@@ -70,7 +69,6 @@ export const navigation = [
         icon: "tabler:user-dollar",
         key: "storefront",
       },
-  
     ],
   },
 
@@ -79,7 +77,7 @@ export const navigation = [
     url: "/customers",
     icon: "lucide:users",
     key: "investment",
-    disabled:true,
+    disabled: true,
     roles: [
       "superadmin",
       "admin",
@@ -97,17 +95,16 @@ export const navigation = [
     url: "/tenants",
     icon: "oui:users",
     key: "savings",
-    disabled:true,
+    disabled: true,
     roles: ["superadmin"],
   },
-
 
   {
     name: "Cards",
     url: "/wallet",
     icon: "ion:wallet-outline",
     key: "card",
-    disabled:true,
+    disabled: true,
     roles: [
       "superadmin",
       "admin",
@@ -125,7 +122,8 @@ export const navigation = [
     url: "/settings",
     icon: "heroicons:cog-6-tooth",
     key: "account",
-    disabled:false,
+    disabled: false,
+    hasChildren: true,
     roles: [
       "superadmin",
       "admin",
@@ -135,6 +133,26 @@ export const navigation = [
       "developer",
       "owner",
       "finance",
+    ],
+    children: [
+      {
+        name: "Profile",
+        url: "/settings/profile",
+        icon: "mdi:account-box-multiple-outline",
+        key: "procurement-my-orders",
+      },
+      {
+        name: "Security",
+        url: "/settings/security",
+        icon: "fluent-mdl2:product",
+        key: "account-saved-searches",
+      },
+      {
+        name: "Verifications",
+        url: "/settings/verifications",
+        icon: "tabler:user-dollar",
+        key: "storefront",
+      },
     ],
   },
 ];

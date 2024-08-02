@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-[#919EAB] text-[11px] mb-2  lg:px-4 font-semibold uppercase">
+  <h1 class="text-[#919EAB] text-[11px] mb-2 lg:px-4 font-semibold uppercase">
     <span class="lg:px-[16px]">Overview</span>
   </h1>
 
@@ -86,11 +86,12 @@
 
       <span
         v-else
-        @click="isShowing ? setIsShowing(null) : setIsShowing(item.name)"
+        @click="handlOpen(item.name)"
         class="text-sm flex items-center px-[10px] cursor-pointer font-medium hover:bg-[#9FE870]/20 hover:text-primary-500 rounded-lg text-[#637381]"
         :activeClass="`${
           item.hasChildren ? '' : 'bg-[#9FE870]'
         }  !text-primary-500 block font-semibold`"
+        :class="openedlinks.includes(item.name) ? 'bg-[#9FE870]/20 text-primary-500' : ''"
       >
         <span
           class="flex items-center justify-between gap-x-[10px] flex-1 py-[10px]"
@@ -105,7 +106,7 @@
           <AppIcon
             v-if="item.hasChildren"
             :icon="
-              isShowing
+              openedlinks.includes(item.name)
                 ? 'heroicons:chevron-down-20-solid'
                 : 'heroicons:chevron-right-20-solid'
             "
@@ -114,7 +115,7 @@
         </span>
       </span>
       <TransitionRoot
-        :show="isShowing === item.name"
+        :show="openedlinks.includes(item.name)"
         enter="transition-opacity duration-75"
         enter-from="opacity-0"
         enter-to="opacity-100"
@@ -130,7 +131,7 @@
                 class="text-sm flex items-center px-[10px] font-medium hover:text-primary-500 rounded-lg text-[#637381]"
                 activeClass="!text-primary-500 block font-semibold"
               >
-                <span class="flex items-center gap-x-3 flex-1 py-[6px]">
+                <span class="flex items-center gap-x-2 flex-1 py-[6px]">
                   <span class="w-6 h-6 flex items-center justify-center">
                     <span
                       :class="
@@ -155,6 +156,7 @@ import { TransitionRoot } from "@headlessui/vue";
 
 const route = useRoute();
 const isShowing = ref(null);
+const openedlinks = ref([]);
 const setIsShowing = (value) => {
   isShowing.value = value;
 };
@@ -164,4 +166,13 @@ const mappedNavigation = computed(
   () => navigation
   // .filter((i) => i.roles.includes(authStore?.userRole?.toLowerCase()))
 );
+
+function handlOpen(val) {
+  if (openedlinks.value.includes(val)) {
+    const [val, ...sublinks] = openedlinks.value;
+    openedlinks.value = sublinks;
+  } else {
+    openedlinks.value = [...openedlinks.value, val];
+  }
+}
 </script>

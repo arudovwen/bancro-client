@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-[310px]">
+  <div class="max-w-[320px]">
     <h2
       class="text-[#101828] font-semibold text-lg lg:text-[30px]"
       :class="className"
