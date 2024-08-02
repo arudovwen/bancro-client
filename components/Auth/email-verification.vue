@@ -42,7 +42,7 @@
         </div>
       </form>
       <div class="text-center text-sm">
-        <NuxtLink to="/" class="text-[#64748B] font-semibold">
+        <NuxtLink to="/auth/login" class="text-[#64748B] font-semibold">
           Go back
         </NuxtLink>
       </div>
