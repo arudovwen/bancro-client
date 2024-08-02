@@ -34,6 +34,18 @@ export default {
     extend: {
       colors: {
         "matta-black": "#475467",
+        "vc-sky-blue": {
+          "--vc-accent-50": "#c7f8b4",
+          " --vc-accent-100": "#b0f29b",
+          " --vc-accent-200": "#99ec82",
+          " --vc-accent-300": "#82e669",
+          "  --vc-accent-400": "#82e669",
+          "--vc-accent-500": "#9FE870",
+          "--vc-accent-600": "#6dc94c",
+          " --vc-accent-700": "#58b738",
+          "--vc-accent-800": "#429d27",
+          "--vc-accent-900": " #2d7f15",
+        },
         primary: {
           50: "#EAF2FF", // Lightest shade
           100: "#D3E2FF",

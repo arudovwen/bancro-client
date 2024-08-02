@@ -198,6 +198,7 @@ useHead(
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import 'v-calendar/style.css';
 
 onMounted(() => {
   AOS.init();

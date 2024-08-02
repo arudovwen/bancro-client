@@ -1,34 +1,12 @@
 <template>
-  <div
-    class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full"
-  >
-    <div class="flex items-start justify-between mb-4">
+  <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full">
+    <div class="flex flex-col lg:flex-row gap-y-5 items-start justify-between mb-4">
       <div>
-        <h2 class="text-[#101828] text-lg font-semibold block">Balance Trend</h2>
-       
+        <h2 class="text-[#101828] text-lg font-semibold block">
+          Balance Trend
+        </h2>
       </div>
-      <div
-        class="border border-[#D0D5DD] rounded-lg text-xs lg:text-sm text-[#344054] max-w-max flex items-center"
-      >
-        <button
-          class="px-4 py-[10px] text-sm border-r border-[#D0D5DD] first:rounded-l-lg last:border-none font-medium whitespace-nowrap text-[#344054]"
-          :class="active === n.value ? 'bg-[#F9FAFB]' : ''"
-          v-for="n in filters"
-          @click="active = n.value"
-        >
-          {{ n.title }}
-        </button>
-        <ClientOnly>
-          <VueDatePicker
-            v-model="date"
-            range
-            multi-calendars
-            placeholder="Custom"
-            :time-picker="false"
-            input-class-name="!text-sm !border-none !w-[120px] placeholder:!text-[#344054] !font-medium"
-          />
-        </ClientOnly>
-      </div>
+      <DatePicker @handleSubmit="" />
     </div>
     <div>
       <client-only>
@@ -47,9 +25,9 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
 
+const isDateOpen = ref(false);
 const chartOptions = computed(() => {
   return {
-
     colors: ["#9FE870"],
     yaxis: {
       show: true,
@@ -63,7 +41,7 @@ const chartOptions = computed(() => {
           fontFamily: "Inter, Arial, sans-serif",
           fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
-          color:"#475467"
+          color: "#475467",
         },
       },
     },
@@ -118,7 +96,7 @@ const chartOptions = computed(() => {
           fontFamily: "Inter, Arial, sans-serif",
           fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
-          color:"#475467"
+          color: "#475467",
         },
       },
     },
@@ -166,4 +144,5 @@ function getMonthsInYear() {
   }
   return months;
 }
+provide("isDateOpen", isDateOpen);
 </script>
