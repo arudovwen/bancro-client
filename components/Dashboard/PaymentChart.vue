@@ -83,10 +83,10 @@ const chartOptions = computed(() => {
       enabled: false,
     },
     labels: ["Apples", "Oranges"],
-    // stroke: {
-    //   curve: "smooth",
-    //   width: 1,
-    // },
+    stroke: {
+      curve: "smooth",
+      width: 1,
+    },
     xaxis: {
       enabled: true,
       type: "category",

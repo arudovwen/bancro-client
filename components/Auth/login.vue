@@ -54,7 +54,7 @@
       >
         Don't have an account?
         <span
-          @click="() => router.push('/auth/individual/register')"
+          @click="() => router.push('/auth/register')"
           class="cursor-pointer font-semibold text-primary-500"
           >Sign Up</span
         >

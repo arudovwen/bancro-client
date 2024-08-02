@@ -5,7 +5,8 @@
       <Breadcrumbs :links="links" />
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-4">
-      <TransfersReview />
+      <TransfersForm v-if="active === 1" />
+      <TransfersReview v-if="active === 2" />
       <div>
         <TransfersRecent />
       </div>
@@ -21,6 +22,7 @@
 </template>
 <script setup>
 const isOpen = ref(false);
+const active = ref(1);
 const enabled = ref(false);
 const isLoading = ref(false);
 const links = [
@@ -34,5 +36,6 @@ const links = [
   },
 ];
 
+provide("active", active);
 provide("isOpen", isOpen);
 </script>

@@ -1,33 +1,55 @@
 <template>
-  <div class="">
-    <h1 class="text-[#344054] font-semibold mb-5 text-2xl lg:text-4xl">Sign Up 👋</h1>
-    <p class="text-[#667085] text-sm mb-6">
-      Clarity gives you the blocks and components you need to create a truly
-      professional website.
-    </p>
+  <div class="w-full">
+    <h1 class="text-[#344054] font-semibold mb-5 text-2xl lg:text-4xl">
+      Sign Up 👋
+    </h1>
+    <p class="text-[#667085] text-sm mb-6">Let’s get started</p>
+    <div
+      class="mb-[22px] border border-[#E4E7EC] rounded-[10px] bg-[#F9FAFB] flex items-center p-1"
+    >
+      <button
+        v-for="n in tabs"
+        :key="n"
+        @click="active = n"
+        class="font-semibold py-2 px-2 text-center justify-center text-xs md:text-sm flex items-center flex-1 capitalize rounded-[10px] text-sm"
+        :class="
+          active === n ? 'bg-white text-[#344054] active' : 'text-[#667085]'
+        "
+      >
+        {{ n }}
+      </button>
+    </div>
 
     <form @submit.prevent="onSubmit" class="grid grid-cols-1 gap-y-5">
-      <div>
+      <div v-if="active !== 'personal account'">
         <Textinput
           placeholder=""
           label="Company name"
           type="text"
+          name="companyName"
+          v-bind="companyNameAtt"
+          v-model="companyName"
+          :error="errors.companyName"
+        />
+      </div>
+      <div v-if="active === 'personal account'">
+        <Textinput
+          placeholder=""
+          label="First name"
           name="firstName"
           v-bind="firstNameAtt"
           v-model="firstName"
           :error="errors.firstName"
         />
       </div>
-      <div v-if="route.params.type==='individual'">
+      <div v-if="active === 'personal account'">
         <Textinput
-          icon="line-md:email"
           placeholder=""
-          label="Full name"
-          name="username"
-          v-bind="usernameAtt"
-          v-model="username"
-          :error="errors.username"
-          iconPosition="left"
+          label="Last name"
+          name="lastName"
+          v-bind="lastNameAtt"
+          v-model="lastName"
+          :error="errors.lastName"
         />
       </div>
       <div>
@@ -36,10 +58,10 @@
           placeholder=""
           label="Email address"
           type="email"
-          name="username"
-          v-bind="usernameAtt"
-          v-model="username"
-          :error="errors.username"
+          name="email"
+          v-bind="emailAtt"
+          v-model="email"
+          :error="errors.email"
           iconPosition="left"
         />
       </div>
@@ -64,7 +86,7 @@
           :isLoading="isLoading"
           text="Create account"
           btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold "
-          :isDisabled="!agree || isLoading"
+          :isDisabled="isLoading"
         />
       </div>
       <span
@@ -91,104 +113,48 @@ useHead({
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { toast } from "vue3-toastify";
-import {
-  createTenant,
-  registerInvitedUser,
-  getInvite,
-} from "~/services/authservices";
 
-const agree = ref(false);
+const active = inject("active");
 const route = useRoute();
 const router = useRouter();
-
+const tabs = ["personal account", "business account"];
 const isLoading = ref(false);
 const formValues = {
   firstName: "",
   lastName: "",
-  phoneNumber: "",
-  role: route.params.type === "sign-up" ? "owner" : "",
-  tenantId: route.params.tenantId,
+  email: "",
+  companyName: "",
+  password: "",
 };
 
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
-  tenantId: yup.string().required("Tenant Id is required"),
-});
-const schema1 = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
-  tenantId: yup.string().required("Tenant Id is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-    )
-    .nullable(),
+  email: yup.string().required("Phone number is required"),
+  companyName: yup.string(),
+  password: yup.string().required(),
 });
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: route.params.type === "invite" ? schema1 : schema,
   initialValues: formValues,
 });
-const tenantUserDto = ref(null);
+
 const [password, passwordAtt] = defineField("password");
 const [firstName, firstNameAtt] = defineField("firstName");
 const [lastName, lastNameAtt] = defineField("lastName");
-const [phoneNumber, phoneNumberAtt] = defineField("phoneNumber");
+const [email, emailAtt] = defineField("email");
+const [companyName, companyNameAtt] = defineField("companyName");
 
 const onSubmit = handleSubmit((values) => {
-  navigateTo("/email-verification")
+  navigateTo("/email-verification");
   isLoading.value = true;
-  return;
-  const data = {
-    tenantUserDto: {
-      emailAddress: tenantUserDto.value?.email,
-      firstName: values?.firstName,
-      lastName: values?.lastName,
-      phoneNumber: values?.phoneNumber,
-      tenantId: tenantUserDto.value?.tenantId,
-      role: tenantUserDto.value?.role,
-    },
-    password: values.password,
-    inviteCode: route.params.tenantId,
-  };
-
-  (route.params.type === "sign-up" ? createTenant : registerInvitedUser)(
-    route.params.type === "sign-up" ? values : data
-  )
-    .then((res) => {
-      if (res.status === 200) {
-        toast.info(
-          "Sign up successful, Check your email for login instructions"
-        );
-        navigateTo("/");
-      }
-    })
-
-    .catch((err) => {
-      isLoading.value = false;
-      if (err.response.data.message || err.response.data.Message) {
-        toast.error(
-          err.response.data.message ||
-            err.response.data.Message ||
-            "Something went wrong"
-        );
-      }
-    });
-});
-onMounted(() => {
-  if (route.params.type === "invite") {
-    getInvite(route.params.tenantId).then((res) => {
-      if (res.status === 200) {
-        tenantUserDto.value = res.data.data;
-      }
-    });
-  }
 });
 </script>
+
+<style>
+.active {
+  box-shadow: 0px 1px 2px 0px #1018280f;
+  box-shadow: 0px 1px 3px 0px #1018281a;
+}
+</style>

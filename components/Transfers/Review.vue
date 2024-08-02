@@ -3,7 +3,7 @@
     <h2
       class="text-[#3C4A67] font-semibold text-xl mb-7 flex items-center gap-x-7"
     >
-      <span @click="navigateTo('/transfers')"
+      <span @click="active=1"
         ><AppIcon icon="uiw:arrow-left"
       /></span>
       Review transfer
@@ -83,6 +83,6 @@
 </template>
 <script setup>
 const isOpen = ref(false);
-
+const active = inject("active")
 provide("isOpen", isOpen);
 </script>

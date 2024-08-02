@@ -1,11 +1,12 @@
 <template>
-  <div class="bg-white rounded-xl p-6">
+  <form @submit.prevent="active = 2" class="bg-white rounded-xl p-6">
     <h2 class="text-[#3C4A67] font-semibold text-xl mb-7">
       Transfer to Bank Account
     </h2>
 
     <div>
       <button
+        type="button"
         @click="isOpen = true"
         :class="`min-w-[180px] px-[14px] w-full flex justify-between items-center !bg-white  !rounded-lg text-[#475467] h-12 cursor-pointer border border-[#C8D2DF]`"
       >
@@ -103,13 +104,14 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 <script setup>
 import { useForm } from "vee-validate";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 import * as yup from "yup";
 
+const active = inject("active");
 const isOpen = ref(false);
 const enabled = ref(false);
 const isLoading = ref(false);

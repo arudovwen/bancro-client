@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-lg bg-white border border-[#EAECF0] flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-[60px]"
+    class="rounded-lg bg-white border border-[#EAECF0] flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12"
   >
     <div class="flex-1">
       <div class="flex gap-x-3 items-center mb-10">

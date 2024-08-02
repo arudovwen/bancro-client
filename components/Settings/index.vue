@@ -5,17 +5,15 @@
   <section>
     <AppTab :tabs="tabs" />
     <div>
-      <SettingsBusinessProfile v-if="active === 'business profile'" />
-      <SettingsBankAccounts v-if="active === 'bank accounts'" />
-      <SettingsTeams v-if="active === 'teams'" />
-      <SettingsApiKeys v-if="active === 'api & webhooks'" />
+     
+      <SettingsAccount v-if="active === 'verification'" />
+      <SettingsPassword v-if="active === 'security'" />
       <SettingsProfile v-if="active === 'profile'" />
     </div>
   </section>
 </template>
 
 <script setup>
-
 const links = [
   {
     title: "Dashboard",
@@ -28,26 +26,19 @@ const links = [
 ];
 const tabs = [
   {
-    title: "business profile",
-    key: "business profile",
-  },
-  {
-    title: "bank accounts",
-    key: "bank accounts",
-  },
-  {
-    title: "teams",
-    key: "teams",
-  },
-  {
-    title: "api & webhooks",
-    key: "api & webhooks",
-  },
-  {
     title: "profile",
     key: "profile",
   },
+  {
+    title: "security",
+    key: "security",
+  },
+  {
+    title: "verification",
+    key: "verification",
+  },
+
 ];
-const active = ref("business profile");
+const active = ref("profile");
 provide("active", active);
 </script>

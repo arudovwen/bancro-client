@@ -1,6 +1,6 @@
 <template>
-  <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full">
-    <div class="flex justify-between mb-5">
+  <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white h-full">
+    <div class="flex justify-between mb-5 px-6">
       <span>
         <h2 class="text-lg font-semibold mb-[2px] capitalize">
           Recent transactions

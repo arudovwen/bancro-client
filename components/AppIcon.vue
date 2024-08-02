@@ -1,6 +1,6 @@
 <template>
   <span>
-    <Icon :icon="icon" :class="iconClass" />
+    <Icon v-if="icon" :icon="icon" :class="iconClass" />
   </span>
 </template>
 <script>
@@ -12,7 +12,7 @@ export default {
   props: {
     icon: {
       type: String,
-      default: "heroicons-outline:home",
+      default: "",
     },
     iconClass: {
       type: String,

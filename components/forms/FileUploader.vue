@@ -1,28 +1,30 @@
 <template>
   <div>
-    <p class="font-medium text-[#475467] text-sm mb-1">{{ title }}</p>
-    <p class="font-normal text-[#667085] text-sm mb-6">
-      {{ text }}
-    </p>
-
-    <div class="border rounded-lg bg-white px-4 py-5 text-center">
-      <img src="~/assets/img/upload.svg" class="mx-auto mb-3" />
+    <label
+      class="border bprder-[#919EAB33] rounded-lg bg-[#919EAB14] px-4 py-4 text-center flex flex-col justify-center items-center gap-y-2"
+    >
+    <input type="file" id="uploadId" class="hidden" @change="handleFile" />
+      <SvgUpload />
       <span class="text-sm text-[#667085]"
-        ><span class="text-[#1570EF]">Click to upload</span> or drag and drop
-        files here</span
+        ><span class="text-[#667085] text-sm block">{{ title }}</span>    <span class="text-xs text-[#919EAB]">{{ text }}</span></span
       >
-    </div>
+  
+    </label>
   </div>
 </template>
 <script setup>
 import { defineProps } from "vue";
 
 defineProps({
-  text: {
-    default: "You can upload more than 1",
-  },
   title: {
-    default: "",
+    default: "Click to upload",
   },
+  text:{
+    default:""
+  }
 });
+const file = ref(null);
+function handleFile(e) {
+  file.value = e.target.files[0];
+}
 </script>

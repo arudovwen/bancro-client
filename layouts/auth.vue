@@ -3,12 +3,12 @@
     <div class="mb-10"><AppLogo imgClass="w-[160px] lg:!w-[180px]" /></div>
     <div class="flex-1 flex items-center justify-center">
       <div
-        class="w-[80vw] max-h-[714px] grid grid-cols-1 lg:grid-cols-2 gap-x-10 lg:gap-x-20 max-w-[1200px] mx-auto"
+        class="w-full lg:w-[80vw] max-h-[714px] grid grid-cols-1 lg:grid-cols-2 gap-x-10 lg:gap-x-20 max-w-[1200px] mx-auto"
       >
         <div class="bg-[#163300A6] h-full w-full hidden lg:flex rounded-2xl">
           <img
             :src="
-              route?.params?.type == 'individual'
+             active === 'personal account'
                 ? '/individual.png'
                 : '/business-signup.png'
             "
@@ -27,4 +27,6 @@
 <script setup>
 definePageMeta({ middleware: "auth" });
 const route = useRoute();
+const active = ref("personal account")
+provide("active", active)
 </script>

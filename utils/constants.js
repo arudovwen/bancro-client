@@ -20,7 +20,7 @@ export const navigation = [
  
   {
     name: "Loans ",
-    url: "/transfers",
+    url: "/loans",
     icon: "mingcute:transfer-fill",
     key: "loan",
     disabled:false,
@@ -54,7 +54,7 @@ export const navigation = [
     children: [
       {
         name: "Send money",
-        url: "/accounts",
+        url: "/transfers",
         icon: "mdi:account-box-multiple-outline",
         key: "procurement-my-orders",
       },
