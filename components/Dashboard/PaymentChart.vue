@@ -38,7 +38,7 @@ const chartOptions = computed(() => {
         style: {
           color: undefined,
           fontSize: "12px",
-          fontFamily: "Inter, Arial, sans-serif",
+          fontFamily: "Onest, Arial, sans-serif",
           fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
           color: "#475467",
@@ -93,7 +93,7 @@ const chartOptions = computed(() => {
         style: {
           color: undefined,
           fontSize: "12px",
-          fontFamily: "Inter, Arial, sans-serif",
+          fontFamily: "Onest, Arial, sans-serif",
           fontWeight: 400,
           cssClass: "apexcharts-xaxis-title",
           color: "#475467",

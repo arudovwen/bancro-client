@@ -10,7 +10,7 @@ html {
   box-sizing: border-box;
 }
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Onest", sans-serif;
   color: #333333;
 }
 /* Chrome, Safari, Edge, Opera */
