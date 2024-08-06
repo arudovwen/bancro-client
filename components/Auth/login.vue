@@ -1,11 +1,10 @@
 <template>
   <div class="">
     <h1 class="text-[#344054] font-semibold mb-5 text-2xl lg:text-4xl">
-      Welcome Back
+      Sign In 👋
     </h1>
     <p class="text-[#667085] text-sm mb-6">
-      We're eliminating the friction and bias of traditional financing,
-      connecting business builders to capital at the click of a button.
+      Welcome Back! Sign in with your registered email address and your password
     </p>
 
     <form @submit.prevent="onSubmit">
