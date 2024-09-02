@@ -48,7 +48,10 @@
         modelValue="modelValue"
       />
 
-      <div class="flex text-xl absolute right-[14px] top-1/2 -translate-y-1/2">
+      <div
+        class="flex text-xl absolute top-1/2 -translate-y-1/2"
+        :class="iconClass"
+      >
         <span
           v-if="hasicon"
           @click="toggleType"
@@ -59,7 +62,11 @@
             class="text-[#666]"
             v-if="types === 'password'"
           />
-          <AppIcon icon="iconamoon:eye-off-duotone" class="text-[#666]" v-else />
+          <AppIcon
+            icon="iconamoon:eye-off-duotone"
+            class="text-[#666]"
+            v-else
+          />
         </span>
 
         <span v-if="error && types !== 'date'" class="text-danger-500">
@@ -181,6 +188,9 @@ export default {
         creditCard: true,
         delimiter: "-",
       }),
+    },
+    iconClass: {
+      default: "right-[14px]",
     },
   },
   data() {

@@ -29,9 +29,14 @@
         v-else-if="type == 'transaction'"
         :class="classIcon"
       />
+      <img
+        src="/images/notfound.svg"
+        v-else-if="type == 'notfound'"
+        :class="classIcon"
+      />
       <img src="~/assets/images/empty.svg" v-else :class="classIcon" />
     </div>
-    <p :class="titleClass" class="text-lg text-[#101828] font-semibold mb-2">
+    <p :class="titleClass" class="text-lg text-[#98A2B3] font-medium mb-1">
       {{ title || "No data available" }}
     </p>
     <p

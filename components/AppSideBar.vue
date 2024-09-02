@@ -101,6 +101,10 @@
               :active="route.path === item.url"
               :keyvalue="item.key"
             />
+            <SvgAccount
+                :active="route.path === item.url"
+                :keyvalue="item.key"
+              />
             <span> {{ item.name }}</span>
           </span>
           <AppIcon

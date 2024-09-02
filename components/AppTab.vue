@@ -7,7 +7,7 @@
       v-for="tab in tabs"
       :key="tab.title"
       @click="active = tab.key"
-      :class="`capitalize text-xs md:text-sm font-semibold pb-3 border-b-2 px-1 flex items-center gap-x-1 ${
+      :class="`${buttonClass} capitalize text-xs md:text-sm font-semibold pb-3 border-b-2 px-1 flex items-center gap-x-1 ${
         active === tab.key
           ? 'border-primary-500 text-primary-500'
           : 'border-transparent text-[#667085]'
@@ -23,6 +23,6 @@
   </div>
 </template>
 <script setup>
-defineProps(["tabs", "className", "count"]);
+defineProps(["tabs", "className", "count","buttonClass"]);
 const active = inject("active");
 </script>

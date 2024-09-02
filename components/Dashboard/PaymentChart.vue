@@ -1,6 +1,8 @@
 <template>
-  <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full">
-    <div class="flex flex-col lg:flex-row gap-y-5 items-start justify-between mb-4">
+  <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white h-full max-h-[356px]">
+    <div
+      class="flex flex-col lg:flex-row gap-y-5 items-start justify-between mb-4"
+    >
       <div>
         <h2 class="text-[#101828] text-lg font-semibold block">
           Balance Trend
@@ -12,7 +14,8 @@
       <client-only>
         <apexchart
           type="area"
-          height="230"
+            
+          height="260"
           :options="chartOptions"
           :series="series"
         ></apexchart
@@ -55,6 +58,7 @@ const chartOptions = computed(() => {
     },
     grid: {
       show: true,
+      borderColor: "#edefeb",
     },
 
     dataLabels: {
