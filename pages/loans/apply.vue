@@ -1,8 +1,7 @@
 <template>
-    <LoanComponent />
+    <LoanComponentApplyLoan />
 </template>
 <script setup>
-import LoanComponent from "~/components/LoanComponent"
 definePageMeta({
   layout: "dashboard",
   middleware: "auth",

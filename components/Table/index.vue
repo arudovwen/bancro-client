@@ -1,16 +1,19 @@
 <template>
   <div class="border-[#EAECF0] border rounded-lg w-ful bg-white">
     <div
-      class="pb-8 pt-8 border-[#EAECF0] border-b px-8"
+      class="pb-6 pt-6 border-[#EAECF0] border-b px-6"
       v-if="
         hasSearch ||
         hasFilter ||
         hasDate ||
         hasExport ||
-        hasFilterButton
+        hasFilterButton ||
+        title
       "
     >
-      <div class="flex gap-x-4 flex-col lg:flex-row gap-y-4 justify-between">
+      <div
+        class="flex gap-x-4 flex-col lg:flex-row gap-y-4 justify-between items-center"
+      >
         <div class="relative flex items-center" v-if="hasSearch">
           <span class="absolute left-4 pointer-events-none text-[#667085]"
             ><i class="uil uil-search"></i
@@ -97,6 +100,13 @@
           </tr>
         </tbody>
       </table>
+      <Pagination
+        :total="queryParams.totalCount"
+        :current="queryParams.PageNumber"
+        :per-page="queryParams.PageSize"
+        :pageRange="5"
+        @page-changed="queryParams.PageNumber = $event"
+      />
     </div>
     <EmptyData
       v-if="!rows.length && !isLoading"
@@ -201,6 +211,9 @@ const props = defineProps({
   },
   placeholder: {
     default: "Search by name",
+  },
+  queryParams: {
+    default: { PageSize: 20, PageNumber: 1, pagecount: 10, totalCount: 100 },
   },
 });
 const emits = defineEmits([

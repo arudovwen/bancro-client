@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 // import { nanoid } from "nanoid"; //if using nanoid
 
-import { confirmpurchase } from "@/services/cartservice";
-
 export function payWithMonnify(data, onModalClose, onSuccess) {
   const config = useRuntimeConfig();
 

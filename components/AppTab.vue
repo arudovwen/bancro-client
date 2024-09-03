@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex gap-x-4 mb-8 w-full overflow-x-auto border-b border-[#EAECF0]"
+    class="flex gap-x-4 mb-8 w-full overflow-x-auto border-b border-[#D0D5DD]"
     :class="className"
   >
     <button

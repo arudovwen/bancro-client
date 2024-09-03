@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center justify-center p-4 h-[400px] text-gray-400 text-center"
+    class="flex flex-col items-center justify-center p-4 h-[340px] text-gray-400 text-center"
     :class="className"
   >
     <div class="mb-6 flex justify-center">
@@ -34,9 +34,14 @@
         v-else-if="type == 'notfound'"
         :class="classIcon"
       />
+      <img
+        src="/images/active.svg"
+        v-else-if="type == 'active'"
+        :class="classIcon"
+      />
       <img src="~/assets/images/empty.svg" v-else :class="classIcon" />
     </div>
-    <p :class="titleClass" class="text-lg text-[#98A2B3] font-medium mb-1">
+    <p :class="titleClass" class="text-base text-[#98A2B3] font-medium mb-1">
       {{ title || "No data available" }}
     </p>
     <p

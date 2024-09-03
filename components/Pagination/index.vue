@@ -1,11 +1,27 @@
 <template>
   <div
     v-if="totalPages"
-    class="flex justify-start items-center relative z-[999]"
+    class="text-sm flex !justify-end gap-x-6 items-center relative z-[999] text-[#212B36]"
     :class="wrapperClass"
   >
+    <div class="flex gap-x-4">
+      <span>Rows per page:</span>
+      <span>
+        <select
+          @change="(e) => perPageChanged(e.target.value)"
+          class="outline-none"
+        >
+          <option class="px-3" :value="n * 10" v-for="n in 5">
+            {{ n * 10 }}
+          </option>
+        </select>
+      </span>
+    </div>
+    <span>
+      <span>{{ current }}</span> of <span>{{ totalPages }}</span>
+    </span>
     <ul
-      class="pagination mx-auto lg:mx-0 bg-white border border-[#EFF1F5] p-[10px] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.03)]"
+      class="pagination mx-auto lg:mx-0 ] p-[10px] flex gap-x-4"
       :class="paginationClass"
     >
       <li class="leading-4">
@@ -14,38 +30,13 @@
           :disabled="current === 1"
           :class="current === 1 ? ' opacity-50 cursor-not-allowed' : ''"
         >
-          <span v-if="enableText" class="text-sm">Previous</span>
+          <span class="text-xl"
+            ><AppIcon icon="flowbite:angle-left-outline"
+          /></span>
         </button>
       </li>
-      <li class="" v-if="hasFirst()">
-        <button @click.prevent="changePage(1)">
-          <div>
-            <span> 1 </span>
-          </div>
-        </button>
-      </li>
-      <li class="text-slate-600 dark:text-slate-300" v-if="hasFirst()">...</li>
-      <li class="" v-for="(page, i) in pages" :key="i">
-        <button @click.prevent="changePage(page)">
-          <div
-            :class="{
-              active: current === page,
-            }"
-            class=""
-          >
-            <span class="">{{ page }}</span>
-          </div>
-        </button>
-      </li>
-      <li class="text-slate-600 dark:text-slate-300" v-if="hasLast()">...</li>
-      <li class="" v-if="hasLast()">
-        <button @click.prevent="changePage(totalPages)">
-          <div>
-            <span> {{ totalPages }} </span>
-          </div>
-        </button>
-      </li>
-      <li class="text-xl leading-4 dark:text-[#333]">
+
+      <li class="leading-4 dark:text-[#333]">
         <button
           @click.prevent="changePage(nextPage)"
           :disabled="current === totalPages"
@@ -53,7 +44,9 @@
             current === totalPages ? ' opacity-50 cursor-not-allowed' : ''
           "
         >
-          <span v-if="enableText" class="text-sm">Next</span>
+          <span class="text-xl"
+            ><AppIcon icon="flowbite:angle-right-outline"
+          /></span>
         </button>
       </li>
     </ul>

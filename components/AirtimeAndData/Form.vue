@@ -45,8 +45,8 @@
             @click="isOpen = true"
             :class="`min-w-[180px] px-[14px] w-full flex justify-between items-center !bg-white  !rounded-lg text-[#475467] h-12 cursor-pointer border border-[#C8D2DF]`"
           >
-            <span class="" v-if="plan">{{ plan.label }}</span>
-            <span v-else class="text-[#AFBACA]">Select Data</span>
+            <span class="" v-if="plan?.value">{{ plan.label }}</span>
+            <span v-if="!plan.value" class="text-[#AFBACA]">Select Data</span>
             <span><AppIcon icon="humbleicons:chevron-down" /></span>
           </button>
         </div>

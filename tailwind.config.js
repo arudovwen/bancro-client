@@ -33,7 +33,7 @@ export default {
     },
     extend: {
       colors: {
-        "matta-black": "#475467",
+        "matta-black": "#344054",
         "vc-sky-blue": {
           "--vc-accent-50": "#c7f8b4",
           " --vc-accent-100": "#b0f29b",

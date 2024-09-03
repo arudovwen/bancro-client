@@ -222,7 +222,7 @@ const links = [
   },
   {
     title: "Loans",
-    url: "/accounts",
+    url: "/loans",
   },
   {
     title: route.params.id,

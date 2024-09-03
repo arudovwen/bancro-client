@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-[320px]">
     <h2
-      class="text-[#101828] font-semibold mb-1 text-lg lg:text-[30px]"
+      class="text-[#344054] font-semibold mb-1 text-lg lg:text-[30px]"
       :class="className"
     >
       {{ title }}
