@@ -1,17 +1,15 @@
 <template>
-  <Menu as="div" class="relative" :class="parentClass">
-    <MenuButton class="block w-full">
-      <div class="flex gap-x-2 items-center">
-        <span
-          class="h-10 w-10 rounded-full bg-[#EDEFEB] flex items-center justify-center"
-        >
-          <AppIcon icon="mingcute:user-2-fill" />
-        </span>
-        <span class="text-sm font-medium">{{
-          authStore?.userInfo?.fullName
-        }}</span>
-        <AppIcon icon="fluent:chevron-down-20-filled" />
+  <Menu as="div" class="relative">
+    <MenuButton class="w-full flex items-center gap-x-2">
+      <div
+        class="h-10 w-10 rounded-full bg-[#EDEFEB] flex items-center justify-center"
+      >
+        <AppIcon icon="mingcute:user-2-fill" />
       </div>
+      <span class="text-sm font-medium">{{
+        authStore?.userInfo?.fullName
+      }}</span>
+      <AppIcon icon="fluent:chevron-down-20-filled" />
     </MenuButton>
 
     <Transition
@@ -23,64 +21,70 @@
       leave-to-class="transform scale-95 opacity-0"
     >
       <MenuItems
-        :class="classMenuItems"
-        class="absolute right-0 origin-top-right rounded bg-white w-[240px] shadow-dropdown z-[9999]"
+        class="absolute right-0 origin-top-right rounded-lg bg-white w-[240px] shadow-dropdown z-[9999] py-2"
       >
-        <div v-if="!$slots.menus">
-          <MenuItem v-slot="{ active }" v-for="(item, i) in options" :key="i">
-            <span
-              :class="`px-[10px] py-2 text-[#344054] ${
-                item.hasDivider === true ? 'border-t border-[#E4E7EC]' : ''
-              }  block`"
-              @click="emits('handleClick', item)"
+        <div class="grid">
+          <div class="mb-2 flex items-center px-[14px] gap-x-2">
+            <div
+              class="h-10 w-10 rounded-full bg-[#EDEFEB] flex items-center justify-center"
             >
-              <div class="flex items-center" v-if="item.icon">
-                <span class="block text-xl mr-3">
-                  <AppIcon :icon="item.icon"
-                /></span>
-                <span class="block text-sm">{{ item.label }}</span>
-              </div>
-              <span v-else class="block text-sm cursor-pointer">{{
-                item.label
-              }}</span>
-            </span>
-          </MenuItem>
+              <AppIcon icon="mingcute:user-2-fill" />
+            </div>
+            <div>
+              <span class="text-sm font-medium block">John Snow</span>
+              <span class="text-sm">sucyy@gmail.com</span>
+            </div>
+          </div>
+          <hr class="my-1 border-[#E4E7EC]" />
+          <template v-for="(item, index) in options" :key="index">
+            <MenuItem @click="handleMenuItemClick(item)">
+              <span
+                :class="[
+                  'px-[14px] py-[10px] text-[#344054] cursor-pointer block',
+                  { 'border-t border-[#E4E7EC]': item.hasDivider },
+                ]"
+              >
+                <div v-if="item.icon" class="flex items-center">
+                  <span class="text-xl mr-3">
+                    <AppIcon :icon="item.icon" />
+                  </span>
+                  <span class="text-sm">{{ item.label }}</span>
+                </div>
+                <span v-else class="text-sm">{{ item.label }}</span>
+              </span>
+            </MenuItem>
+          </template>
         </div>
-        <template v-else>
-          <slot name="menus"></slot>
-        </template>
       </MenuItems>
     </Transition>
   </Menu>
+  <AppLogout v-if="isLogOut" />
 </template>
+
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { computed, inject } from "vue";
 
 const authStore = useAuthStore();
-const isSigniningOut = inject("isSigniningOut");
-const options = [
-  {
-    label: "View profile",
-    link: "",
-    isUrl: false,
-    icon: "",
-  },
-  {
-    label: "Settings",
-    link: "",
-    isUrl: false,
-    icon: "",
-  },
+const isLogOut = ref(false);
+
+const options = computed(() => [
+  { label: "View profile", link: "", icon: "ri:user-3-line" },
+  { label: "Settings", link: "", icon: "uil:cog" },
   {
     label: "Logout",
-    link: "",
-    isUrl: false,
-    icon: "",
+    link: "logout",
+    icon: "material-symbols:logout-rounded",
+    hasDivider: true,
   },
-];
-function handleClick(value) {
-  if (value.label === "Logout") {
-    isSigniningOut.value = true;
+]);
+
+const handleMenuItemClick = (item) => {
+  if (item.link === "logout") {
+    isLogOut.value = true;
+  } else {
+    navigateTo(item.link);
   }
-}
+};
+provide("isLogOut", isLogOut);
 </script>
