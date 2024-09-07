@@ -92,10 +92,10 @@ export const navigation = [
 
   {
     name: "Savings",
-    url: "/tenants",
+    url: "/savings",
     icon: "oui:users",
     key: "savings",
-    disabled: true,
+    disabled: false,
     roles: ["superadmin"],
   },
 

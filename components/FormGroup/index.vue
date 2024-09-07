@@ -7,7 +7,7 @@
   >
     <label
       v-if="label"
-      :class="`${classLabel} inline-block input-label `"
+      :class="`${classLabel} inline-block input-label !text-[#344054]`"
       :for="name"
     >
       {{ label }} <span v-if="required" className="text-red-600">*</span>

@@ -2,9 +2,7 @@
   <div class="mb-7">
     <PageHeader title="Account Verifications" />
   </div>
-  <section
-    class="rounded-lg bg-white border border-[#EAECF0] pb-20"
-  >
+  <section class="rounded-lg bg-white border border-[#EAECF0] pb-20">
     <div
       class="w-full flex gap-x-10 flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12 max-w-[1064px]"
     >
@@ -44,12 +42,22 @@
           </div>
         </div>
 
-        <div
-          class="mb-5 bg-[#182230] py-2 px-8 rounded-lg text-xs text-white text-center"
-        >
-          You are currently on a
-          <span class="font-bold underline">Tier 2</span> account. Upgrade your
-          account to increase your transaction limits
+        <div class="mb-6 bg-[#182230] py-2 px-4 rounded-lg">
+          <div class="mb-[11px] text-xs text-white text-left">
+            You are currently on a
+            <span class="font-bold underline">Tier 2</span> account. Upgrade
+            your account to increase your transaction limits
+          </div>
+          <div class="grid gap-y-2">
+            <div
+              v-for="n in limits"
+              :key="n.label"
+              class="flex justify-start gap-x-5 items-center text-xs text-white"
+            >
+              <span class="w-[154px]">{{ n.label }}</span>
+              <span class="font-medium">{{ currencyFormat(4744757) }}</span>
+            </div>
+          </div>
         </div>
 
         <div class="border border-[#D9E4F6] bg-[#2E90FA08] rounded-xl">
@@ -58,7 +66,7 @@
             v-for="n in data"
             :key="n.label"
           >
-            <span class="text-[#344054]">{{ n.label }}</span>
+            <span class="text-[#344054] font-medium">{{ n.label }}</span>
             <span>
               <button
                 @click="openModal(n.key)"
@@ -101,40 +109,100 @@ const isOpen = ref(false);
 
 const data = [
   {
-    label: "Email address",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Phone Number",
-    status: "verified",
-    buttonText: "Provide Phone number",
-    key: "phone",
-  },
-  {
-    label: "BVN",
+    label: "Bank Verification Number",
     status: "pendingverification",
     buttonText: "Provide BVN",
     key: "bvn",
   },
   {
-    label: "NIN",
+    label: "National Identification Number",
     status: "none",
     buttonText: "Provide NIN",
     key: "nin",
   },
   {
-    label: "Means of Identification",
+    label: "Face  Verification",
     status: "none",
     buttonText: "Upload ID",
     key: "identity",
   },
   {
-    label: "Address Verification",
+    label: "Date of Birth",
+    status: "verified",
+    buttonText: "Provide email address",
+    key: "email",
+  },
+  {
+    label: "Resedential Address",
     status: "none",
     buttonText: "Upload Utility Bill",
     key: "address",
+  },
+  {
+    label: "Next of Kin",
+    status: "verified",
+    buttonText: "Provide email address",
+    key: "email",
+  },
+  {
+    label: "Sign an Indemnity agreement",
+    status: "verified",
+    buttonText: "Provide Phone number",
+    key: "phone",
+  },
+];
+const companyData = [
+  {
+    label: "Bank Verification Number",
+    status: "pendingverification",
+    buttonText: "Provide BVN",
+    key: "bvn",
+  },
+  {
+    label: "National Identification Number",
+    status: "none",
+    buttonText: "Provide NIN",
+    key: "nin",
+  },
+  {
+    label: "Company Profile",
+    status: "none",
+    buttonText: "Upload ID",
+    key: "identity",
+  },
+  {
+    label: "Certificate of Incorporation",
+    status: "verified",
+    buttonText: "Provide email address",
+    key: "email",
+  },
+  {
+    label: "Memorandum & Articles of Association",
+    status: "none",
+    buttonText: "Upload Utility Bill",
+    key: "address",
+  },
+  {
+    label: "CAC Status Report",
+    status: "verified",
+    buttonText: "Provide email address",
+    key: "email",
+  },
+  {
+    label: "Utility Bill",
+    status: "verified",
+    buttonText: "Provide Phone number",
+    key: "phone",
+  },
+];
+const limits = [
+  {
+    label: "Daily Transaction Limit:",
+    key: "",
+  },
+  {
+    label: "Maximum Account Balance:",
+    key: "",
   },
 ];
 const authStore = useAuthStore();

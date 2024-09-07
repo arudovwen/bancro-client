@@ -12,7 +12,10 @@
       <AppButton
         type="button"
         text="Done"
-        @click="isOpen = false"
+        @click="
+          isOpen = false;
+          emits('close');
+        "
         btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
@@ -21,6 +24,7 @@
 
 <script setup>
 const isOpen = inject("isOpen");
+const emits = defineEmits(["close"]);
 
 defineProps({
   status: {
