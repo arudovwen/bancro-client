@@ -9,19 +9,21 @@
     >
       <button
         v-for="n in tabs"
-        :key="n"
-        @click="active = n"
-        class="font-semibold py-2 px-2 text-center justify-center text-xs md:text-sm flex items-center flex-1 capitalize rounded-[10px] text-sm"
+        :key="n.value"
+        @click="setFieldValue('customerType', n.value)"
+        class="font-semibold py-2 px-2 text-center justify-center text-xs md:text-sm flex items-center flex-1 capitalize rounded-[10px] lg:text-sm"
         :class="
-          active === n ? 'bg-white text-[#344054] active' : 'text-[#667085]'
+          values.customerType === n.value
+            ? 'bg-white text-[#344054] active'
+            : 'text-[#667085]'
         "
       >
-        {{ n }}
+        {{ n.label }}
       </button>
     </div>
 
     <form @submit.prevent="onSubmit" class="grid grid-cols-1 gap-y-5">
-      <div v-if="active !== 'personal account'">
+      <div v-if="values?.customerType === 1">
         <Textinput
           placeholder=""
           label="Company name"
@@ -32,7 +34,7 @@
           :error="errors.companyName"
         />
       </div>
-      <div v-if="active === 'personal account'">
+      <div v-if="values?.customerType === 0">
         <Textinput
           placeholder=""
           label="First name"
@@ -42,7 +44,7 @@
           :error="errors.firstName"
         />
       </div>
-      <div v-if="active === 'personal account'">
+      <div v-if="values?.customerType === 0">
         <Textinput
           placeholder=""
           label="Last name"
@@ -113,11 +115,13 @@ useHead({
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { toast } from "vue3-toastify";
+import { signupUser } from "~/services/authservices";
 
-const active = inject("active");
-const route = useRoute();
 const router = useRouter();
-const tabs = ["personal account", "business account"];
+const tabs = [
+  { label: "personal account", value: 0 },
+  { label: "business account", value: 1 },
+];
 const isLoading = ref(false);
 const formValues = {
   firstName: "",
@@ -125,18 +129,35 @@ const formValues = {
   email: "",
   companyName: "",
   password: "",
+  customerType: 0,
 };
 
 const schema = yup.object({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
-  email: yup.string().required("Phone number is required"),
-  companyName: yup.string(),
-  password: yup.string().required(),
+  customerType: yup.number().required(),
+  firstName: yup.string().when("customerType", {
+    is: 0,
+    then: (schema) => schema.required("First name is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  lastName: yup.string().when("customerType", {
+    is: 0,
+    then: (schema) => schema.required("Last name is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Please enter a valid email address"),
+  companyName: yup.string().when("customerType", {
+    is: 1,
+    then: (schema) => schema.required("Company name is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  password: yup.string().required("Password is required"),
 });
 
-const { handleSubmit, defineField, errors } = useForm({
-  validationSchema: route.params.type === "invite" ? schema1 : schema,
+const { handleSubmit, defineField, errors, setFieldValue, values } = useForm({
+  validationSchema: schema,
   initialValues: formValues,
 });
 
@@ -147,7 +168,30 @@ const [email, emailAtt] = defineField("email");
 const [companyName, companyNameAtt] = defineField("companyName");
 
 const onSubmit = handleSubmit((values) => {
-  navigateTo("/email-verification");
+  isLoading.value = true;
+  signupUser({ ...values })
+    .then((res) => {
+      if (res.status === 200) {
+        if (!res.data.succeeded) {
+          toast.error(res.data.message);
+          isLoading.value = false;
+          return;
+        }
+        toast.success("Signup successful");
+        navigateTo(`/email-verification/${encodeURIComponent(values.email)}`);
+        isLoading.value = true;
+      }
+    })
+
+    .catch((err) => {
+      isLoading.value = false;
+      if (err?.response?.data?.message || err?.response?.data?.Message) {
+        toast.error(
+          err?.response?.data?.message || err?.response?.data?.Message
+        );
+      }
+    });
+
   isLoading.value = true;
 });
 </script>

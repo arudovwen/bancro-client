@@ -1,7 +1,6 @@
 <template>
   <div class="p-6 max-w-[500px] mx-auto items-center grid flex-1">
     <div class="w-full">
-  
       <h1 class="text-[#344054] font-semibold mb-5 text-4xl">
         Forgot password
       </h1>
@@ -35,7 +34,7 @@
       </form>
       <div class="text-center text-sm">
         <NuxtLink to="/auth/login" class="text-[#64748B] font-semibold">
-         Go back
+          Go back
         </NuxtLink>
       </div>
     </div>
@@ -87,7 +86,7 @@ const router = useRouter();
 
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
-  forgotPassword(values.email)
+  forgotPassword({ username: values.email })
     .then((res) => {
       if (res.status === 200) {
         isSent.value = true;

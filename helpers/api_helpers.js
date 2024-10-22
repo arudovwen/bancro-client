@@ -2,7 +2,7 @@ import Axios from "axios";
 import { useAuthStore } from "~/stores/auth";
 import { toast } from "vue3-toastify";
 
-const API_URL = "https://bancroapi.streams.com.ng";
+const API_URL = "https://clientapi.streams.com.ng";
 
 const axiosApi = Axios.create({
   baseURL: API_URL,

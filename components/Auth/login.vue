@@ -101,11 +101,15 @@ const router = useRouter();
 
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
-  navigateTo("/");
-  return;
+
   loginUser(values)
     .then((res) => {
       if (res.status === 200) {
+        if (!res.data.succeeded) {
+          toast.error(res.data.message);
+          isLoading.value = false;
+          return;
+        }
         authStore.setLoggedUser(res.data.data);
 
         toast.success("Login successful");
