@@ -31,7 +31,7 @@
             <span
               class="text-[#182230] block rounded-full text-xl font-semibold cursor-pointer mb-[11px]"
             >
-              Adeleke Laketu
+            {{ authStore.fullName || authStore.companyName }}
             </span>
             <span class="flex gap-x-3 items-center text-sm justify-center"
               ><span
@@ -106,7 +106,7 @@ import { toast } from "vue3-toastify";
 
 const showing = ref(1);
 const isOpen = ref(false);
-
+const authStore = useAuthStore()
 const data = [
   {
     label: "Bank Verification Number",
@@ -205,7 +205,7 @@ const limits = [
     key: "",
   },
 ];
-const authStore = useAuthStore();
+
 const open = ref(false);
 const img = ref("");
 const image = ref(null);

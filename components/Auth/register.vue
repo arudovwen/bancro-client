@@ -178,7 +178,7 @@ const onSubmit = handleSubmit((values) => {
           return;
         }
         toast.success("Signup successful");
-        navigateTo(`/email-verification/${encodeURIComponent(values.email)}`);
+        navigateTo(`/auth/email-verification/${encodeURIComponent(values.email)}`);
         isLoading.value = true;
       }
     })

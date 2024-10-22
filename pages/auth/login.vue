@@ -1,5 +1,6 @@
 <template>
-  <AuthLogin />
+  <AuthLogin v-if="active === 1" />
+  <AuthOtplogin v-if="active === 2" />
 </template>
 <script setup>
 definePageMeta({
@@ -16,4 +17,13 @@ definePageMeta({
     "Finance",
   ],
 });
+const active = ref(1);
+const formValues = {
+  username: "",
+  password: "",
+  grantType: "password",
+};
+
+provide("active", active);
+provide("formValues", formValues);
 </script>

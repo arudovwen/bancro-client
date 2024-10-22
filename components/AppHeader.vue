@@ -2,34 +2,40 @@
   <nav
     :class="{
       relative: view.atTopOfPage,
-      'sticky top-0 opacity-95 fade-in-top ':
-        !view.atTopOfPage,
+      'sticky top-0 opacity-95 fade-in-top ': !view.atTopOfPage,
     }"
     class="bg-white border-b border-[#EDEFEB] flex justify-between py-4 px-[25px] items-center"
   >
     <div class="logo flex gap-x-10 items-center">
-     <span class="lg:hidden"> <NuxtLink :to="`/`">
-        <img
-          src="/bancro-logo.png"
-          alt="Bancro"
-          class="w-[130px] h-auto object-contain"
-      /></NuxtLink></span>
+      <span class="lg:hidden">
+        <NuxtLink :to="`/`">
+          <img
+            src="/bancro-logo.png"
+            alt="Bancro"
+            class="w-[130px] h-auto object-contain" /></NuxtLink
+      ></span>
     </div>
     <div class="flex gap-x-2 items-center">
       <Notifications />
-      <span class="h-10 w-10 rounded-full flex items-center justify-center"
-        ><SvgSettings
-      /></span>
-     <span class="hidden lg:inline"> <ProfileMenu /></span>
-     <button class="lg:hidden outline-none" @click="isOpen= true"><AppIcon icon="mingcute:menu-fill" iconClass="text-3xl text-[#163300]" /></button>
+      <NuxtLink to="/settings/profile">
+        <span class="h-10 w-10 rounded-full flex items-center justify-center"
+          ><SvgSettings
+        /></span>
+      </NuxtLink>
+      <span class="hidden lg:inline"> <ProfileMenu /></span>
+      <button class="lg:hidden outline-none" @click="isOpen = true">
+        <AppIcon
+          icon="mingcute:menu-fill"
+          iconClass="text-3xl text-[#163300]"
+        />
+      </button>
     </div>
   </nav>
-
 
   <ModalSide :isOpen="isOpen" @togglePopup="openModal" v-if="isOpen">
     <template #content>
       <div class="h-full bg-white rounded-lg py-10">
-       <AppSideBar />
+        <AppSideBar />
       </div>
     </template>
   </ModalSide>

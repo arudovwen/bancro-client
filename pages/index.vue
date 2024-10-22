@@ -1,8 +1,12 @@
 <template>
   <section>
     <div class="flex justify-between items-center mb-[30px]">
-
-      <PageHeader title="Hello Adeleke" text="Welcome to your dashboard" />
+      <PageHeader
+        :title="`Hello ${
+          authStore.userInfo.firstName || authStore.companyName
+        },`"
+        text="Welcome to your dashboard"
+      />
       <button
         id="create-product-button"
         class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
@@ -14,7 +18,7 @@
     </div>
     <!-- <AppTab :tabs="tabs" /> -->
     <div class="flex flex-col lg:flex-row gap-5 mb-10">
-      <div class=" lg:max-w-[330px] w-full">
+      <div class="lg:max-w-[330px] w-full">
         <DashboardCards />
       </div>
 
@@ -29,7 +33,7 @@
           <DashboardRecentTransactions />
         </div>
       </div>
-      <div class=" lg:max-w-[446px] w-full">
+      <div class="lg:max-w-[446px] w-full">
         <DashboardLoans />
       </div>
     </div>
@@ -50,6 +54,8 @@ definePageMeta({
     "finance",
   ],
 });
+
+const authStore = useAuthStore();
 const tabs = [
   {
     title: "payments",

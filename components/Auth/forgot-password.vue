@@ -9,7 +9,7 @@
         address and we’ll get you sorted out.
       </p>
 
-      <form @submit.prevent="onSubmit" v-if="!isSent">
+      <form @submit.prevent="onSubmit">
         <div class="mb-5">
           <Textinput
             icon="line-md:email"
@@ -51,16 +51,8 @@ useHead({
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { toast } from "vue3-toastify";
-
 import { forgotPassword } from "~/services/authservices";
 
-const title1 = "Forgot password";
-const title2 = "Check your email";
-const text1 =
-  "Enter the email associated with your account and we”ll send you instructions to reset your password";
-const text2 =
-  "We have sent an account activation link to your email address. Click on the link to activate your account.";
-const isSent = ref(false);
 
 const isLoading = ref(false);
 
@@ -81,20 +73,14 @@ const { handleSubmit, defineField, errors } = useForm({
 });
 
 const [email, emailAtt] = defineField("email");
-const route = useRoute();
-const router = useRouter();
 
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
   forgotPassword({ username: values.email })
     .then((res) => {
       if (res.status === 200) {
-        isSent.value = true;
-        navigateTo(
-          `/auth/reset-password?email=${email.value}&code=${encodeURIComponent(
-            res.data
-          )}`
-        );
+        toast.info("Otp sent, Check your email")
+        navigateTo(`/auth/password-reset/${encodeURIComponent(email.value)}`);
       }
     })
 

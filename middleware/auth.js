@@ -1,19 +1,18 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   const authStore = useAuthStore();
 
-  // Redirect to homepage if the user is already logged in and trying to access authentication-related routes
-  if (authStore.isLoggedIn && to?.name.includes("auth")) {
+  const isAuthRoute = to?.name.includes("auth");
+  const isLoggedIn = authStore.isLoggedIn;
+
+  // If the user is logged in and trying to access authentication-related routes, redirect to the homepage
+  if (isLoggedIn && isAuthRoute) {
     abortNavigation();
     return navigateTo("/");
   }
 
-  // Redirect to login if the user is not logged in and trying to access routes other than authentication-related routes
-  if (!authStore.isLoggedIn && !to?.name.includes("auth")) {
+  // If the user is not logged in and trying to access non-auth routes, redirect to login
+  if (!isLoggedIn && !isAuthRoute) {
     abortNavigation();
     return navigateTo(`/auth/login?redirected_from=${to.path}`);
-  }
-  if (authStore.isLoggedIn && !to.meta?.roles?.includes(authStore.userRole.toLowerCase())) {
-    abortNavigation();
-    return navigateTo(`/`);
   }
 });

@@ -66,8 +66,7 @@ const router = useRouter();
 const formValues = {
   confirmPassword: "",
   newPassword: "",
-  token: route.query.code,
-  email: route.query.email,
+  email: route.params.email,
 };
 
 const schema = yup.object({

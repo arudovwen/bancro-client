@@ -8,10 +8,15 @@ export const useAuthStore = defineStore(
     const isLoggedIn = computed(() => !!loggedUser.value);
     const refresh_token = computed(() => loggedUser?.value?.token.refreshToken);
     const access_token = computed(() => loggedUser?.value?.token?.token);
-    const tenantId = computed(() => loggedUser?.value?.user?.tenantId);
-    const userRole = computed(() => loggedUser?.value?.user?.userRole);
-    const userId = computed(() => loggedUser?.value?.user?.id);
-    const userInfo = computed(() => loggedUser?.value?.user);
+    const tenantId = computed(() => loggedUser?.value?.tenantId);
+    const userRole = computed(() => loggedUser?.value?.userRole);
+    const userId = computed(() => loggedUser?.value?.id);
+    const userInfo = computed(() => loggedUser?.value);
+    const fullName = computed(
+      () => `${loggedUser?.value?.firstName} ${loggedUser?.value?.lastName}`
+    );
+    const companyName = computed(() => `${loggedUser?.value?.companyName}`);
+    const email = computed(() => `${loggedUser?.value?.email}`);
 
     function setLoggedUser(data) {
       loggedUser.value = data;
@@ -62,6 +67,9 @@ export const useAuthStore = defineStore(
       loggedUser,
       tenantId,
       userRole,
+      fullName,
+      companyName,
+      email,
     };
   },
   {

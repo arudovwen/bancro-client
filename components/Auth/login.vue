@@ -73,11 +73,7 @@ useHead({
 });
 
 const isLoading = ref(false);
-const formValues = {
-  username: "",
-  password: "",
-  grantType: "password",
-};
+const formValues = inject("formValues");
 
 const schema = yup.object({
   username: yup
@@ -91,8 +87,8 @@ const { handleSubmit, defineField, errors } = useForm({
   validationSchema: schema,
   initialValues: formValues,
 });
-const authStore = useAuthStore();
 
+const active = inject("active");
 const [username, usernameAtt] = defineField("username");
 const [password, passwordAtt] = defineField("password");
 
@@ -101,7 +97,7 @@ const router = useRouter();
 
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
-
+  formValues.username = values.username;
   loginUser(values)
     .then((res) => {
       if (res.status === 200) {
@@ -110,35 +106,34 @@ const onSubmit = handleSubmit((values) => {
           isLoading.value = false;
           return;
         }
-        authStore.setLoggedUser(res.data.data);
 
-        toast.success("Login successful");
+        toast.info("Verify Login Request");
         if (route.query.redirected_from) {
           window.location.replace(route.query.redirected_from);
           return;
         }
 
-        window.location.replace("/");
+        active.value = 2;
       }
     })
 
     .catch((err) => {
-      console.log("🚀 ~ onSubmit ~ err:", err);
+    
       isLoading.value = false;
       if (err?.response?.data?.message || err?.response?.data?.Message) {
         toast.error(
           err?.response?.data?.message || err?.response?.data?.Message
         );
       }
-      // if (
-      //   (err?.response?.data?.message || err?.response?.data?.Message)?.includes(
-      //     "username has not verified yet"
-      //   )
-      // ) {
-      //   router.push(
-      //     `/auth/resend-verification/${encodeURIComponent(values.username)}`
-      //   );
-      // }
+      if (
+        (
+          err?.response?.data?.message || err?.response?.data?.Message
+        )?.includes("username has not verified yet")
+      ) {
+        router.push(
+          `/auth/email-verification/${encodeURIComponent(values.username)}`
+        );
+      }
     });
 });
 </script>

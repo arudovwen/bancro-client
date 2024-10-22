@@ -13,9 +13,7 @@
       <span
         :class="`bg-[url('/pattern.png')] absolute w-full top-0 left-0 h-full z-[2]`"
       />
-      <div
-        class="flex gap-x-4 items-end absolute z-10 left-[48px] top-[110px]"
-      >
+      <div class="flex gap-x-4 items-end absolute z-10 left-[48px] top-[110px]">
         <div class="flex items-center">
           <label for="upload" class="!mb-0">
             <span
@@ -39,11 +37,17 @@
         </div>
         <div class="pb-1">
           <span
-            class="text-[#182230] block rounded-full text-xl font-semibold  cursor-pointer mb-1"
+            class="text-[#182230] block rounded-full text-xl font-semibold cursor-pointer mb-1"
           >
-            Adeleke Laketu
+            {{ authStore.fullName || authStore.companyName }}
           </span>
-       <span class="flex gap-x-3 items-center text-sm"><span class="text-sm text-[#667085]">@laketu</span><span class="border border-[#B2DDFF] bg-[#EFF8FF] text-xs text-[#175CD3] px-[6px] rounded-[6px] py-[2px]">Tier 2</span></span>
+          <span class="flex gap-x-3 items-center text-sm"
+            ><span class="text-sm text-[#667085]">@laketu</span
+            ><span
+              class="border border-[#B2DDFF] bg-[#EFF8FF] text-xs text-[#175CD3] px-[6px] rounded-[6px] py-[2px]"
+              >Tier 2</span
+            ></span
+          >
         </div>
       </div>
     </div>
@@ -51,7 +55,12 @@
     <div
       class="flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12"
     >
-    <PageHeader title="Personal Information"  text="Update your personal details" className="!text-lg !text-[#3C4A67] mb-1" subClass=" !text-sm !text-[#667085]" />
+      <PageHeader
+        title="Personal Information"
+        text="Update your personal details"
+        className="!text-lg !text-[#3C4A67] mb-1"
+        subClass=" !text-sm !text-[#667085]"
+      />
       <div class="max-w-[700px] w-full">
         <form
           @submit.prevent="onSubmit"
@@ -163,7 +172,7 @@
               :error="errors.phone"
             />
           </div>
-<div></div>
+          <div></div>
 
           <div class="flex justify-end mt-6">
             <AppButton

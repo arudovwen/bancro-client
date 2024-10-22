@@ -31,8 +31,8 @@
               <AppIcon icon="mingcute:user-2-fill" />
             </div>
             <div>
-              <span class="text-sm font-medium block">John Snow</span>
-              <span class="text-sm">sucyy@gmail.com</span>
+              <span class="text-sm font-medium block">{{ authStore.fullName || authStore.companyName }}</span>
+              <span class="text-sm block max-w-[160px] truncate">{{authStore.email}}</span>
             </div>
           </div>
           <hr class="my-1 border-[#E4E7EC]" />
@@ -69,8 +69,8 @@ const authStore = useAuthStore();
 const isLogOut = ref(false);
 
 const options = computed(() => [
-  { label: "View profile", link: "", icon: "ri:user-3-line" },
-  { label: "Settings", link: "", icon: "uil:cog" },
+  { label: "View profile", link: "/settings/profile", icon: "ri:user-3-line" },
+  { label: "Settings", link: "/settings/security", icon: "uil:cog" },
   {
     label: "Logout",
     link: "logout",

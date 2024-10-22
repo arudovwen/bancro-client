@@ -23,7 +23,7 @@
         />
       </svg>
     </span>
-    <h1 class="text-[#101828] text-[30px] mb-1">Hello Adeleke</h1>
+    <h1 class="text-[#101828] text-[30px] mb-1">Hello {{authStore.fullName || authStore.companyName}}</h1>
     <p class="mb-7 text-[#475467]">
       Welcome Onboard. To get started, we need to verify either your BVN or NIN
       to create an account for you
@@ -77,6 +77,7 @@
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
+const authStore = useAuthStore()
 const active = inject("active");
 const isLoading = ref(false);
 const formValues = {
