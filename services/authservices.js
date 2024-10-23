@@ -31,8 +31,14 @@ export async function inviteUser(user, config = {}) {
 export async function registerInvitedUser(user, config = {}) {
   return await post(urls.REGISTER_INVITED_USER, user, config);
 }
+export async function setupPin(data, config = {}) {
+  return await put(`${urls.PIN_SETUP}`, data, config);
+}
+export async function changePin(data, config = {}) {
+  return await put(`${urls.CHANGE_PIN}`, data, config);
+}
 export async function changePassword(data, config = {}) {
-  return await post(`${urls.CHANGE_PASSWORD}`, data, config);
+  return await post(`${urls.CHANGE_PASSWORD_CUSTOMER}`, data, config);
 }
 
 export async function forgotPassword(data, config = {}) {
@@ -50,9 +56,11 @@ export async function resetPassword(data, config = {}) {
 }
 
 export async function getUserProfile(userId, config = {}) {
-  return await get(`${urls.GET_PROFILE}?userId=${userId}`, config);
+  return await get(`${urls.USER_PROFILE(userId)}`, config);
 }
-
+export async function updateProfile(data, config = {}) {
+  return await post(`${urls.UPDATE_PROFILE}?userId=${data.userId}`, data, config);
+}
 export async function getRoles() {
   return await get(urls.GET_ROLES);
 }

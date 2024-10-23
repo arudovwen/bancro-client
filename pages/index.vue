@@ -42,7 +42,7 @@
 <script setup>
 definePageMeta({
   layout: "dashboard",
-  middleware: "auth",
+  middleware: ["auth", "onboarding"],
   roles: [
     "superadmin",
     "admin",

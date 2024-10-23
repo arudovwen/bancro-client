@@ -21,7 +21,7 @@
   <AppLogout v-if="isSigniningOut" />
 </template>
 <script setup>
-definePageMeta({ middleware: "auth" });
+definePageMeta({ middleware: ["auth", "onboarding"] });
 
 const route = useRoute();
 const isSigniningOut = ref(false);

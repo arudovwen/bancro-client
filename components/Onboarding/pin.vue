@@ -119,7 +119,9 @@
       verifying transactions.
     </p>
   </div>
-  <div class="px-8 max-w-[480px] bg-white rounded-lg py-10 border border-[#DFE5EC]">
+  <div
+    class="px-8 max-w-[480px] bg-white rounded-lg py-10 border border-[#DFE5EC]"
+  >
     <form @submit.prevent="onSubmit" class="grid gap-y-7">
       <div class="">
         <Textinput
@@ -127,10 +129,10 @@
           placeholder=""
           label="New Transaction PIN"
           type="password"
-          name="newPassword"
-          v-model="newPassword"
-          v-bind="newPasswordAtt"
-          :error="errors.newPassword"
+          name="pin"
+          v-model="pin"
+          v-bind="pinAtt"
+          :error="errors.pin"
         />
       </div>
 
@@ -140,10 +142,10 @@
           placeholder=""
           label="Confirm Transaction PIN"
           type="password"
-          name="confirmPassword"
-          v-model="confirmPassword"
-          v-bind="confirmPasswordAtt"
-          :error="errors.confirmPassword"
+          name="confirmPin"
+          v-model="confirmPin"
+          v-bind="confirmPinAtt"
+          :error="errors.confirmPin"
         />
       </div>
 
@@ -163,28 +165,30 @@
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { toast } from "vue3-toastify";
-import { changePassword } from "~/services/authservices";
+import { setupPin } from "~/services/authservices";
 
 const isLoading = ref(false);
+const authStore = useAuthStore();
+const active = inject("active");
 const formValues = reactive({
-  newPassword: "",
-  confirmPassword: "",
+  pin: "",
+  confirmPin: "",
+  userId: authStore.userId,
 });
 
 const schema = yup.object({
-  newPassword: yup
+  pin: yup
     .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-    )
-    .nullable(),
-  confirmPassword: yup
+    .required("Pin is required")
+    .length(4, "Pin must be 4 digits")
+    .matches(/^\d{4}$/, "Pin must be numeric"),
+
+  confirmPin: yup
     .string()
-    .oneOf([yup.ref("newPassword"), null], "Passwords must match")
-    .required("Confirm Password is required"),
+    .oneOf([yup.ref("pin"), null], "Pins must match")
+    .required("Confirm Pin is required")
+    .length(4, "Pin must be 4 digits")
+    .matches(/^\d{4}$/, "Pin must be numeric"),
 });
 
 const { handleSubmit, defineField, errors } = useForm({
@@ -192,25 +196,26 @@ const { handleSubmit, defineField, errors } = useForm({
   initialValues: formValues,
 });
 
-const [newPassword, newPasswordAtt] = defineField("newPassword");
-const [confirmPassword, confirmPasswordAtt] = defineField("confirmPassword");
+const [pin, pinAtt] = defineField("pin");
+const [confirmPin, confirmPinAtt] = defineField("confirmPin");
 
 const onSubmit = handleSubmit((values) => {
-  isLoading.value = true;
-  navigateTo("/");
-  // changePassword(values)
-  //   .then((res) => {
-  //     if (res.status === 200) {
-  //       isLoading.value = false;
-  //       toast.success("Password Reset successful");
-  //     }
-  //   })
 
-  //   .catch((err) => {
-  //     isLoading.value = false;
-  //     if (err.response.data.message || err.response.data.Message) {
-  //       toast.error(err.response.data.message || err.response.data.Message);
-  //     }
-  //   });
+  isLoading.value = true;
+  setupPin(values)
+    .then((res) => {
+      if (res.status === 200) {
+        isLoading.value = false;
+        toast.success("Pin Setup successful");
+        active.value = 1;
+      }
+    })
+
+    .catch((err) => {
+      isLoading.value = false;
+      if (err.response.data.message || err.response.data.Message) {
+        toast.error(err.response.data.message || err.response.data.Message);
+      }
+    });
 });
 </script>

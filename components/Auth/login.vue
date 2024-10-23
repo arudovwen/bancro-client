@@ -108,17 +108,12 @@ const onSubmit = handleSubmit((values) => {
         }
 
         toast.info("Verify Login Request");
-        if (route.query.redirected_from) {
-          window.location.replace(route.query.redirected_from);
-          return;
-        }
 
         active.value = 2;
       }
     })
 
     .catch((err) => {
-    
       isLoading.value = false;
       if (err?.response?.data?.message || err?.response?.data?.Message) {
         toast.error(

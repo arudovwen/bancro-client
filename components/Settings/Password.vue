@@ -2,7 +2,9 @@
   <div class="mb-7">
     <PageHeader title="Security" />
   </div>
-  <section class="rounded-lg bg-white border border-[#EAECF0] overflow-hidden grid gap-y-6">
+  <section
+    class="rounded-lg bg-white border border-[#EAECF0] overflow-hidden grid gap-y-6"
+  >
     <div
       class="flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12 max-w-[960px]"
     >
@@ -65,69 +67,8 @@
         </form>
       </div>
     </div>
-    <hr class="border-[#2E90FA29]"/>
-    <div
-      class="flex gap-x-[76px] flex-col lg:flex-row gap-y-7 lg:gap-y-10 py-[40px] px-6 md:px-12 max-w-[960px]"
-    >
-      <PageHeader
-        title="Transaction PIN"
-        text="Set your 4-Digit PIN for authorizing transactions"
-        className="!text-lg !text-[#3C4A67] mb-1"
-        subClass=" !text-sm !text-[#667085]"
-      />
-      <div class="flex-1">
-        <form @submit.prevent="onSubmit">
-          <div class="mb-10">
-            <Textinput
-              hasicon
-              placeholder=""
-              label="Current Transaction PIN"
-              type="password"
-              name="currentPassword"
-              v-model="currentPassword"
-              v-bind="currentPasswordAtt"
-              :error="errors.currentPassword"
-            />
-          </div>
-
-          <div class="mb-10">
-            <Textinput
-              hasicon
-              placeholder=""
-              label="New Transaction PIN"
-              type="password"
-              name="newPassword"
-              v-model="newPassword"
-              v-bind="newPasswordAtt"
-              :error="errors.newPassword"
-            />
-          </div>
-
-          <div class="mb-10">
-            <Textinput
-              hasicon
-              placeholder=""
-              label="Confirm Transaction PIN"
-              type="password"
-              name="confirmPassword"
-              v-model="confirmPassword"
-              v-bind="confirmPasswordAtt"
-              :error="errors.confirmPassword"
-            />
-          </div>
-
-          <div class="flex justify-end">
-            <AppButton
-              :disabled="isLoading"
-              :isLoading="isLoading"
-              btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
-              type="submit"
-              text=" Update Transaction PIN"
-            />
-          </div>
-        </form>
-      </div>
-    </div>
+    <hr class="border-[#2E90FA29]" />
+    <SettingsPin />
   </section>
 </template>
 
@@ -164,7 +105,7 @@ const schema = yup.object({
     .required("Confirm Password is required"),
 });
 
-const { handleSubmit, defineField, errors } = useForm({
+const { handleSubmit, defineField, errors, resetForm } = useForm({
   validationSchema: schema,
   initialValues: formValues,
 });
@@ -179,6 +120,7 @@ const onSubmit = handleSubmit((values) => {
     .then((res) => {
       if (res.status === 200) {
         isLoading.value = false;
+        resetForm();
         toast.success("Password Reset successful");
       }
     })

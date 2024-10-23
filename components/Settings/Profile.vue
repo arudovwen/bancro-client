@@ -101,77 +101,88 @@
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="phone number"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="phoneNumber"
+              v-bind="phoneNumberAtt"
+              v-model="phoneNumber"
+              :error="errors.phoneNumber"
             />
           </div>
 
-          <div>
+          <!-- <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Username"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="username"
+              v-bind="usernameAtt"
+              v-model="username"
+              :error="errors.username"
             />
-          </div>
+          </div> -->
 
           <div>
-            <Textinput
-              :placeholder="isLoading ? 'Fetching...' : ''"
+            <FormGroup
+              name="gender"
+              :error="errors.gender"
               label="Gender"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
-            />
+              isCumpulsory
+              info
+              infoTitle="Kindly select from the list the appropriate type of product package"
+            >
+              <SelectVueSelect
+                v-model="gender"
+                :options="GenderOptions"
+                :reduce="(gender) => gender.value"
+                placeholder="Select gender"
+                :classInput="`min-w-[180px] !bg-white  !rounded-lg !text-[#475467] cursor-pointer ${
+                  errors.title ? 'border-red-500' : 'border-[#D0D5DD]'
+                }`"
+              />
+            </FormGroup>
           </div>
 
           <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Date of birth"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="dateOfBirth"
+              type="date"
+              v-bind="dateOfBirthAtt"
+              v-model="dateOfBirth"
+              :error="errors.dateOfBirth"
             />
           </div>
 
-          <div>
+          <!-- <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Address"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="address"
+              v-bind="addressAtt"
+              v-model="address"
+              :error="errors.address"
             />
-          </div>
+          </div> -->
 
-          <div>
+          <!-- <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="BVN"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="bvn"
+              v-bind="bvnAtt"
+              v-model="bvn"
+              :error="errors.bvn"
             />
           </div>
           <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="NIN"
-              name="phone"
-              v-bind="phoneAtt"
-              v-model="phone"
-              :error="errors.phone"
+              name="nin"
+              v-bind="ninAtt"
+              v-model="nin"
+              :error="errors.nin"
             />
-          </div>
+          </div> -->
           <div></div>
 
           <div class="flex justify-end mt-6">
@@ -191,7 +202,7 @@
 <script setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
-import { getUserProfile } from "~/services/authservices";
+import { getUserProfile, updateProfile } from "~/services/authservices";
 
 const authStore = useAuthStore();
 const isLoading = ref(false);
@@ -199,35 +210,75 @@ const formValues = reactive({
   lastName: "",
   firstName: "",
   email: "",
-  phone: "",
+  phoneNumber: "",
+  gender: "",
+  dateOfBirth: "",
+  userId: authStore.userId,
 });
 const image = ref(null);
 const schema = yup.object().shape({
   lastName: yup.string().required("Last name is required"),
   firstName: yup.string().required("First name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  phone: yup.string().required("Phone number is required"),
+  phoneNumber: yup.string().nullable(),
+  gender: yup.string().nullable(),
+  dateOfBirth: yup.string().nullable(),
 });
 const { handleSubmit, defineField, errors, setFieldValue } = useForm({
   validationSchema: schema,
   initialValues: formValues,
 });
 const [email, emailAtt] = defineField("email");
-const [phone, phoneAtt] = defineField("phone");
+const [phoneNumber, phoneNumberAtt] = defineField("phoneNumber");
 const [firstName, firstNameAtt] = defineField("firstName");
 const [lastName, lastNameAtt] = defineField("lastName");
+const [gender] = defineField("gender");
+const [dateOfBirth, dateOfBirthAtt] = defineField("dateOfBirth");
 
 onMounted(() => {
-  // isLoading.value = true;
-  // getUserProfile(authStore.userId).then((res) => {
-  //   if (res.status === 200) {
-  //     isLoading.value = false;
-  //     isLoading.value = false;
-  //     setFieldValue("firstName", res.data.firstName);
-  //     setFieldValue("lastName", res.data.lastName);
-  //     setFieldValue("email", res.data.email);
-  //     setFieldValue("phone", res.data.phoneNumber);
-  //   }
-  // });
+  isLoading.value = true;
+  getUserProfile(authStore.userId).then((res) => {
+    if (res.status === 200) {
+      isLoading.value = false;
+      isLoading.value = false;
+      const {
+        avatarUrl,
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        phoneNumber,
+        ...rest
+      } = res.data.data;
+      Object.keys({
+        avatarUrl,
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        phoneNumber,
+      }).forEach((key) => {
+        setFieldValue(key, res.data.data[key]);
+      });
+    }
+  });
+});
+
+const onSubmit = handleSubmit((values) => {
+  console.log("🚀 ~ onSubmit ~ values:", values);
+  isLoading.value = true;
+  updateProfile(values)
+    .then((res) => {
+      if (res.status === 200) {
+        isLoading.value = false;
+        toast.success("Profile update successful");
+      }
+    })
+    .catch((err) => {
+      isLoading.value = false;
+      if (err.response.data.message || err.response.data.Message) {
+        toast.error(err.response.data.message || err.response.data.Message);
+      }
+    });
 });
 </script>
