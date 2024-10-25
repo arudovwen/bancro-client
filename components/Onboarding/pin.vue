@@ -200,14 +200,14 @@ const [pin, pinAtt] = defineField("pin");
 const [confirmPin, confirmPinAtt] = defineField("confirmPin");
 
 const onSubmit = handleSubmit((values) => {
-
   isLoading.value = true;
   setupPin(values)
     .then((res) => {
       if (res.status === 200) {
         isLoading.value = false;
         toast.success("Pin Setup successful");
-        active.value = 1;
+        authStore.setPin(true);
+        navigateTo("/");
       }
     })
 

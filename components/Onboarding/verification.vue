@@ -5,7 +5,7 @@
   </div>
 </template>
 <script setup>
-const active = ref(2);
+const active = ref(1);
 
 provide("active", active);
 </script>

@@ -53,7 +53,6 @@ import * as yup from "yup";
 import { toast } from "vue3-toastify";
 import { forgotPassword } from "~/services/authservices";
 
-
 const isLoading = ref(false);
 
 const formValues = {
@@ -79,8 +78,8 @@ const onSubmit = handleSubmit((values) => {
   forgotPassword({ username: values.email })
     .then((res) => {
       if (res.status === 200) {
-        toast.info("Otp sent, Check your email")
-        navigateTo(`/auth/password-reset/${encodeURIComponent(email.value)}`);
+        toast.info("Otp sent, Check your email");
+        navigateTo(`/auth/password-reset/${encodeURIComponent(values.email)}`);
       }
     })
 

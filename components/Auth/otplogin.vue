@@ -71,7 +71,7 @@ import { useRoute } from "vue-router";
 import VOtpInput from "vue3-otp-input";
 
 const route = useRoute();
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 const formValues = inject("formValues");
 const active = inject("active");
 const form = reactive({
@@ -89,7 +89,7 @@ const schema = yup.object({
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: schema,
-  initialValues: { ...form, username: formValues.username},
+  initialValues: { ...form, username: formValues.username },
 });
 
 const [otpToken] = defineField("otpToken");
@@ -103,7 +103,6 @@ const onSubmit = handleSubmit((values) => {
 
   loginVerifyOtp(values)
     .then((res) => {
-      console.log("🚀 ~ .then ~ res:", res.data);
       if (res.status === 200) {
         if (!res.data.succeeded) {
           toast.error(res.data.message);

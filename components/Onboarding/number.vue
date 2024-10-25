@@ -23,7 +23,9 @@
         />
       </svg>
     </span>
-    <h1 class="text-[#101828] text-[30px] mb-1">Hello {{authStore.fullName || authStore.companyName}}</h1>
+    <h1 class="text-[#101828] text-[30px] mb-1">
+      Hello {{ authStore.fullName || authStore.companyName }}
+    </h1>
     <p class="mb-7 text-[#475467]">
       Welcome Onboard. To get started, we need to verify either your BVN or NIN
       to create an account for you
@@ -68,6 +70,7 @@
         :isLoading="isLoading"
         :isDisabled="isLoading"
         text="Verify"
+        customLoadingMessage="Validating ..."
         btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
@@ -75,19 +78,33 @@
 </template>
 <script setup>
 import { useForm } from "vee-validate";
+import { toast } from "vue3-toastify";
 import * as yup from "yup";
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
+console.log("🚀 ~ authStore:", authStore)
 const active = inject("active");
 const isLoading = ref(false);
 const formValues = {
-  method: "",
+  method: 0,
   bvn: "",
 };
 
 const schema = yup.object({
-  method: yup.string().required("Select a  method"),
-  bvn: yup.string().required("Provide your BVN"),
+  method: yup.number().required("Select a method"),
+  bvn: yup.string().when("method", {
+    is: 0,
+    then: (schema) =>
+      schema
+        .required("Provide your BVN")
+        .length(11, "BVN must be exactly 11 digits")
+        .matches(/^\d+$/, "BVN must contain only digits"),
+    otherwise: (schema) =>
+      schema
+        .required("Provide your NIN")
+        .length(11, "NIN must be exactly 11 digits")
+        .matches(/^\d+$/, "NIN must contain only digits"),
+  }),
 });
 
 const { handleSubmit, defineField, errors } = useForm({
@@ -99,18 +116,22 @@ const [bvn, bvnAtt] = defineField("bvn");
 const [method] = defineField("method");
 
 const onSubmit = handleSubmit((values) => {
-  console.log("🚀 ~ onSubmit ~ values:", values);
-  active.value = 2;
+  isLoading.value = true;
+  authStore.setBVN(true)
+  setTimeout(() => {
+    toast.success("Validation successful")
+    active.value = 2;
+  }, 5000);
 });
 
 const options = [
   {
     label: "Bank Verification Number",
-    value: "bvn",
+    value: 0,
   },
   {
     label: "National Identification Number",
-    value: "nin",
+    value: 1,
   },
 ];
 </script>

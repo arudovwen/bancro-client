@@ -41,9 +41,10 @@
           >
             {{ authStore.fullName || authStore.companyName }}
           </span>
-          <span class="flex gap-x-3 items-center text-sm"
-            ><span class="text-sm text-[#667085]">@laketu</span
-            ><span
+          <span class="flex gap-x-3 items-center text-sm">
+            <!-- <span class="text-sm text-[#667085]">@laketu</span
+            > -->
+            <span
               class="border border-[#B2DDFF] bg-[#EFF8FF] text-xs text-[#175CD3] px-[6px] rounded-[6px] py-[2px]"
               >Tier 2</span
             ></span
@@ -217,9 +218,9 @@ const formValues = reactive({
 });
 const image = ref(null);
 const schema = yup.object().shape({
-  lastName: yup.string().required("Last name is required"),
-  firstName: yup.string().required("First name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
+  lastName: yup.string().nullable(),
+  firstName: yup.string().nullable(),
+  email: yup.string().email("Invalid email").nullable(),
   phoneNumber: yup.string().nullable(),
   gender: yup.string().nullable(),
   dateOfBirth: yup.string().nullable(),

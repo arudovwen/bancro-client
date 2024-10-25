@@ -4,7 +4,8 @@ export const useAuthStore = defineStore(
   "auth",
   () => {
     const loggedUser = ref("");
-
+    const isPinSet = ref(false);
+    const isBVNSet = ref(false);
     const isLoggedIn = computed(() => !!loggedUser.value);
     const refresh_token = computed(() => loggedUser?.value?.token.refreshToken);
     const access_token = computed(() => loggedUser?.value?.token?.token);
@@ -12,16 +13,17 @@ export const useAuthStore = defineStore(
     const userRole = computed(() => loggedUser?.value?.userRole);
     const userId = computed(() => loggedUser?.value?.id);
     const userInfo = computed(() => loggedUser?.value);
-    const fullName = computed(
-      () => `${loggedUser?.value?.firstName} ${loggedUser?.value?.lastName}`
+    const fullName = computed(() =>
+      loggedUser?.value?.firstName
+        ? `${loggedUser?.value?.firstName} ${loggedUser?.value?.lastName}`
+        : null
     );
-    const companyName = computed(() => `${loggedUser?.value?.companyName}`);
+    const companyName = computed(() => loggedUser?.value?.companyName);
     const email = computed(() => `${loggedUser?.value?.email}`);
 
     function setLoggedUser(data) {
       loggedUser.value = data;
-      // setAccessToken(data?.token?.token || null);
-      // setRefreshToken(data?.token?.refreshToken || null);
+      setPin(!!data?.pin);
     }
 
     function setAccessToken(value) {
@@ -44,6 +46,12 @@ export const useAuthStore = defineStore(
     function updateUserInfo(data) {
       let userInfo = { ...loggedUser?.value, ...data };
       setLoggedUser(userInfo);
+    }
+    function setPin(data) {
+      isPinSet.value = data;
+    }
+    function setBVN(data) {
+      isBVNSet.value = data;
     }
 
     const logOut = () => {
@@ -70,6 +78,10 @@ export const useAuthStore = defineStore(
       fullName,
       companyName,
       email,
+      isPinSet,
+      setPin,
+      isBVNSet,
+      setBVN,
     };
   },
   {
