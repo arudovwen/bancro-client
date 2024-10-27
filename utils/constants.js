@@ -65,7 +65,7 @@ export const navigation = [
       },
       {
         name: "Bill Payment",
-        url: "/requests",
+        url: "#",
         icon: "tabler:user-dollar",
         key: "storefront",
       },
