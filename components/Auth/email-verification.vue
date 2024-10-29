@@ -17,13 +17,18 @@
       </p>
       <form @submit.prevent="onSubmit">
         <div class="mb-5">
-          <div class="mb-4">
-            <Textinput
-              v-model="token"
-              v-bind="tokenAtt"
-              :error="errors.token"
-              required
-              placeholder="Enter token"
+          <div class="flex gap-x-2 justify-center mb-8">
+            <v-otp-input
+              ref="otpInput"
+              v-model:value="token"
+              :input-classes="`otp-input w-12 h-12 flex items-center border border-matta-black/20 focus:border-[#4A5578] outline-none mx-1 rounded-md text-center text-sm ${
+                errors.token ? '!border-red-500' : ''
+              } `"
+              separator=" "
+              :num-inputs="6"
+              :should-auto-focus="true"
+              input-type="letter-numeric"
+              :placeholder="['-', '-', '-', '-', '-', '-']"
             />
           </div>
         </div>
@@ -65,7 +70,9 @@ import * as yup from "yup";
 import { resend2FA, signupVerify } from "~/services/authservices";
 import { ref, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import VOtpInput from "vue3-otp-input";
 
+const authStore = useAuthStore()
 const props = defineProps({
   title: {
     default: "Enter your transaction PIN",
@@ -83,7 +90,6 @@ const props = defineProps({
 });
 
 const route = useRoute();
-const router = useRouter();
 
 const form = reactive({
   token: "",
@@ -121,7 +127,8 @@ const onSubmit = handleSubmit((values) => {
           return;
         }
         toast.success("Email verification successful");
-        router.push("/auth/login");
+        authStore.setLoggedUser(res.data.data);
+        window.location.replace("/onboarding");
       }
     })
     .catch((err) => {

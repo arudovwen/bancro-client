@@ -80,9 +80,10 @@
 import { useForm } from "vee-validate";
 import { toast } from "vue3-toastify";
 import * as yup from "yup";
+import { createSavingsAccount } from "~/services/savingsservice";
 
 const authStore = useAuthStore();
-console.log("🚀 ~ authStore:", authStore)
+console.log("🚀 ~ authStore:", authStore);
 const active = inject("active");
 const isLoading = ref(false);
 const formValues = {
@@ -117,11 +118,27 @@ const [method] = defineField("method");
 
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
-  authStore.setBVN(true)
-  setTimeout(() => {
-    toast.success("Validation successful")
-    active.value = 2;
-  }, 5000);
+  const data = {
+    userId: authStore.userId,
+    bvn: values.method === 0 ? values.bvn : "",
+    nin: values.method === 1 ? values.bvn : "",
+    businessName: authStore.fullName || authStore.companyName,
+  };
+  createSavingsAccount(data)
+    .then((res) => {
+      if (res.status === 200) {
+        authStore.setBVN(true);
+        setTimeout(() => {
+          toast.success("Validation successful");
+          active.value = 2;
+        }, 2000);
+        isLoading.value = true;
+      }
+    })
+    .then((err) => {
+      toast.error(err?.response?.data?.message);
+      isLoading.value = false;
+    });
 });
 
 const options = [
