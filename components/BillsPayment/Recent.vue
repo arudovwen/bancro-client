@@ -11,8 +11,8 @@
 
    </div> -->
     <AppTab :tabs="tabs" buttonClass="!flex-1 !text-center justify-center" />
-    <AirtimeAndDataTransactions v-if="active === 'recent'" />
-    <AirtimeAndDataBeneficiary v-else />
+    <BillsPaymentTransactions v-if="active === 'recent'" />
+    <BillsPaymentBeneficiary v-else />
   </div>
   
 </template>

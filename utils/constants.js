@@ -65,7 +65,7 @@ export const navigation = [
       },
       {
         name: "Bill Payment",
-        url: "#",
+        url: "/bill-payment",
         icon: "tabler:user-dollar",
         key: "storefront",
       },
@@ -252,3 +252,19 @@ export const CollateralOptions = [
     value: "Collateral is deposited with lender",
   },
 ];
+
+export const BillerOptions = [
+  {
+    label: "Electricity",
+    value: "1",
+  },
+  {
+    label: "Cable Bill",
+    value: "2",
+  },  {
+    label: "Betting",
+    value: "3",
+  },
+];
+
+export const BillOptions = [];

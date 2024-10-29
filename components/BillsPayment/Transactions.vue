@@ -6,15 +6,10 @@
       :key="n"
     >
       <span class="flex items-center gap-x-4">
-        <img
-          :src="networks.find((i) => i.value === 'mtn')?.imgUrl"
-          class="w-9 h-9 rounded-full"
-          width="36"
-          height="36"
-        />
+     
         <span class="block">
           <span class="text-sm text-[#344054] font-medium block leading-normal"
-            >MTN</span
+            >Bet9ja</span
           >
           <span class="text-sm text-[#98A2B3] block leading-normal"
             >0731082157</span

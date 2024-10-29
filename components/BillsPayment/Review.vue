@@ -10,21 +10,21 @@
       class="border border-[#21231D1A] bg-[#A0E1E11A] px-4 pt-8 rounded-lg mb-6"
     >
       <div class="mb-10 w-full">
-        <div class="flex justify-center mb-3">
+        <!-- <div class="flex justify-center mb-3">
           <img
             :src="networks.find((i) => i.value === networkTab).imgUrl"
             class="w-14 h-14 rounded-full"
             width="56"
             height="56"
           />
-        </div>
+        </div> -->
         <span
           class="block text-2xl font-semibold text-[#344054] text-center mb-[11px]"
           >{{ currencyFormat(1387) }}</span
         >
         <div class="flex justify-center gap-x-2 items-center">
           <span class="text-xs text-[#667085] capitalize"
-            >{{ activeTab }} Recharge</span
+            >DSTV Payment</span
           >
         </div>
       </div>
@@ -33,7 +33,7 @@
         <span class="flex items-center gap-x-4">
           <span class="block">
             <span class="text-sm text-[#98A2B3] block leading-normal mb-[2px]"
-              >Phone number</span
+              >Bill ID</span
             >
             <span
               class="text-sm text-[#344054] font-medium block leading-normal"
@@ -56,7 +56,7 @@
       <AppButton
         @click="isOpen = true"
         type="button"
-        :text="`Buy ${activeTab}`"
+        :text="`Buy`"
         btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
@@ -66,7 +66,7 @@
       <div class="p-6 rounded-xl">
         <TransactionsStatus
           title="Topup Successful"
-          :text="`Your ${activeTab} purchase was successful`"
+          :text="`Your bill payment  was successful`"
           :canClose="false"
         />
       </div>

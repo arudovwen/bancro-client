@@ -1,55 +1,40 @@
 <template>
   <form @submit.prevent="active = 2" class="bg-white rounded-xl p-6">
     <div>
-      <div class="mb-[30px]">
-        <TabSwitch :tabs="tabs" />
-      </div>
-      <div class="mb-[30px]">
-        <h2 class="mb-4">Select network</h2>
-
-        <div class="flex gap-x-10 items-center">
-          <button
-            type="button"
-            @click="networkTab = network.value"
-            v-for="network in networks"
-            :key="network.value"
-            :class="`rounded-full h-14 w-14 border-2 flex items-center justify-center ${
-              networkTab === network.value
-                ? 'border-[#9FE870]'
-                : 'border-transparent'
-            }`"
-          >
-            <img
-              :src="network.imgUrl"
-              class="w-14 h-14 rounded-full"
-              width="56"
-              height="56"
-            />
-          </button>
-        </div>
-      </div>
       <div class="grid grid-cols-1 gap-y-4">
+        <FormGroup label="Bill Type" :error="errors.billType" name="billType">
+          <SelectVueSelect
+            v-model="billType"
+            :options="BillerOptions"
+            :reduce="(bill) => bill.value"
+            placeholder="Select bill type"
+            :classInput="`min-w-[180px] !bg-white  !rounded-lg !text-[#475467] !h-11 cursor-pointer ${
+              errors.billType ? 'border-red-500' : 'border-[#D0D5DD]'
+            }`"
+          />
+        </FormGroup>
+        <FormGroup label="Select Biller" :error="errors.biller" name="biller">
+          <SelectVueSelect
+            v-model="biller"
+            :options="BillOptions"
+            :reduce="(biller) => biller.value"
+            placeholder="Select biller"
+            :classInput="`min-w-[180px] !bg-white  !rounded-lg !text-[#475467] !h-11 cursor-pointer ${
+              errors.biller ? 'border-red-500' : 'border-[#D0D5DD]'
+            }`"
+          />
+        </FormGroup>
         <div>
           <Textinput
             placeholder=""
-            label="Phone number"
-            name="Phone number"
-            v-bind="phoneNumberAtt"
-            v-model="phoneNumber"
-            :error="errors.phoneNumber"
+            label="Biller ID"
+            name="billerId"
+            v-bind="billerIdAtt"
+            v-model="billerId"
+            :error="errors.billerId"
           />
         </div>
-        <div v-if="activeTab === 'data'" class="relative">
-          <button
-            type="button"
-            @click="isOpen = true"
-            :class="`min-w-[180px] px-[14px] w-full flex justify-between items-center !bg-white  !rounded-lg text-[#475467] h-12 cursor-pointer border border-[#C8D2DF]`"
-          >
-            <span class="" v-if="plan?.value">{{ plan.label }}</span>
-            <span v-if="!plan.value" class="text-[#AFBACA]">Select Data</span>
-            <span><AppIcon icon="humbleicons:chevron-down" /></span>
-          </button>
-        </div>
+
         <div class="relative">
           <Textinput
             placeholder=""
@@ -79,7 +64,7 @@
         <AirtimeAndDataPlans
           @handleClick="
             (val) => {
-              setFieldValue('plan', val);
+              setFieldValue('biller', val);
               isOpen = false;
             }
           "
@@ -109,19 +94,17 @@ const tabs = [
 
 const isLoading = ref(false);
 const formValues = reactive({
-  phoneNumber: "",
+  billerId: "",
   amount: null,
-  plan: null,
+  biller: "",
+  billType: "",
 });
 
 const schema = yup.object().shape({
-  phoneNumber: yup.string().required(),
+  billerId: yup.string().required(),
   amount: yup.string().required(),
-  plan: yup.object().when("type", {
-    is: "data",
-    then: (schema) => schema.required().nullable(),
-    otherwise: (schema) => schema.notRequired().nullable(),
-  }),
+  biller: yup.string().required(),
+  billType: yup.string().required(),
 });
 
 const { handleSubmit, defineField, errors, setValues, setFieldValue } = useForm(
@@ -130,12 +113,10 @@ const { handleSubmit, defineField, errors, setValues, setFieldValue } = useForm(
     initialValues: formValues,
   }
 );
-const [phoneNumber, phoneNumberAtt] = defineField("phoneNumber");
+const [billerId, billerIdAtt] = defineField("billerId");
 const [amount, amountAtt] = defineField("amount");
-const [plan, planAtt] = defineField("plan");
+const [biller] = defineField("biller");
+const [billType] = defineField("billType");
 
-watch(activeTab, () => {
-  setFieldValue("plan", activeTab.value);
-});
 provide("isOpen", isOpen);
 </script>
