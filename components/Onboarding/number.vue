@@ -83,7 +83,6 @@ import * as yup from "yup";
 import { createSavingsAccount } from "~/services/savingsservice";
 
 const authStore = useAuthStore();
-console.log("🚀 ~ authStore:", authStore);
 const active = inject("active");
 const isLoading = ref(false);
 const formValues = {
