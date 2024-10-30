@@ -10,7 +10,7 @@
         </p>
       </span>
       <button
-      @click="navigateTo('/transactions')"
+        @click="navigateTo('/transactions')"
         class="text-xs text-primary-500 flex gap-x-2 items-center h-auto font-medium"
       >
         See all transactions <AppIcon icon="fa6-solid:chevron-right" />
@@ -34,9 +34,10 @@
           >
             <td class="py-4 px-6">
               <span class="flex gap-x-3 items-center">
-                <span class="h-9 w-9 rounded-full bg-gray-50 flex items-center justify-center">
-
-                  <SvgDebit v-if="n.status==0" />
+                <span
+                  class="h-9 w-9 rounded-full bg-gray-50 flex items-center justify-center"
+                >
+                  <SvgDebit v-if="n.status == 0" />
                 </span>
                 <span>
                   <span class="text-sm text-[#0E0F0C] font-medium block">{{
@@ -62,6 +63,7 @@
           </tr>
         </tbody>
       </table>
+      <EmptyData />
     </div>
   </div>
 </template>
@@ -103,33 +105,5 @@ const columns = [
   },
 ];
 
-const rows = ref([
-  {
-    name: "John snow",
-    action: "Bank transfer",
-    date: "05 Mar. 2024  3:37 AM",
-    balance: 304948,
-    status: 1,
-  },
-  {
-    name: "Netflix",
-    action: "Bill payment",
-    date: "05 Mar. 2024  3:37 AM",
-    balance: 4948,
-    status: 0,
-  },
-  {
-    name: "04875755776-MTN",
-    action: "Airtime purchase",
-    date: "05 Mar. 2024  3:37 AM",
-    balance: 3049,
-    status: 1,
-  },
-  {  name: "Netflix",
-    action: "Bill payment",
-    date: "05 Mar. 2024  3:37 AM",
-    balance: 4948,
-    status: 0,
-  }
-]);
+const rows = ref([]);
 </script>

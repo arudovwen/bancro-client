@@ -67,7 +67,7 @@
           @submit.prevent="onSubmit"
           class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5"
         >
-          <div>
+          <div v-if="firstName">
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="First name"
@@ -77,7 +77,7 @@
               :error="errors.firstName"
             />
           </div>
-          <div>
+          <div v-if="lastName">
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Last name "
@@ -85,6 +85,16 @@
               v-bind="lastNameAtt"
               v-model="lastName"
               :error="errors.lastName"
+            />
+          </div>
+          <div v-if="companyName">
+            <Textinput
+              :placeholder="isLoading ? 'Fetching...' : ''"
+              label="companyName"
+              name="companyName"
+              v-bind="companyNameAtt"
+              v-model="companyName"
+              :error="errors.companyName"
             />
           </div>
           <div>
@@ -96,8 +106,10 @@
               v-bind="emailAtt"
               v-model="email"
               :error="errors.email"
+              :is-readonly="true"
             />
           </div>
+
           <div>
             <Textinput
               :placeholder="isLoading ? 'Fetching...' : ''"
@@ -108,17 +120,6 @@
               :error="errors.phoneNumber"
             />
           </div>
-
-          <!-- <div>
-            <Textinput
-              :placeholder="isLoading ? 'Fetching...' : ''"
-              label="Username"
-              name="username"
-              v-bind="usernameAtt"
-              v-model="username"
-              :error="errors.username"
-            />
-          </div> -->
 
           <div>
             <FormGroup
@@ -215,9 +216,11 @@ const formValues = reactive({
   gender: "",
   dateOfBirth: "",
   userId: authStore.userId,
+  companyName: "",
 });
 const image = ref(null);
 const schema = yup.object().shape({
+  companyName: yup.string().nullable(),
   lastName: yup.string().nullable(),
   firstName: yup.string().nullable(),
   email: yup.string().email("Invalid email").nullable(),
@@ -235,6 +238,7 @@ const [firstName, firstNameAtt] = defineField("firstName");
 const [lastName, lastNameAtt] = defineField("lastName");
 const [gender] = defineField("gender");
 const [dateOfBirth, dateOfBirthAtt] = defineField("dateOfBirth");
+const [companyName, companyNameAtt] = defineField("companyName");
 
 onMounted(() => {
   isLoading.value = true;
@@ -249,6 +253,8 @@ onMounted(() => {
         dateOfBirth,
         gender,
         phoneNumber,
+        email,
+        companyName,
         ...rest
       } = res.data.data;
       Object.keys({
@@ -258,6 +264,8 @@ onMounted(() => {
         dateOfBirth,
         gender,
         phoneNumber,
+        email,
+        companyName,
       }).forEach((key) => {
         setFieldValue(key, res.data.data[key]);
       });

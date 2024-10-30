@@ -130,11 +130,11 @@ const onSubmit = handleSubmit((values) => {
         setTimeout(() => {
           toast.success("Validation successful");
           active.value = 2;
-        }, 2000);
-        isLoading.value = true;
+        }, 1000);
+        isLoading.value = false;
       }
     })
-    .then((err) => {
+    .catch((err) => {
       toast.error(err?.response?.data?.message);
       isLoading.value = false;
     });

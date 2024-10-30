@@ -47,7 +47,7 @@ const data = ref([
   {
     label: "Account balance",
     icon: "wallet",
-    balance: 384745555747,
+    balance: 0,
     rightBottom: "Wema BAnk - 0123454009",
     leftBottom: "Access bank",
     canCopy: true,
@@ -57,7 +57,7 @@ const data = ref([
   {
     label: "Loan balance",
     icon: "investment",
-    balance: 38474747,
+    balance: 0,
     rightBottom: "Next due payment",
     leftBottom: "June 24, 2024",
     canCopy: false,
@@ -67,7 +67,7 @@ const data = ref([
   {
     label: "Investment balance",
     icon: "investment",
-    balance: 38474747,
+    balance: 0,
     rightBottom: "Next due payment",
     leftBottom: "June 24, 2024",
     canCopy: false,

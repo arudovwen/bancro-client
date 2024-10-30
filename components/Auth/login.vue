@@ -123,7 +123,7 @@ const onSubmit = handleSubmit((values) => {
       if (
         (
           err?.response?.data?.message || err?.response?.data?.Message
-        )?.includes("username has not verified yet")
+        )?.includes("You are yet to confirm your mail, ensure you confirm mail before you sign int")
       ) {
         router.push(
           `/auth/email-verification/${encodeURIComponent(values.username)}`
