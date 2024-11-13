@@ -129,6 +129,10 @@ const onSubmit = handleSubmit((values) => {
         authStore.setBVN(true);
         setTimeout(() => {
           toast.success("Validation successful");
+          if (authStore.isPinSet) {
+            navigateTo("/");
+            return;
+          }
           active.value = 2;
         }, 1000);
         isLoading.value = false;
@@ -150,4 +154,10 @@ const options = [
     value: 1,
   },
 ];
+
+onMounted(() => {
+  if (authStore.isBVNSet) {
+    active.value = 2;
+  }
+});
 </script>

@@ -24,6 +24,7 @@ export const useAuthStore = defineStore(
     function setLoggedUser(data) {
       loggedUser.value = data;
       setPin(!!data?.pin);
+      setBVN(!!data?.bvn);
     }
 
     function setAccessToken(value) {

@@ -112,7 +112,7 @@ import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 import * as yup from "yup";
 
 const active = inject("active");
-const isOpen = ref(false);
+const isOpen = inject("isOpen");
 const enabled = ref(false);
 const isLoading = ref(false);
 const links = [
@@ -142,5 +142,5 @@ const { handleSubmit, defineField, errors, setValues, setFieldValue } = useForm(
 );
 const [accountNumber, accountNumberAtt] = defineField("accountNumber");
 
-provide("isOpen", isOpen);
+
 </script>

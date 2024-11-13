@@ -3,11 +3,11 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const isOnboarding = to?.name?.includes("onboarding");
   const isLoggedIn = authStore.isLoggedIn;
   const hasPin = authStore.isPinSet;
-  const hasBVN = authStore.hasBVN;
+  const hasBVN = authStore.isBVNSet;
 
   if (isLoggedIn) {
     // If logged in but no PIN and not on onboarding
-    if (!isOnboarding && !hasPin) {
+    if (!isOnboarding && (!hasPin)) {
       return navigateTo("/onboarding");
     }
     // If logged in and already on onboarding, redirect to home

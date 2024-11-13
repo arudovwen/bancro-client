@@ -59,5 +59,8 @@ const urls = {
   GENERATE_KEY: "/tenant/generate-keypair",
   GET_WEBHOOK_URL: "/tenant/get-tenant-webhookurl",
   GET_KEY: "/tenant/get-tenant-keys",
+
+  // Beneficiary
+  BENEFICIARY: "/Beneficiary",
 };
 export default urls;
