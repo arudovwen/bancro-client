@@ -4,7 +4,7 @@
       class="w-max h-full border-r border-[#ECECEC] bg-white min-w-[280px] hidden lg:inline"
     >
       <div class="pt-6 px-[25px] mb-10">
-        <AppLogo imgClass="w-[150px]" />
+        <AppLogo imgClass="w-[120px]" />
       </div>
       <!-- sIDE BAR  -->
       <div>
