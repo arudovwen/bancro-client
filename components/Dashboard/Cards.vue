@@ -43,6 +43,9 @@
   </div>
 </template>
 <script setup>
+import { getSavingsAccountByUserid } from "~/services/savingsservice";
+
+const authStore = useAuthStore()
 const data = ref([
   {
     label: "Account balance",
@@ -75,4 +78,12 @@ const data = ref([
     color: "#FFC091",
   },
 ]);
+
+async function getData() {
+  const response = await getSavingsAccountByUserid(authStore.userId);
+}
+
+onMounted(()=>{
+  getData()
+})
 </script>

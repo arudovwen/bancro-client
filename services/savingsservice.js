@@ -13,3 +13,20 @@ export const getWalletDetails = () => {
 export const createSavingsAccount = (data) => {
   return post(`${urls.CREATE_ACCOUNT}`, data, config);
 };
+
+export const getSavingsAccountByUserid = (id) => {
+  return get(`${urls.SAVINGS_ACCOUNT}/accounts/${id}`, config);
+};
+
+
+export const getBanks = () => {
+  return get(`${urls.GET_BANKS}`, config);
+};
+
+export const validateAccount = (data) => {
+  return post(`${urls.VALIDATE_ACCOUNT}?${new URLSearchParams(data)}`, {}, config);
+};
+
+export const completeTransfer = (data) => {
+  return post(`${urls.TRANSFER}`, data, config);
+};

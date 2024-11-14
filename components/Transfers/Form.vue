@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="active = 2" class="bg-white rounded-xl p-6">
+  <form @submit.prevent="onSubmit" class="bg-white rounded-xl p-6">
     <h2 class="text-[#3C4A67] font-semibold text-xl mb-7">
       Transfer to Bank Account
     </h2>
@@ -25,43 +25,61 @@
           <Textinput
             placeholder=""
             label="Account number"
-            name="Business name"
-            v-bind="accountNumberAtt"
-            v-model="accountNumber"
-            :error="errors.accountNumber"
+            name="recipientAccountNumber"
+            v-bind="recipientAccountNumberAtt"
+            v-model="recipientAccountNumber"
+            :error="errors.recipientAccountNumber"
           />
         </div>
         <div>
-          <Textinput
-            placeholder=""
+          <FormGroup
             label="Select Bank"
-            name="Business name"
-            v-bind="accountNumberAtt"
-            v-model="accountNumber"
-            :error="errors.accountNumber"
-          />
+            :error="errors.biller"
+            name="recipientBankCode"
+          >
+            <SelectVueSelect
+              v-model="recipientBankCode"
+              :options="banks"
+              :reduce="(bank) => bank.value"
+              placeholder="Select bank"
+              :classInput="`min-w-[180px] !bg-white  !rounded-lg !text-[#475467] !h-11 cursor-pointer ${
+                errors.recipientBankCode ? 'border-red-500' : 'border-[#D0D5DD]'
+              }`"
+            />
+          </FormGroup>
         </div>
 
         <div>
           <div class="mb-3">
             <Textinput
               placeholder=""
-              label="Beneficiary name"
-              name="Business name"
-              v-bind="accountNumberAtt"
-              v-model="accountNumber"
-              :error="errors.accountNumber"
+              label="Account name"
+              name="recipientAccountName"
+              v-bind="recipientAccountNameAtt"
+              v-model="recipientAccountName"
+              :error="errors.recipientAccountName"
+              :isReadonly="true"
+              :disabled="true"
+              :placeholder="isFetching ? 'Fetching account ...' : ''"
             />
           </div>
           <SwitchGroup>
             <div class="flex items-center gap-x-4">
               <Switch
-                v-model="enabled"
-                :class="enabled ? 'bg-primary-500' : 'bg-gray-200'"
+                v-model="shouldSaveBeneficiary"
+                :class="
+                  values?.shouldSaveBeneficiary
+                    ? 'bg-primary-500'
+                    : 'bg-gray-200'
+                "
                 class="relative inline-flex h-4 w-8 items-center rounded-full transition-colors focus:outline-none"
               >
                 <span
-                  :class="enabled ? 'translate-x-4' : 'translate-x-1'"
+                  :class="
+                    values?.shouldSaveBeneficiary
+                      ? 'translate-x-4'
+                      : 'translate-x-1'
+                  "
                   class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"
                 />
               </Switch>
@@ -70,14 +88,22 @@
           </SwitchGroup>
         </div>
         <div class="relative">
-          <Textinput
-            placeholder=""
-            label="Amount"
-            name="Business name"
-            v-bind="accountNumberAtt"
-            v-model="accountNumber"
-            :error="errors.accountNumber"
-          />
+          <FormGroup label="Amount" :error="errors.amount" name="amount">
+            <div class="relative items-center flex">
+              <CurrencyInput
+                min="1"
+                :class="`outline-none px-[14px] py-[10px] min-w-[180px] w-full !bg-white disabled:bg-gray-50 border !rounded-lg !text-[#475467] !h-11 cursor-pointer placeholder:text-[14px] ${
+                  errors.amount ? 'border-red-500' : 'border-[#D0D5DD]'
+                }`"
+                v-model="amount"
+                :options="{
+                  currency: 'ngn',
+                  currencyDisplay: 'hidden',
+                }"
+              />
+              <span class="absolute right-4 text-sm text-[#344054]">NGN</span>
+            </div>
+          </FormGroup>
           <span
             class="absolute top-0 right-0 text-[11px] border-[#ABEFC6] border text-[#067647] rounded-[6px] px-[6px] py-[1px] bg-[#ECFDF3]"
             >Balance: <span class="font-medium">NGN1,200,000</span></span
@@ -87,10 +113,10 @@
           <Textinput
             placeholder=""
             label="Narration"
-            name="Business name"
-            v-bind="accountNumberAtt"
-            v-model="accountNumber"
-            :error="errors.accountNumber"
+            name="narration"
+            v-bind="narrationAtt"
+            v-model="narration"
+            :error="errors.narration"
           />
         </div>
         <div class="mb-3 mt-4">
@@ -99,22 +125,34 @@
             :isLoading="isLoading"
             text="Next"
             btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
-            :isDisabled="isLoading"
+            :isDisabled="isLoading ||  !meta.valid"
           />
         </div>
       </div>
     </div>
+    <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false">
+      <template #default>
+        <div class="p-6 rounded-xl">
+          <TransfersBeneficiary @getValue="handleData" />
+        </div>
+      </template>
+    </ModalCenter>
   </form>
 </template>
 <script setup>
 import { useForm } from "vee-validate";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 import * as yup from "yup";
+import { getBanks, validateAccount } from "~/services/savingsservice";
+import { toast } from "vue3-toastify";
 
 const active = inject("active");
+const isFetching = ref(false);
 const isOpen = inject("isOpen");
 const enabled = ref(false);
+const banks = ref([]);
 const isLoading = ref(false);
+const authStore = useAuthStore();
 const links = [
   {
     title: "Transfers",
@@ -125,22 +163,127 @@ const links = [
     url: "#",
   },
 ];
-
+const formData = inject("formData");
 const formValues = reactive({
-  accountNumber: "",
+  userId: authStore.userId,
+  amount: null,
+  recipientAccountNumber: "",
+  recipientAccountName: "",
+  recipientBankCode: "",
+  recipientBankName: "",
+  narration: "",
+  shouldSaveBeneficiary: true,
 });
 
 const schema = yup.object().shape({
-  accountNumber: yup.string().required(),
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .min(1, "Amount must be greater than 0"),
+
+  recipientAccountNumber: yup
+    .string()
+    .required("Recipient account number is required")
+    .min(10, "Account number must be 11")
+    .max(10, "Account number must be 11")
+    .matches(/^\d+$/, "Account number must be numeric"),
+
+  recipientAccountName: yup
+    .string()
+    .required("Recipient account name is required")
+    .min(2, "Account name must be at least 2 characters"),
+
+  recipientBankCode: yup
+    .string()
+    .required("Recipient bank code is required")
+    .length(3, "Bank code should be exactly 3 characters"),
+
+  recipientBankName: yup
+    .string()
+    .required("Recipient bank name is required")
+    .min(2, "Bank name must be at least 2 characters"),
+
+  narration: yup.string().max(200, "Narration can be up to 200 characters"),
+
+  shouldSaveBeneficiary: yup
+    .boolean()
+    .required("Indicate if beneficiary should be saved"),
 });
 
-const { handleSubmit, defineField, errors, setValues, setFieldValue } = useForm(
-  {
+const { handleSubmit, defineField, errors, setValues, setFieldValue, values,meta } =
+  useForm({
     validationSchema: schema,
     initialValues: formValues,
+  });
+
+const [amount] = defineField("amount");
+const [recipientAccountNumber, recipientAccountNumberAtt] = defineField(
+  "recipientAccountNumber"
+);
+const [narration, narrationAtt] = defineField("narration");
+const [recipientAccountName, recipientAccountNameAtt] = defineField(
+  "recipientAccountName"
+);
+const [recipientBankCode] = defineField("recipientBankCode");
+const [shouldSaveBeneficiary] = defineField("shouldSaveBeneficiary");
+
+async function getAllBanks() {
+  const response = await getBanks();
+  banks.value = response.data.data.responseBody.map((i) => ({
+    label: i.name,
+    value: i.code,
+  }));
+}
+const onSubmit = handleSubmit((values) => {
+  formData.value = values;
+  active.value = 2;
+  // isLoading.value = true;
+});
+watch(recipientBankCode, () => {
+  const bank = banks.value.find((i) => i.value === recipientBankCode.value);
+  if (bank) {
+    setFieldValue("recipientBankName", bank.label);
+  }
+});
+watch(
+  () => [values.recipientAccountNumber, values.recipientBankCode],
+
+  async () => {
+    if (
+      values.recipientAccountNumber.length == 10 &&
+      values.recipientBankCode
+    ) {
+  
+      try {
+        isFetching.value = true;
+        const response = await validateAccount({
+          bankCode: values.recipientBankCode,
+          accountNumber: values.recipientAccountNumber,
+        });
+        if (response.status === 200) {
+          setFieldValue(
+            "recipientAccountName",
+            response.data.data.responseBody.accountName
+          );
+        }
+      } catch (err) {
+        console.log("🚀 ~ err:", err);
+        toast.error(err.response.data.message);
+      } finally {
+        isFetching.value = false;
+      }
+    }
   }
 );
-const [accountNumber, accountNumberAtt] = defineField("accountNumber");
+onMounted(() => {
+  getAllBanks();
+});
 
-
+function handleData(value) {
+  setFieldValue("recipientBankName", value.bankName);
+  setFieldValue("recipientBankCode", value.bankCode);
+  setFieldValue("recipientAccountName", value.name);
+  setFieldValue("recipientAccountNumber", value.accountNumber);
+  isOpen.value = false;
+}
 </script>

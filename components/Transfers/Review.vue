@@ -3,9 +3,7 @@
     <h2
       class="text-[#3C4A67] font-semibold text-xl mb-7 flex items-center gap-x-7"
     >
-      <span @click="active=1"
-        ><AppIcon icon="uiw:arrow-left"
-      /></span>
+      <span @click="active = 1"><AppIcon icon="uiw:arrow-left" /></span>
       Review transfer
     </h2>
     <div
@@ -17,7 +15,7 @@
         </div>
         <span
           class="block text-2xl font-semibold text-[#344054] text-center mb-[11px]"
-          >{{ currencyFormat(13874747) }}</span
+          >{{ currencyFormat(formData?.amount) }}</span
         >
         <div class="flex justify-center gap-x-2 items-center">
           <span class="text-xs text-[#667085]">Transfer Amount</span>
@@ -32,7 +30,9 @@
             >
             <span
               class="text-sm text-[#344054] font-medium block leading-normal"
-              >0731082157 - Access Bank - Ralph Edwards</span
+              >{{ formData?.recipientAccountNumber }} -
+              {{ formData?.recipientBankName }} -
+              {{ formData?.recipientAccountName }}</span
             >
           </span>
         </span>
@@ -45,7 +45,7 @@
             >
             <span
               class="text-sm text-[#344054] font-medium block leading-normal"
-              >FX Change on Leatherback</span
+              >{{ formData?.narration }}</span
             >
           </span>
         </span>
@@ -58,14 +58,17 @@
         label="Enter you 4-Digit PIN to complete this transaction"
         type="password"
         name="password"
+        v-model="pin"
       />
     </div>
     <div>
       <AppButton
-        @click="isOpen = true"
+        @click="finanlizeTransfer"
+        :isDisabled="pin?.length !== 4 || loading"
+        :isLoading="loading"
         type="button"
         text="Confirm Transfer"
-        btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
+        btnClass="text-primary bg-[#9FE870] disabled:!bg-gray-200 disabled:!text-gray-500 !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
   </div>
@@ -82,7 +85,31 @@
   </ModalCenter>
 </template>
 <script setup>
+import { toast } from "vue3-toastify";
+import { completeTransfer } from "~/services/savingsservice";
+
+const loading = ref(false);
+const pin = ref(null);
 const isOpen = ref(false);
-const active = inject("active")
+const active = inject("active");
+const formData = inject("formData");
 provide("isOpen", isOpen);
+
+async function finanlizeTransfer() {
+  try {
+    if (!pin.value) {
+      toast.error("Invalid transaction pin");
+      return;
+    }
+    loading.value = true;
+    const response = await completeTransfer(formData.value);
+    if (response.status === 200) {
+      isOpen.value = true;
+    }
+  } catch (error) {
+    toast.error(error.response.data.message);
+  } finally {
+    loading.value = false;
+  }
+}
 </script>

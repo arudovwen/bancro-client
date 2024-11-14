@@ -10,8 +10,10 @@ const urls = {
   SEND_CHANGE_PASSWORD_OTP: "/customerprofile/send-change-password-otp",
   VALIDATE_CHANGE_PASSWORD_OTP: "/customerprofile/validate-change-password-otp",
   CHANGE_PASSWORD_CUSTOMER: "/customerprofile/change-password-customer",
-  SEND_UPDATE_PROFILE_SETTINGS_OTP: "/customerprofile/send-update-profile-settings-otp",
-  VERIFY_UPDATE_PROFILE_SETTINGS_OTP: "/customerprofile/verify-update-profile-settings-otp",
+  SEND_UPDATE_PROFILE_SETTINGS_OTP:
+    "/customerprofile/send-update-profile-settings-otp",
+  VERIFY_UPDATE_PROFILE_SETTINGS_OTP:
+    "/customerprofile/verify-update-profile-settings-otp",
   EDIT_PROFILE_SETTINGS_OTP: "/customerprofile/edit-profile-settings-otp",
   UPDATE_PROFILE: "/customerprofile/update-profile",
   USER_PROFILE: (userId) => `/customerprofile/user-profile/${userId}`,
@@ -30,11 +32,14 @@ const urls = {
   CREATE_ACCOUNT: "/savingsaccount/create-account",
   DEPOSIT: "/savingsaccount/deposit",
   WITHDRAWAL: "/savingsaccount/withdrawal",
+  SAVINGS_ACCOUNT: "/savingsaccount",
 
   // Transactions urls
   GET_TRANSACTION_BY_ID: (id) => `/transactions/${id}`,
   GET_ALL_TRANSACTIONS: "/transactions/transactions",
-
+  GET_BANKS: "/transactions/banks",
+  VALIDATE_ACCOUNT: "/transactions/account/validate",
+  TRANSFER: "/transactions/transfer",
 
   CREATE_TENANT: "/tenant/create-tenant",
   SIGN_UP_TENANT: "/onboarding/sign-up-user",

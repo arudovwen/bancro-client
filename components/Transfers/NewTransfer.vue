@@ -12,19 +12,14 @@
       </div>
     </div>
   </section>
-  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false">
-    <template #default>
-      <div class="p-6 rounded-xl">
-        <TransfersBeneficiary />
-      </div>
-    </template>
-  </ModalCenter>
+
 </template>
 <script setup>
 const isOpen = ref(false);
 const active = ref(1);
 const enabled = ref(false);
 const isLoading = ref(false);
+const formData = ref(null)
 const links = [
   {
     title: "Transfers",
@@ -38,4 +33,5 @@ const links = [
 
 provide("active", active);
 provide("isOpen", isOpen);
+provide("formData",formData)
 </script>

@@ -12,11 +12,17 @@
         v-model="search"
       />
     </div>
-    <div class="grid grid-cols-1 gap-y-[10px] max-h-[300px] overflow-y-auto pb-6 pt-4">
+    <div
+      class="grid grid-cols-1 gap-y-[10px] max-h-[300px] overflow-y-auto pb-6 pt-4"
+    >
       <div
         class="border-b border-[#21231D1A] last:border-none p-4 rounded-lg flex justify-between"
         v-for="n in filteredUsers"
         :key="n.id"
+        @click="
+          emit('getValue', n);
+          selected = n;
+        "
       >
         <span class="flex items-center gap-x-4">
           <SvgBeneficiary />
@@ -54,12 +60,15 @@ import {
   deleteBeneficiary,
 } from "~/services/beneficiaryservice";
 
+const emit = defineEmits(["getValue"]);
 const authStore = useAuthStore();
 const query = {
   userId: authStore.userId,
   pageNumber: 1,
   pageSize: 10000,
 };
+
+const selected = ref(null);
 const rows = ref([]);
 const search = ref("");
 async function getData() {
