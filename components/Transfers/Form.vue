@@ -125,7 +125,7 @@
             :isLoading="isLoading"
             text="Next"
             btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
-            :isDisabled="isLoading ||  !meta.valid"
+            :isDisabled="isLoading || !meta.valid"
           />
         </div>
       </div>
@@ -149,31 +149,11 @@ import { toast } from "vue3-toastify";
 const active = inject("active");
 const isFetching = ref(false);
 const isOpen = inject("isOpen");
-const enabled = ref(false);
+
 const banks = ref([]);
 const isLoading = ref(false);
-const authStore = useAuthStore();
-const links = [
-  {
-    title: "Transfers",
-    url: "/transfers",
-  },
-  {
-    title: "New Transfer",
-    url: "#",
-  },
-];
+
 const formData = inject("formData");
-const formValues = reactive({
-  userId: authStore.userId,
-  amount: null,
-  recipientAccountNumber: "",
-  recipientAccountName: "",
-  recipientBankCode: "",
-  recipientBankName: "",
-  narration: "",
-  shouldSaveBeneficiary: true,
-});
 
 const schema = yup.object().shape({
   amount: yup
@@ -210,11 +190,18 @@ const schema = yup.object().shape({
     .required("Indicate if beneficiary should be saved"),
 });
 
-const { handleSubmit, defineField, errors, setValues, setFieldValue, values,meta } =
-  useForm({
-    validationSchema: schema,
-    initialValues: formValues,
-  });
+const {
+  handleSubmit,
+  defineField,
+  errors,
+  setValues,
+  setFieldValue,
+  values,
+  meta,
+} = useForm({
+  validationSchema: schema,
+  initialValues: formData,
+});
 
 const [amount] = defineField("amount");
 const [recipientAccountNumber, recipientAccountNumberAtt] = defineField(
@@ -235,7 +222,12 @@ async function getAllBanks() {
   }));
 }
 const onSubmit = handleSubmit((values) => {
-  formData.value = values;
+  formData.recipientBankName = values.recipientBankName;
+  formData.recipientBankCode = values.recipientBankCode;
+  formData.recipientAccountName = values.recipientAccountName;
+  formData.recipientAccountNumber = values.recipientAccountNumber;
+  formData.amount = values.amount;
+  formData.narration = values.narration;
   active.value = 2;
   // isLoading.value = true;
 });
@@ -253,7 +245,6 @@ watch(
       values.recipientAccountNumber.length == 10 &&
       values.recipientBankCode
     ) {
-  
       try {
         isFetching.value = true;
         const response = await validateAccount({

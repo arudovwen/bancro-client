@@ -77,8 +77,11 @@
       <div class="p-6 rounded-xl">
         <TransactionsStatus
           title="Transaction Successful"
-          text="Your transfer of N5,000.00 to Adeleke Laketu was successful"
+          :text="`Your transfer of ${currencyFormat(formData.amount)} to ${
+            formData.recipientAccountName
+          } was successful`"
           :canClose="false"
+          @close="router.go()"
         />
       </div>
     </template>
@@ -88,6 +91,7 @@
 import { toast } from "vue3-toastify";
 import { completeTransfer } from "~/services/savingsservice";
 
+const router = useRouter();
 const loading = ref(false);
 const pin = ref(null);
 const isOpen = ref(false);
@@ -96,13 +100,14 @@ const formData = inject("formData");
 provide("isOpen", isOpen);
 
 async function finanlizeTransfer() {
+
   try {
     if (!pin.value) {
       toast.error("Invalid transaction pin");
       return;
     }
     loading.value = true;
-    const response = await completeTransfer(formData.value);
+    const response = await completeTransfer(formData);
     if (response.status === 200) {
       isOpen.value = true;
     }

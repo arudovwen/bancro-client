@@ -31,8 +31,8 @@
         <div class="flex justify-between items-center gap-x-2 text-[10.5px]">
           <span class="flex gap-x-2 items-center"
             >{{ n.rightBottom }}
-            <span v-if="n.canCopy"
-              ><AppIcon icon="solar:copy-bold-duotone"
+            <span v-if="n.canCopy" @click="handleCopy">
+              <AppIcon icon="solar:copy-bold-duotone"
             /></span>
             <span class="uppercase"> </span
           ></span>
@@ -43,9 +43,11 @@
   </div>
 </template>
 <script setup>
+import { toast } from "vue3-toastify";
 import { getSavingsAccountByUserid } from "~/services/savingsservice";
 
-const authStore = useAuthStore()
+const accountNo = ref(null);
+const authStore = useAuthStore();
 const data = ref([
   {
     label: "Account balance",
@@ -78,12 +80,27 @@ const data = ref([
     color: "#FFC091",
   },
 ]);
-
+function handleCopy() {
+  navigator.clipboard.writeText(accountNo.value);
+  toast.info("Copied to clipboard!")
+}
 async function getData() {
   const response = await getSavingsAccountByUserid(authStore.userId);
+  if (response.status === 200) {
+    const { issuer, savingsAccountNo, firstName, lastName } =
+      response.data.data;
+    accountNo.value = savingsAccountNo;
+    data.value = data.value.map((item, index) => {
+      if (index === 0) {
+        item.rightBottom = `${issuer || "Wema Bank"} - ${savingsAccountNo}`;
+        item.leftBottom = `${ucFirst(firstName)}  ${ucFirst(lastName)}`;
+      }
+      return item;
+    });
+  }
 }
 
-onMounted(()=>{
-  getData()
-})
+onMounted(() => {
+  getData();
+});
 </script>

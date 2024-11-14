@@ -17,9 +17,18 @@
 <script setup>
 const isOpen = ref(false);
 const active = ref(1);
-const enabled = ref(false);
-const isLoading = ref(false);
-const formData = ref(null)
+const authStore = useAuthStore();
+const formData = reactive({
+  userId: authStore.userId,
+  amount: null,
+  recipientAccountNumber: "",
+  recipientAccountName: "",
+  recipientBankCode: "",
+  recipientBankName: "",
+  narration: "",
+  shouldSaveBeneficiary: true,
+});
+
 const links = [
   {
     title: "Transfers",
