@@ -4,7 +4,7 @@
   </div>
   <div class="mb-6">
     <button
-      class="bg-none flex gap-x-2 items-center text-[#163300]"
+      class="bg-none flex gap-x-2 items-center text-[#ED3237]"
       @click="() => router.push('/accounts')"
     >
       <AppIcon icon="heroicons:arrow-small-left-20-solid" />
@@ -24,7 +24,7 @@
       <Menu as="div" class="relative inline-block text-left z-[9999999999]">
         <div>
           <MenuButton
-            class="flex w-full justify-center gap-x-2 items-center rounded-md bg-[#9FE870] py-[8px] px-[12px] text-[14px] font-medium hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            class="flex w-full justify-center gap-x-2 items-center rounded-md bg-danger-500 text-white py-[8px] px-[12px] text-[14px] font-medium hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
           >
             Actions
             <AppIcon icon="heroicons:chevron-down-solid" />
@@ -46,7 +46,7 @@
               <MenuItem v-slot="{ active }">
                 <button
                   :class="[
-                    active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                    active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                   ]"
                   @click="writeOffLoanDialog.open"
@@ -57,7 +57,7 @@
               <MenuItem v-slot="{ active }">
                 <button
                   :class="[
-                    active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                    active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                   ]"
                   @click="liquidateLoanDialog.open"
@@ -135,7 +135,7 @@
                   <MenuItem v-slot="{ active }">
                     <button
                       :class="[
-                        active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                        active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
                       @click=""
@@ -146,7 +146,7 @@
                   <MenuItem v-slot="{ active }">
                     <button
                       :class="[
-                        active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                        active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                       ]"
                       @click="updateRepaymentDialog.open"
@@ -172,7 +172,7 @@
         writeOffLoanDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >
@@ -187,7 +187,7 @@
         liquidateLoanDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >
@@ -202,7 +202,7 @@
         updateRepaymentDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >

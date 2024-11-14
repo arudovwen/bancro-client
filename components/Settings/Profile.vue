@@ -5,7 +5,7 @@
   <section class="rounded-lg bg-white border border-[#EAECF0] overflow-hidden">
     <div
       class="h-[140px] relative w-full mb-24"
-      style="background: linear-gradient(91.73deg, #9fe870 0%, #079455 108.89%)"
+      style="background: linear-gradient(91.73deg, #ED3237 0%, #F89F40 108.89%)"
     >
       <span
         :class="`bg-[url('/Noise.png')] absolute w-full top-0 left-0 h-full z-[1]`"
@@ -193,7 +193,7 @@
               :isLoading="isLoading"
               :isDisabled="isLoading"
               text="Save changes"
-              btnClass="text-primary-500 bg-[#9FE870] w-full !px-[114px] !py-[10px] !rounded-lg font-semibold "
+              btnClass="text-white bg-danger-500 w-full !px-[114px] !py-[10px] !rounded-lg font-semibold "
             />
           </div>
         </form>

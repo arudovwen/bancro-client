@@ -25,7 +25,7 @@
                         btnClass="text-primary bg-white border !py-[10px] px-20 min-w-[156px] !rounded-lg font-semibold"
                         :isDisabled="isLoading" />
                     <AppButton type="submit" :isLoading="isLoading" text="Next"
-                        btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
+                        btnClass="text-white bg-danger-500  !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
                         :isDisabled="isLoading" />
                 </div>
             </div>

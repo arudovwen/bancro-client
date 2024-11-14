@@ -65,7 +65,7 @@
                   type="submit"
                   text="Apply"
                   :isDisabled="!dates"
-                  btnClass="text-primary-500 bg-[#9FE870] px-4 !py-2 !rounded-lg font-semibold w-full lg:w-auto !text-xs"
+                  btnClass="text-white bg-danger-500 px-4 !py-2 !rounded-lg font-semibold w-full lg:w-auto !text-xs"
                 />
               </div>
             </div>
@@ -153,7 +153,7 @@ function onSubmit() {
   --vc-accent-200: #f9fafb; /* Soft green */
   --vc-accent-300: #91c74b; /* Bright green */
   --vc-accent-400: #6dbf2e; /* Vivid green */
-  --vc-accent-500: #163300; /* Base color - Deep green */
+  --vc-accent-500: #ED3237; /* Base color - Deep green */
   --vc-accent-600: #122b00; /* Darker green */
   --vc-accent-700: #0e2200; /* Even darker green */
   --vc-accent-800: #091a00; /* Very dark green */
@@ -167,7 +167,7 @@ function onSubmit() {
 }
 .vc-container .vc-weekday-1,
 .vc-container .vc-weekday-7 {
-  color: #163300;
+  color: #ED3237;
 }
 .vc-header{
     margin-bottom: 10px;

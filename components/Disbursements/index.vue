@@ -29,7 +29,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     :class="[
-                      active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                      active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                     @click=""
@@ -40,7 +40,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     :class="[
-                      active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                      active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                     @click="approveDisbursementDialog.open"
@@ -76,7 +76,7 @@
         approveDisbursementDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >

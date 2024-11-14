@@ -19,9 +19,9 @@ defineProps(["className"]);
 .custom-loader {
   width: 70px;
   height: 70px;
-  background: radial-gradient(farthest-side, #183329 90%, #0000) center/16px
+  background: radial-gradient(farthest-side, #ED3237 90%, #0000) center/16px
       16px,
-    radial-gradient(farthest-side, #f2f16e 90%, #0000) bottom/12px 12px;
+    radial-gradient(farthest-side, #F89F40 90%, #0000) bottom/12px 12px;
   background-repeat: no-repeat;
   animation: s7 1s infinite linear;
   position: relative;
@@ -33,7 +33,7 @@ defineProps(["className"]);
   height: 8px;
   inset: auto 0 16px;
   margin: auto;
-  background: #183329;
+  background: #ED3237;
   border-radius: 50%;
   transform-origin: 50% calc(100% + 10px);
   animation: inherit;

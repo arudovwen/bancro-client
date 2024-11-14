@@ -57,7 +57,7 @@
                         src="/images/logo.png"
                         width="100"
                         height="26"
-                        alt="Bancro"
+                        alt="Cowry"
                         class="w-[100px] h-auto mx-auto"
                       />
                     </span>

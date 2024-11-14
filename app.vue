@@ -119,45 +119,45 @@ label,
 <script setup>
 useHead(
   {
-    title: "Bancro",
+    title: "Cowry",
     charset: "utf-8",
     viewport: "width=device-width, initial-scale=1",
     meta: [
       {
         hid: "description",
         name: "description",
-        content: "Bancro.",
+        content: "Cowry.",
       },
       {
         hid: "og:title",
         property: "og:title",
-        content: "Bancro ",
+        content: "Cowry ",
       },
       {
         hid: "og:description",
         property: "og:description",
-        content: "Bancro",
+        content: "Cowry",
       },
       {
         hid: "og:image",
         property: "og:image",
-        content: "https://matta.trade/img/3.png",
+        content: "",
       }, // Add OG image URL
-      // Twitter Tags
+   
       {
         hid: "twitter:card",
         name: "twitter:card",
-        content: "https://matta.trade/img/3.png",
+        content: "Cowry",
       }, // Use 'summary_large_image' for large images
       {
         hid: "twitter:title",
         name: "twitter:title",
-        content: "Bancro ",
+        content: "Cowry ",
       },
       {
         hid: "twitter:description",
         name: "twitter:description",
-        content: "Bancro ",
+        content: "Cowry ",
       },
       {
         hid: "twitter:image",
@@ -166,7 +166,7 @@ useHead(
       }, // Add Twitter image URL
       {
         name: "keywords",
-        content: "Bancro, Business",
+        content: "Cowry, Business",
       }, // Add relevant keywords
       { name: "author", content: "Success Ahon" }, // Add author information
       { name: "robots", content: "index, follow" }, // Control search engine indexing

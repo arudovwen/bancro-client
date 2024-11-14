@@ -111,7 +111,7 @@
               type="submit"
               :isLoading="isLoading"
               text="Create Savings"
-              btnClass="text-primary bg-[#9FE870] !py-[10px] w-full !px-10 !rounded-lg min-w-[156px] font-semibold"
+              btnClass="text-white bg-danger-500  !py-[10px] w-full !px-10 !rounded-lg min-w-[156px] font-semibold"
               :isDisabled="isLoading"
             />
           </div>

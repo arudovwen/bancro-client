@@ -51,7 +51,7 @@
               (amount > balance?.availableBalance && active === 'wallet')
             "
             text="Topup amount"
-            btnClass="normal-case  !py-3 text-primary bg-[#9FE870] "
+            btnClass="normal-case  !py-3 text-white bg-danger-500  "
           />
         </div>
       </div>

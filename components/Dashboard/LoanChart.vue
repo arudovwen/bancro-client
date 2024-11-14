@@ -36,8 +36,8 @@
             <span class="block text-base lg:text-xl xl:text-[30px] font-bold">{{
               stats?.[n.key] || 0
             }}</span>
-            <span class="text-xs flex gap-x-1 items-center text-[#17B26A]">
-              <AppIcon icon="uil:arrow-growth" iconClass="!text-[#17B26A]" />
+            <span class="text-xs flex gap-x-1 items-center text-danger-500">
+              <AppIcon icon="uil:arrow-growth" iconClass="!text-danger-500" />
               <span>{{ stats?.[n.percent] || 0 }}%</span></span
             >
           </div>

@@ -10,7 +10,7 @@
               <img
                 src="/images/logo.png"
                 class="w-[132px]"
-                alt="Bancro"
+                alt="Cowry"
                 width="132"
                 height="auto"
               />
@@ -73,7 +73,7 @@
           class="order-1 md:grid-cols-2 grid gap-y-3 lg:gap-y-6 md:gap-y-0 text-left md:gap-x-4 darks:text-white/80"
         >
           <p class="order-2 lg:order-1 text-sm">
-            © {{ new Date().getFullYear() }} Bancro. All Rights
+            © {{ new Date().getFullYear() }} Cowry. All Rights
             Reserved.
           </p>
           <div class="order-1 lg:order-2 flex gap-x-2 md:gap-x-4 items-center">

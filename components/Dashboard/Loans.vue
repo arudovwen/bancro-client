@@ -9,7 +9,7 @@
         class="text-center flex flex-col gap-y-1 capitalize"
       >
         <span
-          class="h-14 w-14 rounded-full flex items-center justify-center bg-[#9FE87066]"
+          class="h-14 w-14 rounded-full flex items-center justify-center bg-primary-100"
         >
           <SvgBuy v-if="n.icon === 'buy'" /> <SvgPay  v-if="n.icon === 'pay'"  /> <SvgSend  v-if="n.icon === 'send'"  /> <SvgPlus   v-if="n.icon === 'add'" />
         </span>
@@ -55,7 +55,7 @@ const tabs = [
     title: "pay bills",
     count: "0",
     key: "overDueLoan",
-    className: "bg-[#9FE870] text-[#163300]",
+    className: "bg-daner-500 text-white ",
     icon: "pay",
   },
 ];

@@ -9,7 +9,7 @@
 
     <div class="grid grid-cols-1 gap-y-[10px]">
       <div
-        class="border border-[#21231D1A] bg-[#A0E1E11A] p-4 rounded-lg flex justify-between"
+        class="border border-primary-100/20 bg-primary-100/20 p-4 rounded-lg flex justify-between"
         v-for="n in 4"
         :key="n"
       >

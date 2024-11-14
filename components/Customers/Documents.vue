@@ -33,7 +33,7 @@
       @click="isOpen = true"
       text="Upload other documents"
       icon="lucide:upload"
-      btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+      btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
     />
   </div>
 </template>

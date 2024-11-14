@@ -34,7 +34,7 @@
         />
       </div>
       <span class="flex items-center text-sm mb-5">
-        <span class="font-semibold text-primary hover:underline pb-[1px]">
+        <span class="font-semibold text-danger hover:underline pb-[1px]">
           <NuxtLink to="/auth/forgot-password">Forgot password?</NuxtLink></span
         >
       </span>
@@ -44,7 +44,7 @@
           :isLoading="isLoading"
           :isDisabled="isLoading"
           text="Login"
-          btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold "
+          btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold "
         />
       </div>
 
@@ -54,7 +54,7 @@
         Don't have an account?
         <span
           @click="() => router.push('/auth/register')"
-          class="cursor-pointer font-semibold text-primary-500"
+          class="cursor-pointer font-semibold text-danger-500"
           >Sign Up</span
         >
       </span>
@@ -68,8 +68,8 @@ import { toast } from "vue3-toastify";
 import { loginUser } from "~/services/authservices";
 
 useHead({
-  title: "Login | Bancro",
-  meta: [{ name: "description", content: "Login | Bancro" }],
+  title: "Login | Cowry",
+  meta: [{ name: "description", content: "Login | Cowry" }],
 });
 
 const isLoading = ref(false);

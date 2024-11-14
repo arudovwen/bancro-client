@@ -7,7 +7,7 @@
       Review purchase
     </h2>
     <div
-      class="border border-[#21231D1A] bg-[#A0E1E11A] px-4 pt-8 rounded-lg mb-6"
+      class="border border-primary-100/20 bg-primary-100/20 px-4 pt-8 rounded-lg mb-6"
     >
       <div class="mb-10 w-full">
         <!-- <div class="flex justify-center mb-3">
@@ -57,7 +57,7 @@
         @click="isOpen = true"
         type="button"
         :text="`Buy`"
-        btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
+        btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
   </div>

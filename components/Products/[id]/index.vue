@@ -6,7 +6,7 @@
     <p class="text-[24px] font-semibold">Loan Products</p>
     <button
       id="create-product-button"
-      class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+      class="flex items-center gap-x-2 text-[14px] bg-danger-500 text-white rounded-lg py-[10px] px-[15px] font-medium"
       @click="() => router.push('/products/create')"
     >
       <AppIcon icon="heroicons-outline:cube" />
@@ -43,7 +43,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     :class="[
-                      active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
+                      active ? 'bg-daner-500 text-white ' : 'text-gray-900',
                       'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     ]"
                   >

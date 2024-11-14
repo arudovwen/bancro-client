@@ -4,7 +4,7 @@
  
   <form @submit.prevent="handleSubmit" class="bg-white rounded-xl">
     <div class="mb-6">
-      <div class="grid grid-cols-1 rounded-lg  border border-[#1633000D] px-6 bg-[#1633000D]">
+      <div class="grid grid-cols-1 rounded-lg  border border-[#ED32370D] px-6 bg-[#ED32370D]">
         <div
           v-for="n in formObject1"
           :key="n.label"
@@ -31,7 +31,7 @@
             type="submit"
             :isLoading="isLoading"
             text="Start savings"
-            btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
+            btnClass="text-white bg-danger-500  !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
             :isDisabled="isLoading"
           />
         </div>

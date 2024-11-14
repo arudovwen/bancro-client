@@ -1,5 +1,5 @@
 <template>
-  <NuxtImg src="/bancro-logo.png" quality="100" :class="`${imgClass}`" />
+  <NuxtImg src="/images/cowry.jpg" quality="100" :class="`${imgClass}`" />
 </template>
 
 <script setup>

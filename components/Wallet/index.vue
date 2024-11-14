@@ -25,14 +25,14 @@
               >NGN {{ stats?.[tab.key]?.total || 0 }}</span
             >
             <div class="flex gap-x-2 overflow-scroll no-scrollbar">
-              <AppButton :btnClass="`bg-[#9fe870]`">
+              <AppButton :btnClass="`bg-primary`">
                 <span class="">
                   {{ tab.primaryAction.label }}
                 </span>
               </AppButton>
               <AppButton
                 :isLoading="false"
-                :btnClass="`bg-white text-[#163300] border`"
+                :btnClass="`bg-white text-[#ED3237] border`"
                 v-if="tab.secondaryAction"
               >
                 <span class="">

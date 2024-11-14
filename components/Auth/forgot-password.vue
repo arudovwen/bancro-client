@@ -28,7 +28,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Request password reset"
-            btnClass="text-primary-500 bg-[#9FE870] !py-3 !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 !py-3 !rounded-lg font-semibold "
           />
         </div>
       </form>
@@ -46,7 +46,7 @@ definePageMeta({
   middleware: "auth",
 });
 useHead({
-  title: "Forgot password | Bancro",
+  title: "Forgot password | Cowry",
 });
 import { useForm } from "vee-validate";
 import * as yup from "yup";

@@ -20,7 +20,7 @@
             iconPosition="left"
             text="Actions"
             icon="ion:chevron-down-outline"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
           />
         </MenuButton>
         <MenuItems
@@ -129,7 +129,7 @@ const tabs = [
     title: "Pending Loans",
     count: "0",
     key: "overDueLoan",
-    className: "bg-[#9FE870] text-[#163300]",
+    className: "bg-daner-500 text-white ",
     icon: "lucide:users",
     isAmount: false,
   },

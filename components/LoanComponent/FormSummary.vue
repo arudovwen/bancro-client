@@ -5,7 +5,7 @@
     <form @submit.prevent="handleSubmit" class="bg-white rounded-xl">
         <div>
             <div class="grid grid-cols-1 gap-y-4">
-                <div class="text-sm grid grid-cols-2 gap-4 border border-[#16330017] rounded-lg p-6 bg-[#1633000D]">
+                <div class="text-sm grid grid-cols-2 gap-4 border border-[#ED323717] rounded-lg p-6 bg-[#ED32370D]">
                     <span class="block" v-for="n in formObject1" :key="n.label">
                         <span class="block text-[#667085] mb-[2px]">{{ n.label }}</span>
                         <span class="block font-medium">-</span>
@@ -27,7 +27,7 @@
                         btnClass="text-primary bg-white border !py-[10px] px-20 min-w-[156px] !rounded-lg font-semibold"
                         :isDisabled="isLoading" />
                     <AppButton type="submit" :isLoading="isLoading" text="submit"
-                        btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
+                        btnClass="text-white bg-danger-500  !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
                         :isDisabled="isLoading" />
                 </div>
             </div>

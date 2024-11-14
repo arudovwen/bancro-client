@@ -4,7 +4,7 @@
       <PageHeader title="Savings" />
       <button
         id="create-product-button"
-        class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+        class="flex items-center gap-x-2 bg-danger-500 text-white text-[14px]  rounded-lg py-[10px] px-[15px] font-medium"
         @click="() => navigateTo('/savings/create/1')"
       >
         <AppIcon icon="lets-icons:add-square-duotone" />
@@ -81,7 +81,7 @@ const data = ref([
     leftBottom: "June 24, 2024",
     canCopy: false,
     canHide: false,
-    color: "#57BE83",
+    color: "#F04648",
   },
 ]);
 

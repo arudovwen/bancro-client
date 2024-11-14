@@ -26,7 +26,7 @@
           <button
             type="button"
             @click="isLogOut = false"
-            class="appearance-none border border-[#9FE870] leading-none w-full px-8 py-3 rounded-lg bg-[#9FE870] text-primary-500 hover:opacity-70 text-[13px] uppercase"
+            class="appearance-none border border-primary leading-none w-full px-8 py-3 rounded-lg bg-danger-500 text-white hover:opacity-70 text-[13px] uppercase"
           >
             No
           </button>

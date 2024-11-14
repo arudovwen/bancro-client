@@ -31,7 +31,7 @@ import moment from "moment";
 const isDateOpen = ref(false);
 const chartOptions = computed(() => {
   return {
-    colors: ["#9FE870"],
+    colors: ["#F04648"],
     yaxis: {
       show: true,
       title: {

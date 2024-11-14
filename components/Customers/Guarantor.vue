@@ -70,7 +70,7 @@
             @click="isOpen = true"
             text="Add another guarantor"
             icon="solar:user-plus-broken"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
           />
         </div>
       </div>

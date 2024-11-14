@@ -11,7 +11,7 @@
       </span>
       <button
         @click="navigateTo('/transactions')"
-        class="text-xs text-primary-500 flex gap-x-2 items-center h-auto font-medium"
+        class="text-xs text-primary-900 flex gap-x-2 items-center h-auto font-medium"
       >
         See all transactions <AppIcon icon="fa6-solid:chevron-right" />
       </button>

@@ -2,7 +2,7 @@
   <h2 class="text-[#344054] font-semibold text-2xl mb-6">Review Loan Offer</h2>
   <div class="grid grid-cols-1 gap-y-2">
     <div
-      class="text-sm grid grid-cols-1 gap-4 border border-[#16330017] rounded-lg px-5 p-4 bg-[#1633000D]"
+      class="text-sm grid grid-cols-1 gap-4 border border-[#ED323717] rounded-lg px-5 p-4 bg-[#ED32370D]"
     >
       <span
         class="block border-b border-[#3440541A] last:border-none pb-2"
@@ -26,7 +26,7 @@
         type="submit"
         :isLoading="isLoading"
         text="Accept terms"
-        btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
+        btnClass="text-white bg-danger-500  !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
         :isDisabled="isLoading"
       />
     </div>

@@ -10,8 +10,8 @@
       <span class="lg:hidden">
         <NuxtLink :to="`/`">
           <img
-            src="/bancro-logo.png"
-            alt="Bancro"
+            src="/images/cowry.jpg"
+            alt="Cowry"
             class="w-[130px] h-auto object-contain" /></NuxtLink
       ></span>
     </div>
@@ -26,7 +26,7 @@
       <button class="lg:hidden outline-none" @click="isOpen = true">
         <AppIcon
           icon="mingcute:menu-fill"
-          iconClass="text-3xl text-[#163300]"
+          iconClass="text-3xl text-[#ED3237]"
         />
       </button>
     </div>

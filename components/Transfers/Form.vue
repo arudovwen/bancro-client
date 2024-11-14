@@ -69,10 +69,10 @@
                 v-model="shouldSaveBeneficiary"
                 :class="
                   values?.shouldSaveBeneficiary
-                    ? 'bg-primary-500'
+                    ? 'bg-danger-500'
                     : 'bg-gray-200'
                 "
-                class="relative inline-flex h-4 w-8 items-center rounded-full transition-colors focus:outline-none"
+                class="relative inline-flex h-4 w-[30px] items-center rounded-full transition-colors focus:outline-none"
               >
                 <span
                   :class="
@@ -124,7 +124,7 @@
             type="submit"
             :isLoading="isLoading"
             text="Next"
-            btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
+            btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold w-full"
             :isDisabled="isLoading || !meta.valid"
           />
         </div>

@@ -100,14 +100,14 @@
               <span>Download</span>
             </AppButtonV2>
             <AppButtonV2>
-              <span class="text-[#9FE870] font-medium">View</span>
+              <span class="text-danger-500 font-medium">View</span>
             </AppButtonV2>
           </div>
         </div>
       </div>
       <AppButtonV2
         :size="'large'"
-        :classes="{ root: 'bg-[#9FE870] flex gap-x-2 items-center' }"
+        :classes="{ root: 'bg-danger-500 text-white flex gap-x-2 items-center' }"
       >
         <AppIcon :icon="'heroicons:plus'" />
         <span class="">New Request</span>
@@ -124,7 +124,7 @@
         uploadDocumentDialog.close();
       },
       classes: {
-        root: 'border border-gray-800 text-[#163300] flex-grow-1 !w-full',
+        root: 'border border-gray-800 text-[#ED3237] flex-grow-1 !w-full',
       },
     }"
     :SecondaryActionProps="{
@@ -133,7 +133,7 @@
         uploadDocumentDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >

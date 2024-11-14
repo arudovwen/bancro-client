@@ -4,7 +4,7 @@
   </div>
   <div class="mb-6">
     <button
-      class="bg-none flex gap-x-2 items-center text-[#163300]"
+      class="bg-none flex gap-x-2 items-center text-[#ED3237]"
       @click="() => router.push('/requests')"
     >
       <AppIcon icon="heroicons:arrow-small-left-20-solid" />
@@ -28,7 +28,7 @@
         <span>Decline</span>
       </AppButtonV2>
       <AppButtonV2
-        :classes="{ root: 'bg-[#9FE870] text-[#163300]' }"
+        :classes="{ root: 'bg-daner-500 text-white ' }"
         :size="'small'"
         :onClick="approveDialog.open"
       >
@@ -39,7 +39,7 @@
       <Menu as="div" class="relative inline-block text-left z-[9999999999]">
         <div>
           <MenuButton
-            class="flex w-full justify-center gap-x-2 items-center rounded-md bg-[#9FE870] py-[8px] px-[12px] text-[14px] font-medium hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            class="flex w-full justify-center gap-x-2 items-center rounded-md bg-danger-500 text-white py-[8px] px-[12px] text-[14px] font-medium hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
           >
             Options
             <AppIcon icon="heroicons:chevron-down-solid" />
@@ -151,7 +151,7 @@
             <span>Download</span>
           </AppButtonV2>
           <AppButtonV2>
-            <span class="text-[#9FE870] font-medium">View</span>
+            <span class="text-primary font-medium">View</span>
           </AppButtonV2>
         </div>
       </div>
@@ -167,7 +167,7 @@
         approveDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >
@@ -206,7 +206,7 @@
     </div>
     <span
       @click="loanScheduleDialog.open"
-      class="cursor-pointer text-[14px] text-[#9FE870]"
+      class="cursor-pointer text-[14px] text-primary"
       >Review loan schedule</span
     >
   </AppDialog>
@@ -261,7 +261,7 @@
         approveDialog.open();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >

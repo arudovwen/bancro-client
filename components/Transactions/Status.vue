@@ -16,7 +16,7 @@
           isOpen = false;
           emits('close');
         "
-        btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold w-full"
+        btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold w-full"
       />
     </div>
   </div>

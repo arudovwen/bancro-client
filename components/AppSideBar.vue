@@ -9,10 +9,10 @@
         <NuxtLink
           v-if="!item.disabled"
           :to="item.url"
-          class="text-sm flex items-center px-[10px] font-medium hover:bg-[#9FE870]/20 hover:text-primary-500 rounded-lg text-[#637381]"
+          class="text-sm flex items-center px-[10px] font-medium hover:bg-danger-100 hover:text-danger-500  rounded-lg text-[#637381]"
           :activeClass="`${
-            item.hasChildren ? '' : 'bg-[#9FE870]'
-          }  !text-primary-500 block font-semibold`"
+            item.hasChildren ? '' : 'bg-danger-100'
+          } text-danger-800  block font-semibold`"
         >
           <span
             class="flex items-center justify-between gap-x-[10px] flex-1 py-[10px]"
@@ -48,7 +48,7 @@
         </NuxtLink>
         <span
           v-else
-          class="text-sm flex items-center px-[10px] font-medium cursor-not-allowed opacity-90 hover:text-primary-500 rounded-lg text-[#637381]"
+          class="text-sm flex items-center px-[10px] font-medium cursor-not-allowed opacity-90 hover:text-danger-500 rounded-lg text-[#637381]"
         >
           <span
             class="flex items-center justify-between gap-x-[10px] flex-1 py-[10px]"
@@ -87,11 +87,11 @@
       <span
         v-else
         @click="handlOpen(item.name)"
-        class="text-sm flex items-center px-[10px] cursor-pointer font-medium hover:bg-[#9FE870]/20 hover:text-primary-500 rounded-lg text-[#637381]"
+        class="text-sm flex items-center px-[10px] cursor-pointer font-medium hover:bg-danger/20 hover:text-danger-500 rounded-lg text-[#637381]"
         :activeClass="`${
-          item.hasChildren ? '' : 'bg-[#9FE870]'
-        }  !text-primary-500 block font-semibold`"
-        :class="openedlinks.includes(item.name) ? 'bg-[#9FE870]/20 text-primary-500' : ''"
+          item.hasChildren ? '' : 'bg-danger-100'
+        }  !text-danger-500 block font-semibold`"
+        :class="openedlinks.includes(item.name) ? 'bg-danger-100/20 text-danger-500' : ''"
       >
         <span
           class="flex items-center justify-between gap-x-[10px] flex-1 py-[10px]"
@@ -132,15 +132,15 @@
             <li v-for="child in item.children" :key="item.name">
               <NuxtLink
                 :to="child.url"
-                class="text-sm flex items-center px-[10px] font-medium hover:text-primary-500 rounded-lg text-[#637381]"
-                activeClass="!text-primary-500 block font-semibold"
+                class="text-sm flex items-center px-[10px] font-medium hover:text-danger-500 rounded-lg text-[#637381]"
+                activeClass="!text-danger-500 block font-semibold"
               >
                 <span class="flex items-center gap-x-2 flex-1 py-[6px]">
                   <span class="w-6 h-6 flex items-center justify-center">
                     <span
                       :class="
                         route.path === child.url
-                          ? 'w-2 h-2 rounded-full bg-[#9FE870]'
+                          ? 'w-2 h-2 rounded-full bg-danger-300'
                           : 'w-1 h-1 rounded-full bg-[#637381]'
                       "
                     ></span>

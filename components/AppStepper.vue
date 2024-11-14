@@ -17,7 +17,7 @@
           </button>
           <span
             :class="`${
-              currentStepIndex < index ? 'text-gray-200' : 'text-[#163300]'
+              currentStepIndex < index ? 'text-gray-200' : 'text-[#ED3237]'
             }`"
             >{{ step.label }}</span
           >

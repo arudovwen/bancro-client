@@ -9,7 +9,7 @@
             @click="isOpen = true"
             text="Add director"
             icon="solar:user-plus-broken"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
           />
         </div>
         <div class="rounded-[10px] border border-[#F4F7FE] bg-white mb-8">
@@ -52,7 +52,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Next"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold w-full"
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold w-full"
           />
         </div>
       </div>

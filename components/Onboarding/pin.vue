@@ -153,7 +153,7 @@
         <AppButton
           :disabled="isLoading"
           :isLoading="isLoading"
-          btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] w-full !rounded-lg font-semibold "
+          btnClass="text-white bg-danger-500 px-6 !py-[10px] w-full !rounded-lg font-semibold "
           type="submit"
           text=" Set PIN"
         />

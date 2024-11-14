@@ -9,7 +9,7 @@
       @click="active = tab.key"
       :class="`${buttonClass} capitalize text-xs md:text-sm font-semibold pb-3 border-b-2 px-1 flex items-center gap-x-1 ${
         active === tab.key
-          ? 'border-primary-500 text-primary-500'
+          ? 'border-danger-500 text-danger-500'
           : 'border-transparent text-[#667085]'
       } `"
     >

@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-[420px] w-full">
     <div
-    class="text-sm grid grid-cols-1 gap-4 border border-[#16330017] rounded-lg px-5 p-4 bg-[#1633000D]"
+    class="text-sm grid grid-cols-1 gap-4 border border-[#ED323717] rounded-lg px-5 p-4 bg-[#ED32370D]"
   >
     <span
       class="block border-b border-[#3440541A] last:border-none pb-2"

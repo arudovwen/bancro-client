@@ -8,7 +8,7 @@
           <AppButton
             @click="isOpen = true"
             text="Create tenant"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
           />
         </div>
         <div class="rounded-[10px] border border-[#F4F7FE] bg-white">

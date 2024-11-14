@@ -37,7 +37,7 @@
             @click="resendOTP"
             :disabled="isResending"
             type="button"
-            class="text-primary-500 font-semibold text-sm"
+            class="text-danger-500 font-semibold text-sm"
           >
             Resend OTP
           </button>
@@ -50,7 +50,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Verify code"
-            btnClass="text-primary-500 bg-[#9FE870] !py-3 !rounded-lg font-semibold"
+            btnClass="text-white bg-danger-500 !py-3 !rounded-lg font-semibold"
           />
         </div>
       </form>

@@ -9,8 +9,8 @@
       />
       <button
         id="create-product-button"
-        class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
-        @click="() => router.push('/products/create')"
+        class="flex items-center gap-x-2 bg-danger-500 text-white text-[14px]  rounded-lg py-[10px] px-[15px] font-medium"
+        @click="() => navigateTo('/products/create')"
       >
         <AppIcon icon="lets-icons:add-square-duotone" />
         <span>Fund account</span>

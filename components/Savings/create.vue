@@ -7,7 +7,7 @@
   </div>
   <div class="mb-6">
     <button
-      class="bg-none flex gap-x-2 items-center font-semibold text-[#163300]"
+      class="bg-none flex gap-x-2 items-center font-semibold text-[#ED3237]"
       @click="() => router.push('/accounts')"
     >
       <AppIcon icon="heroicons:arrow-small-left-20-solid" />

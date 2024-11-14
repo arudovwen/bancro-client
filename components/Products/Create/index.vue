@@ -104,7 +104,7 @@
                       setCurrentStepValue('kyc_and_documents');
                     }
                   "
-                  :classes="{ root: 'bg-[#9FE870] w-full' }"
+                  :classes="{ root: 'bg-danger-500 text-white w-full' }"
                 >
                   <span> Next </span>
                 </AppButtonV2>
@@ -151,7 +151,7 @@
                       setCurrentStepValue('fees');
                     }
                   "
-                  :classes="{ root: 'bg-[#9FE870] w-full' }"
+                  :classes="{ root: 'bg-danger-500 text-white w-full' }"
                 >
                   <span> Next </span>
                 </AppButtonV2>
@@ -198,7 +198,7 @@
                               <button
                                 :class="[
                                   active
-                                    ? 'bg-[#9FE870] text-[#163300]'
+                                    ? 'bg-daner-500 text-white '
                                     : 'text-gray-900',
                                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                 ]"
@@ -250,7 +250,7 @@
                       router.push('products');
                     }
                   "
-                  :classes="{ root: 'bg-[#9FE870] w-full' }"
+                  :classes="{ root: 'bg-danger-500 text-white w-full' }"
                 >
                   <span> Complete </span>
                 </AppButtonV2>
@@ -272,7 +272,7 @@
         createFeeDialog.close();
       },
       classes: {
-        root: 'border-2 border-black text-[#163300] flex-grow-1 !w-full',
+        root: 'border-2 border-black text-[#ED3237] flex-grow-1 !w-full',
       },
     }"
     :SecondaryActionProps="{
@@ -281,7 +281,7 @@
         createFeeDialog.close();
       },
       classes: {
-        root: 'bg-[#9FE870] text-[#163300] flex-grow-1 !w-full',
+        root: 'bg-daner-500 text-white  flex-grow-1 !w-full',
       },
     }"
   >

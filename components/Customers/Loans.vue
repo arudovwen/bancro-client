@@ -7,7 +7,7 @@
           iconPosition="left"
           text="Create customer"
           icon="solar:user-plus-broken"
-          btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold "
+          btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold "
         />
       </NuxtLink>
     </div>
@@ -92,7 +92,7 @@ const tabs = [
     title: "Abandoned Loans",
     count: "0",
     key: "overDueLoan",
-    className: "bg-[#9FE870] text-[#163300]",
+    className: "bg-daner-500 text-white ",
     icon: "lucide:users",
   },
 ];

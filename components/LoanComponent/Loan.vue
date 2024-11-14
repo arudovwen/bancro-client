@@ -11,7 +11,7 @@
         </p>
 
         <button @click="navigateTo(url)"
-            class="text-[#163300] text-[13px] font-semibold flex gap-x-4 items-center">Learn more
+            class="text-[#ED3237] text-[13px] font-semibold flex gap-x-4 items-center">Learn more
             <AppIcon icon="flowbite:angle-right-outline" />
         </button>
     </div>

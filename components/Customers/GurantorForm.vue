@@ -83,7 +83,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Save changes"
-            btnClass="text-primary-500 bg-[#9FE870] px-6 !py-[10px] !rounded-lg font-semibold w-full"
+            btnClass="text-white bg-danger-500 px-6 !py-[10px] !rounded-lg font-semibold w-full"
           />
         </div>
       </form>

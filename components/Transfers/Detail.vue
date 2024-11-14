@@ -38,12 +38,12 @@
     </div>
 
     <div
-      class="border border-[#16330017] bg-[#1633000D] py-6 px-5 rounded-xl grid gap-y-[10px] mb-8"
+      class="border border-[#ED323717] bg-[#ED32370D] py-6 px-5 rounded-xl grid gap-y-[10px] mb-8"
     >
       <div
         v-for="n in content"
         :key="n.title"
-        class="pb-[10px] border-b border-[#16330017]"
+        class="pb-[10px] border-b border-[#ED323717]"
       >
         <span class="text-[#667085] text-sm block">{{ n.title }}</span>
         <span class="text-[#344054] text-sm font-medium">{{ n.text }}</span>
@@ -72,7 +72,7 @@
        
         text="Download receipt"
         icon="hugeicons:cloud-download"
-        btnClass="text-primary bg-[#9FE870] border border-[#9FE870] !py-[10px] !rounded-lg font-semibold w-full"
+        btnClass="text-white bg-danger-500  border border-primary !py-[10px] !rounded-lg font-semibold w-full"
       />
     </div>
   </section>

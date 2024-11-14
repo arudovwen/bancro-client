@@ -24,7 +24,7 @@
     </div>
     <div v-if="canRepay" class="flex justify-end px-4 pt-3 mt-3 border-t border-[#ECF1F6]">
       <AppButton @click="emits('repayClick')" type="button" :isLoading="isLoading" text="Repay loan"
-        btnClass="text-primary bg-[#9FE870] !py-1 !px-4 !rounded min-w-[100px] font-semibold" :isDisabled="isLoading" />
+        btnClass="text-white bg-danger-500  !py-1 !px-4 !rounded min-w-[100px] font-semibold" :isDisabled="isLoading" />
 
     </div>
   </div>

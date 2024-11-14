@@ -5,7 +5,7 @@
       <div
         class="w-full lg:w-[80vw] max-h-[714px] grid grid-cols-1 lg:grid-cols-2 gap-x-10 lg:gap-x-20 max-w-[1200px] mx-auto"
       >
-        <div class="bg-[#163300A6] h-full w-full hidden lg:flex rounded-2xl">
+        <div class="bg-[#ED3237A6] h-full w-full hidden lg:flex rounded-2xl">
           <img
             :src="
              active === 'personal account'

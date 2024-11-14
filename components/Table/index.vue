@@ -43,7 +43,7 @@
           <button
             v-if="hasExport"
             id="create-product-button"
-            class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+            class="flex items-center gap-x-2 bg-danger-500 text-white text-[14px] rounded-lg py-[10px] px-[15px] font-medium"
           >
             <AppIcon icon="hugeicons:cloud-download" />
             <span>Export</span>
@@ -58,7 +58,7 @@
             @click="emits('filter-click')"
             v-if="hasFilterButton"
             id="create-product-button"
-            class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+            class="flex items-center gap-x-2 bg-danger-500 text-white text-[14px]  rounded-lg py-[10px] px-[15px] font-medium"
           >
             <AppIcon icon="fluent:filter-28-filled" />
             <span>Filter</span>

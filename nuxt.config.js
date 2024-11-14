@@ -70,24 +70,24 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: " Bancro",
+      title: " Cowry",
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1 ",
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Bancro ",
+          content: "Cowry ",
         },
         {
           hid: "og:title",
           property: "og:title",
-          content: "Bancro",
+          content: "Cowry",
         },
         {
           hid: "og:description",
           property: "og:description",
-          content: "Bancro ",
+          content: "Cowry ",
         },
         {
           hid: "og:image",
@@ -103,12 +103,12 @@ export default defineNuxtConfig({
         {
           hid: "twitter:title",
           name: "twitter:title",
-          content: "Bancro",
+          content: "Cowry",
         },
         {
           hid: "twitter:description",
           name: "twitter:description",
-          content: "Bancro ",
+          content: "Cowry ",
         },
         {
           hid: "twitter:image",
@@ -117,7 +117,7 @@ export default defineNuxtConfig({
         }, // Add Twitter image URL
         {
           name: "keywords",
-          content: "Bancro",
+          content: "Cowry",
         }, // Add relevant keywords
         { name: "author", content: "Success Ahon" }, // Add author information
         { name: "robots", content: "index, follow" }, // Control search engine indexing

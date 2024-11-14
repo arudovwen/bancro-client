@@ -87,7 +87,7 @@
           type="submit"
           :isLoading="isLoading"
           text="Create account"
-          btnClass="text-primary bg-[#9FE870] !py-3 !rounded-lg font-semibold "
+          btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold "
           :isDisabled="isLoading"
         />
       </div>
@@ -97,7 +97,7 @@
         Already have an account?
         <span
           @click="() => router.push('/auth/login')"
-          class="cursor-pointer font-semibold text-primary-500"
+          class="cursor-pointer font-semibold text-danger-500"
           >Login</span
         >
       </span>
@@ -110,7 +110,7 @@ definePageMeta({
   middleware: "auth",
 });
 useHead({
-  title: "Register | Bancro",
+  title: "Register | Cowry",
 });
 import { useForm } from "vee-validate";
 import * as yup from "yup";

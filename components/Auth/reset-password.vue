@@ -38,7 +38,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Reset password"
-            btnClass="text-primary-500 bg-[#9FE870] !py-3 !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500 !py-3 !rounded-lg font-semibold "
           />
         </div>
       </form>
@@ -57,7 +57,7 @@ import { toast } from "vue3-toastify";
 import { resetPassword } from "~/services/authservices";
 
 useHead({
-  title: "Reset Password | Bancro",
+  title: "Reset Password | Cowry",
 });
 
 const isLoading = ref(false);
