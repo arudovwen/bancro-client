@@ -60,8 +60,11 @@
     <div>
       <AppTab :tabs="tabs" buttonClass="" />
       <div>
-        <SavingsActive />
+        <div v-if="active === 'active'">
+          <SavingsActive />
         <SavingsTypes />
+        </div>
+        <SavingsHistory v-if="active === 'completed'" />
       </div>
     </div>
   </section>
@@ -73,7 +76,7 @@ const data = ref([
   {
     label: "Total Savings",
     icon: "investment",
-    balance: 38474747,
+    balance: 0,
     rightBottom: "No active loan",
     leftBottom: "June 24, 2024",
     canCopy: false,

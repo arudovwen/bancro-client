@@ -1,11 +1,11 @@
 <template>
-    <div class="grid grid-cols-3 gap-y-9 gap-x-[30px]" v-if="!financeData.length">
+    <div class="grid grid-cols-3 gap-y-9 gap-x-[30px]" v-if="financeData.length">
         <div @click="navigateTo('/loans/detail/1')" v-for="(n, id) in 4" :key="id">
             <ActiveLoan :detail="n" />
         </div>
     </div>
 
-    <div v-else>
+    <div v-else class="bg-white rounded-lg border border-[#DFE5EC]">
         <EmptyData type="active" title="No active loans" />
     </div>
  
