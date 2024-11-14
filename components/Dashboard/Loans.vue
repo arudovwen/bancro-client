@@ -9,7 +9,7 @@
         class="text-center flex flex-col gap-y-1 capitalize"
       >
         <span
-          class="h-14 w-14 rounded-full flex items-center justify-center bg-primary-100"
+          class="h-14 w-14 rounded-full flex items-center justify-center bg-danger-50"
         >
           <SvgBuy v-if="n.icon === 'buy'" /> <SvgPay  v-if="n.icon === 'pay'"  /> <SvgSend  v-if="n.icon === 'send'"  /> <SvgPlus   v-if="n.icon === 'add'" />
         </span>
