@@ -16,7 +16,7 @@
         <span>Fund account</span>
       </button>
     </div>
-    <!-- <AppTab :tabs="tabs" /> -->
+  
     <div class="flex flex-col lg:flex-row gap-5 mb-10">
       <div class="lg:max-w-[330px] w-full">
         <DashboardCards />
