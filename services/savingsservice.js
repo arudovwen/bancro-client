@@ -18,6 +18,10 @@ export const getSavingsAccountByUserid = (id) => {
   return get(`${urls.SAVINGS_ACCOUNT}/accounts/${id}`, config);
 };
 
+export const getSavingsAccountClientByUserid = (id) => {
+  return get(`${urls.SAVINGS_ACCOUNT}/clients/${id}`, config);
+};
+
 
 export const getBanks = () => {
   return get(`${urls.GET_BANKS}`, config);
