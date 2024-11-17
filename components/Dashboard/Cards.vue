@@ -17,7 +17,7 @@
           <div>
             <span class="block text-xs mb-1">{{ n.label }}</span>
             <span class="flex gap-x-3 items-center text-xl"
-              ><span class="font-semibold">{{ currencyFormat(n.balance) }}</span
+              ><span class="font-semibold">{{ n.balance }}</span
               ><span v-if="n.canHide"
                 ><AppIcon icon="solar:eye-bold-duotone" /></span
             ></span>
@@ -44,7 +44,10 @@
 </template>
 <script setup>
 import { toast } from "vue3-toastify";
-import { getSavingsAccountByUserid } from "~/services/savingsservice";
+import {
+  getSavingsAccountByUserid,
+  getSavingsAccountClientByUserid,
+} from "~/services/savingsservice";
 
 const accountNo = ref(null);
 const authStore = useAuthStore();
@@ -82,10 +85,11 @@ const data = ref([
 ]);
 function handleCopy() {
   navigator.clipboard.writeText(accountNo.value);
-  toast.info("Copied to clipboard!")
+  toast.info("Copied to clipboard!");
 }
 async function getData() {
   const response = await getSavingsAccountByUserid(authStore.userId);
+  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
   if (response.status === 200) {
     const { issuer, savingsAccountNo, firstName, lastName } =
       response.data.data;
@@ -94,6 +98,19 @@ async function getData() {
       if (index === 0) {
         item.rightBottom = `${issuer || "Wema Bank"} - ${savingsAccountNo}`;
         item.leftBottom = `${ucFirst(firstName)}  ${ucFirst(lastName)}`;
+      }
+      return item;
+    });
+  }
+  if (response1.status === 200) {
+    const data1 = response1.data.data.savingsAccounts[0];
+    console.log("🚀 ~ getData ~ data1:", data1);
+    data.value = data.value.map((item, index) => {
+      if (index === 0) {
+        item.balance = currencyFormat(
+          data1.accountBalance,
+          data1.currency.code
+        );
       }
       return item;
     });
