@@ -37,6 +37,7 @@ const urls = {
   // Transactions urls
   GET_TRANSACTION_BY_ID: (id) => `/transactions/${id}`,
   GET_ALL_TRANSACTIONS: "/transactions/transactions",
+  GET_ALL_TRANSACTIONS_SAVING: "/transactions/savings",
   GET_BANKS: "/transactions/banks",
   VALIDATE_ACCOUNT: "/transactions/account/validate",
   TRANSFER: "/transactions/transfer",

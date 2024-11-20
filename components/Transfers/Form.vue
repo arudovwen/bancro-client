@@ -106,7 +106,10 @@
           </FormGroup>
           <span
             class="absolute top-0 right-0 text-[11px] border-[#ABEFC6] border text-[#067647] rounded-[6px] px-[6px] py-[1px] bg-[#ECFDF3]"
-            >Balance: <span class="font-medium">NGN1,200,000</span></span
+            >Balance:
+            <span class="font-medium">{{
+              currencyFormat(authStore.savingsInfo?.accountBalance)
+            }}</span></span
           >
         </div>
         <div>
@@ -149,7 +152,7 @@ import { toast } from "vue3-toastify";
 const active = inject("active");
 const isFetching = ref(false);
 const isOpen = inject("isOpen");
-
+const authStore = useAuthStore();
 const banks = ref([]);
 const isLoading = ref(false);
 
@@ -159,7 +162,11 @@ const schema = yup.object().shape({
   amount: yup
     .number()
     .required("Amount is required")
-    .min(1, "Amount must be greater than 0"),
+    .min(1, "Amount must be greater than 0")
+    .max(
+      authStore.savingsInfo?.accountBalance,
+      `Max amount is ${authStore.savingsInfo?.accountBalance}`
+    ),
 
   recipientAccountNumber: yup
     .string()
@@ -188,6 +195,7 @@ const schema = yup.object().shape({
   shouldSaveBeneficiary: yup
     .boolean()
     .required("Indicate if beneficiary should be saved"),
+
 });
 
 const {

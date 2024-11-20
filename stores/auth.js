@@ -4,6 +4,7 @@ export const useAuthStore = defineStore(
   "auth",
   () => {
     const loggedUser = ref("");
+    const savingsInfo = ref("");
     const isPinSet = ref(false);
     const isBVNSet = ref(false);
     const isLoggedIn = computed(() => !!loggedUser.value);
@@ -25,6 +26,10 @@ export const useAuthStore = defineStore(
       loggedUser.value = data;
       setPin(!!data?.pin);
       setBVN(!!data?.bvn);
+    }
+    
+    function setSavingsInfo(data) {
+      savingsInfo.value = data;
     }
 
     function setAccessToken(value) {
@@ -83,6 +88,8 @@ export const useAuthStore = defineStore(
       setPin,
       isBVNSet,
       setBVN,
+      setSavingsInfo,
+      savingsInfo,
     };
   },
   {

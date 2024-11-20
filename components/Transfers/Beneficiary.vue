@@ -19,12 +19,14 @@
         class="border-b border-[#21231D1A] last:border-none p-4 rounded-lg flex justify-between"
         v-for="n in filteredUsers"
         :key="n.id"
-        @click="
-          emit('getValue', n);
-          selected = n;
-        "
       >
-        <span class="flex items-center gap-x-4">
+        <span
+          class="flex items-center gap-x-4 cursor-pointer"
+          @click="
+            emit('getValue', n);
+            selected = n;
+          "
+        >
           <SvgBeneficiary />
           <span class="block">
             <span
@@ -36,11 +38,13 @@
             >
           </span>
         </span>
-        <span
+        <button
+          type="button"
           @click="removeBeneficiary(n.id)"
-          class="text-sm text-[#344054] font-semibold block leading-normal"
-          ><SvgTrash
-        /></span>
+          class="text-sm text-[#344054] font-semibold block leading-normal outline-none"
+        >
+          <SvgTrash />
+        </button>
       </div>
 
       <div
@@ -55,6 +59,7 @@
 </template>
 
 <script setup>
+import { toast } from "vue3-toastify";
 import {
   getBeneficiaries,
   deleteBeneficiary,
@@ -85,10 +90,13 @@ const filteredUsers = computed(() =>
 );
 
 async function removeBeneficiary(id) {
-  const response = await deleteBeneficiary({ id });
-  if (response.status === 200) {
-    getData();
-  }
+  try {
+    const response = await deleteBeneficiary({ id });
+    if (response.status === 200) {
+      getData();
+      toast.success("Benefuciary deleted");
+    }
+  } catch (err) {}
 }
 onMounted(() => {
   getData();

@@ -21,10 +21,32 @@
   <AppLogout v-if="isSigniningOut" />
 </template>
 <script setup>
+import {
+  getSavingsAccountByUserid,
+  getSavingsAccountClientByUserid,
+} from "~/services/savingsservice";
+
 definePageMeta({ middleware: ["auth", "onboarding"] });
 
+const authStore = useAuthStore();
 const route = useRoute();
 const isSigniningOut = ref(false);
+async function getData() {
+  const response = await getSavingsAccountByUserid(authStore.userId);
+  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
+  if (response.status === 200) {
+    console.log("🚀 ~ getData ~ response.data.data:", response.data.data);
+  }
 
+  if (response1.status === 200) {
+    const data1 = response1.data.data.savingsAccounts[0];
+    console.log("🚀 ~ getData ~ data1:", data1);
+    authStore.setSavingsInfo(data1);
+  }
+}
+
+onMounted(() => {
+  getData();
+});
 provide("isSigniningOut", isSigniningOut);
 </script>
