@@ -8,7 +8,6 @@
     </p>
 
     <div v-if="rows.length && !isLoading" class="grid grid-cols-1 gap-y-[10px]">
-
       <div
         class="border border-[#21231D1A] bg-[#A0E1E11A] p-4 rounded-lg flex justify-between"
         v-for="n in rows"
@@ -19,7 +18,7 @@
           <span class="block">
             <span
               class="text-sm text-[#344054] font-medium block leading-normal"
-              >{{n.beneficiary}}</span
+              >{{ n.beneficiary }}</span
             >
             <span class="text-sm text-[#98A2B3] block leading-normal"
               >0731082157 - Access Bank</span
@@ -50,6 +49,7 @@ const query = reactive({
   PageNumber: 1,
   pagecount: 5,
   totalCount: 0,
+  Limit: 5,
 });
 const rows = ref([]);
 
@@ -58,7 +58,7 @@ async function getData() {
     isLoading.value = true;
     const response = await getTransactions(query);
     if (response.status === 200) {
-      rows.value = response.data.data.content.slice(0, 5).map((i) => ({
+      rows.value = response.data.data.content.map((i) => ({
         beneficiary: "Success Ahon",
         amount: currencyFormat(i.amount, i.currency.code),
         paymentMethod: "Bank transfer",

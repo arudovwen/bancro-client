@@ -93,7 +93,7 @@ const isLoading = ref(true);
 const router = useRouter();
 const query = reactive({
   savingsId: useAuthStore().savingsInfo.id,
-  PageSize: 20,
+  PageSize: 10,
   PageNumber: 1,
   pagecount: 10,
   totalCount: 0,
@@ -161,8 +161,8 @@ async function getData() {
     isLoading.value = true;
     const response = await getTransactions({
       ...query,
-      offset: query.PageNumber,
-      limit: query.PageSize,
+      // Offset: query.PageNumber,
+      Limit: query.PageSize,
     });
     if (response.status === 200) {
       rows.value = response.data.data.content.map((i) => ({
