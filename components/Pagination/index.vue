@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="totalPages"
-    class="text-sm flex !justify-end gap-x-6 items-center relative z-[999] text-[#212B36]"
+    class="text-sm flex !justify-end gap-x-6 items-center relative z-[999] text-[#212B36] py-2"
     :class="wrapperClass"
   >
     <div class="flex gap-x-4">

@@ -95,6 +95,11 @@ const [password, passwordAtt] = defineField("password");
 const route = useRoute();
 const router = useRouter();
 
+onMounted(() => {
+  if (route.query.email) {
+    active.value = 2;
+  }
+});
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
   formValues.username = values.username;
@@ -108,7 +113,10 @@ const onSubmit = handleSubmit((values) => {
         }
 
         toast.info("Verify Login Request");
-
+        router.replace({
+          path: route.path,
+          query: { email: values.username },
+        });
         active.value = 2;
       }
     })
@@ -123,7 +131,9 @@ const onSubmit = handleSubmit((values) => {
       if (
         (
           err?.response?.data?.message || err?.response?.data?.Message
-        )?.includes("You are yet to confirm your mail, ensure you confirm mail before you sign int")
+        )?.includes(
+          "You are yet to confirm your mail, ensure you confirm mail before you sign int"
+        )
       ) {
         router.push(
           `/auth/email-verification/${encodeURIComponent(values.username)}`

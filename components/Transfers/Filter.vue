@@ -1,8 +1,10 @@
 <template>
   <form @submit.prevent="onSubmit" class="p-2 w-[410px]">
-    <legend class="text-xl font-semibold mb-6 block text-[#344054] ">
+    <legend class="text-xl font-semibold mb-6 block text-[#344054]">
       Filter
     </legend>
+
+    <!-- Start Date -->
     <div class="mb-5 w-full">
       <Textinput
         placeholder=""
@@ -13,6 +15,8 @@
         :error="errors.startDate"
       />
     </div>
+
+    <!-- End Date -->
     <div class="mb-8 w-full">
       <Textinput
         placeholder=""
@@ -23,51 +27,70 @@
         :error="errors.endDate"
       />
     </div>
+
+    <!-- Beneficiary Bank -->
     <div class="mb-5 w-full">
       <Textinput
         placeholder=""
         label="Beneficiary bank"
-        name="startDate"
-        v-bind="startDateAtt"
-        v-model="startDate"
-        :error="errors.startDate"
+        name="beneficiaryBank"
+        v-bind="beneficiaryBankAtt"
+        v-model="beneficiaryBank"
+        :error="errors.beneficiaryBank"
       />
     </div>
+    <div class="flex mb-5 w-full gap-x-8 input">
+      <Checkbox label="Debit" labelClass="text-xs md:text-sm" v-model="debit" :checked="debit" />
+
+      <Checkbox
+        label="Credit"
+        labelClass="text-xs md:text-sm"
+        v-model="credit"
+        :checked="credit"
+      />
+    </div>
+
+    <!-- Transaction Reference -->
     <div class="mb-8 w-full">
       <Textinput
         placeholder=""
         label="Transaction reference"
-        name="endDate"
-        v-bind="endDateAtt"
-        v-model="endDate"
-        :error="errors.endDate"
+        name="transactionReference"
+        v-bind="transactionReferenceAtt"
+        v-model="transactionReference"
+        :error="errors.transactionReference"
       />
     </div>
+
+    <!-- Beneficiary Account Number -->
     <div class="mb-5 w-full">
       <Textinput
         placeholder=""
         label="Beneficiary account number"
-        name="startDate"
-        v-bind="startDateAtt"
-        v-model="startDate"
-        :error="errors.startDate"
+        name="beneficiaryAccountNumber"
+        v-bind="beneficiaryAccountNumberAtt"
+        v-model="beneficiaryAccountNumber"
+        :error="errors.beneficiaryAccountNumber"
       />
     </div>
+
+    <!-- Amount -->
     <div class="mb-8 w-full">
       <Textinput
         placeholder=""
         label="Amount"
-        name="endDate"
-        v-bind="endDateAtt"
-        v-model="endDate"
-        :error="errors.endDate"
+        name="amount"
+        v-bind="amountAtt"
+        v-model="amount"
+        :error="errors.amount"
       />
     </div>
 
+    <!-- Buttons -->
     <div class="flex gap-x-4">
       <AppButton
         type="button"
-        @click="isOpen=false"
+        @click="isOpen = false"
         :isLoading="isLoading"
         :isDisabled="isLoading"
         text="Clear"
@@ -83,23 +106,41 @@
     </div>
   </form>
 </template>
+
 <script setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
+// Injection of values from parent context
 const showing = inject("showing");
 const isOpen = inject("isOpen");
 const isLoading = ref(false);
+const emits = defineEmits(["apply"]);
+// Define form values
 const formValues = {
   startDate: "",
   endDate: "",
+  beneficiaryBank: "",
+  transactionReference: "",
+  beneficiaryAccountNumber: "",
+  amount: null,
+  credit: true,
+  debit: true,
 };
 
+// Yup validation schema
 const schema = yup.object({
-  startDate: yup.string().required("Start date is required"),
-  endDate: yup.string().required("End date is required"),
+  startDate: yup.string(),
+  endDate: yup.string(),
+  beneficiaryBank: yup.string(),
+  transactionReference: yup.string(),
+  beneficiaryAccountNumber: yup.string(),
+  credit: yup.boolean(),
+  debit: yup.boolean(),
+  amount: yup.number().positive("Amount must be positive").nullable(),
 });
 
+// Define fields
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: schema,
   initialValues: formValues,
@@ -107,9 +148,20 @@ const { handleSubmit, defineField, errors } = useForm({
 
 const [startDate, startDateAtt] = defineField("startDate");
 const [endDate, endDateAtt] = defineField("endDate");
+const [beneficiaryBank, beneficiaryBankAtt] = defineField("beneficiaryBank");
+const [transactionReference, transactionReferenceAtt] = defineField(
+  "transactionReference"
+);
+const [beneficiaryAccountNumber, beneficiaryAccountNumberAtt] = defineField(
+  "beneficiaryAccountNumber"
+);
+const [amount, amountAtt] = defineField("amount");
+const [debit, debitAtt] = defineField("debit");
+const [credit, creditAtt] = defineField("credit");
 
+// Handle form submission
 const onSubmit = handleSubmit((values) => {
   console.log("🚀 ~ onSubmit ~ values:", values);
-  showing.value = 2;
+  emits("apply", values);
 });
 </script>

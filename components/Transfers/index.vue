@@ -65,7 +65,7 @@
   >
     <template #default>
       <div class="p-6 rounded-xl">
-        <TransfersFilter />
+        <TransfersFilter @apply="handleFilter" />
       </div>
     </template>
   </ModalCenter>
@@ -155,13 +155,16 @@ function openDetail(value) {
   detail.value = value;
   isDetail.value = true;
 }
-
+function handleFilter(value){
+  console.log("🚀 ~ handleFilter ~ value:", value)
+  
+}
 async function getData() {
   try {
     isLoading.value = true;
     const response = await getTransactions({
       ...query,
-      // Offset: query.PageNumber,
+      Offset: query.PageNumber - 1,
       Limit: query.PageSize,
     });
     if (response.status === 200) {

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="totalPages"
-    class="flex justify-between items-center relative z-[999]"
+    class="flex justify-between items-center relative z-[999] py-2"
     :class="wrapperClass"
   >
     <span class="text-xs md:text-sm text-[#454745]">

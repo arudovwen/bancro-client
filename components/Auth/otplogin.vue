@@ -126,9 +126,10 @@ const onSubmit = handleSubmit((values) => {
 
 function resendOTP() {
   if (countdown.value === 0) {
-    resend2FA({ email: route.params.email }).then((res) => {
+    resend2FA({ email: route.query.email }).then((res) => {
       if (res.status === 200) {
         // Start the countdown
+        toast.info("OTP sent , check your email")
         countdown.value = 60;
         isResending.value = true;
         const interval = setInterval(() => {
