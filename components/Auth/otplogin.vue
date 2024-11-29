@@ -73,10 +73,11 @@ import VOtpInput from "vue3-otp-input";
 const route = useRoute();
 const authStore = useAuthStore();
 const formValues = inject("formValues");
+console.log("🚀 ~ formValues:", formValues);
 const active = inject("active");
 const form = reactive({
   otpToken: "",
-  username: formValues.username,
+  username: formValues.username || route.query.email,
 });
 
 const schema = yup.object({
@@ -89,7 +90,10 @@ const schema = yup.object({
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: schema,
-  initialValues: { ...form, username: formValues.username },
+  initialValues: {
+    ...form,
+    username: formValues.username || route.query.email,
+  },
 });
 
 const [otpToken] = defineField("otpToken");
@@ -126,21 +130,23 @@ const onSubmit = handleSubmit((values) => {
 
 function resendOTP() {
   if (countdown.value === 0) {
-    resend2FA({ email: route.query.email }).then((res) => {
-      if (res.status === 200) {
-        // Start the countdown
-        toast.info("OTP sent , check your email")
-        countdown.value = 60;
-        isResending.value = true;
-        const interval = setInterval(() => {
-          countdown.value--;
-          if (countdown.value <= 0) {
-            clearInterval(interval);
-            isResending.value = false;
-          }
-        }, 1000);
+    resend2FA({ email: formValues.username || route.query.email }).then(
+      (res) => {
+        if (res.status === 200) {
+          // Start the countdown
+          toast.info("OTP sent , check your email");
+          countdown.value = 60;
+          isResending.value = true;
+          const interval = setInterval(() => {
+            countdown.value--;
+            if (countdown.value <= 0) {
+              clearInterval(interval);
+              isResending.value = false;
+            }
+          }, 1000);
+        }
       }
-    });
+    );
   }
 }
 </script>
