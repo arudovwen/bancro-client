@@ -95,11 +95,6 @@ const [password, passwordAtt] = defineField("password");
 const route = useRoute();
 const router = useRouter();
 
-onMounted(() => {
-  if (route.query.email) {
-    active.value = 2;
-  }
-});
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
   formValues.username = values.username;
