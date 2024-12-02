@@ -21,7 +21,7 @@
               >{{ n.beneficiary }}</span
             >
             <span class="text-sm text-[#98A2B3] block leading-normal"
-              >{{n.transaction.accountNumber}} - Access Bank</span
+              >{{n.transaction?.accountNumber}} - Access Bank</span
             >
           </span>
         </span>
@@ -50,6 +50,7 @@ const query = reactive({
   pagecount: 5,
   totalCount: 0,
   Limit: 5,
+  userId: authStore.userId,
 });
 const rows = ref([]);
 const TransType = {
@@ -63,6 +64,7 @@ async function getData() {
     const response = await getTransactions(query);
     if (response.status === 200) {
       rows.value = response.data.data.map((i) => ({
+        ...i,
         beneficiary: i.transaction.customerName,
         amount: currencyFormat(i.transaction.amount),
         paymentMethod: i.paymentMethod,
