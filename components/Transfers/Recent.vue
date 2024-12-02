@@ -21,7 +21,7 @@
               >{{ n.beneficiary }}</span
             >
             <span class="text-sm text-[#98A2B3] block leading-normal"
-              >0731082157 - Access Bank</span
+              >{{n.transaction.accountNumber}} - Access Bank</span
             >
           </span>
         </span>
@@ -52,19 +52,25 @@ const query = reactive({
   Limit: 5,
 });
 const rows = ref([]);
-
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
 async function getData() {
   try {
     isLoading.value = true;
     const response = await getTransactions(query);
     if (response.status === 200) {
-      rows.value = response.data.data.content.map((i) => ({
-        beneficiary: "Success Ahon",
-        amount: currencyFormat(i.amount, i.currency.code),
-        paymentMethod: "Bank transfer",
-        date: moment(`${i.date[0]}-${i.date[1]}-${i.date[2]}`).format("lll"),
-        transactionType: i.entryType,
-        status: 0,
+      rows.value = response.data.data.map((i) => ({
+        beneficiary: i.transaction.customerName,
+        amount: currencyFormat(i.transaction.amount),
+        paymentMethod: i.paymentMethod,
+        date: moment(i.createdAt).format("lll"),
+        transactionType: TransType[i.transaction?.actionType],
+        status: i.status,
+        note: i.transaction.note,
+      
       }));
     }
   } finally {

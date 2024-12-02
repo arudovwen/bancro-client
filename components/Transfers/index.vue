@@ -73,7 +73,7 @@
   <ModalSide :isOpen="isDetail" @togglePopup="isDetail = false" v-if="isDetail">
     <template #content>
       <div class="h-full bg-white rounded-lg py-6">
-        <TransfersDetail />
+        <TransfersDetail :detail="detail" />
       </div>
     </template>
   </ModalSide>
@@ -155,10 +155,20 @@ function openDetail(value) {
   detail.value = value;
   isDetail.value = true;
 }
-function handleFilter(value){
-  console.log("🚀 ~ handleFilter ~ value:", value)
-  
+function handleFilter(value) {
+  console.log("🚀 ~ handleFilter ~ value:", value);
 }
+const authStore = useAuthStore();
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
+const StatusType = {
+  0: "Pending",
+  1: "Successful",
+  2: "Failed",
+};
 async function getData() {
   try {
     isLoading.value = true;
@@ -166,15 +176,23 @@ async function getData() {
       ...query,
       Offset: query.PageNumber - 1,
       Limit: query.PageSize,
+      userId: authStore.userId,
     });
     if (response.status === 200) {
-      rows.value = response.data.data.content.map((i) => ({
-        beneficiary: "Success Ahon",
-        amount: currencyFormat(i.amount, i.currency.code),
-        paymentMethod: "Bank transfer",
-        date: moment(`${i.date[0]}-${i.date[1]}-${i.date[2]}`).format("lll"),
-        transactionType: i.entryType,
-        status: 0,
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        beneficiary: i.transaction.customerName,
+        amount: currencyFormat(i.transaction.amount),
+        paymentMethod: i.paymentMethod,
+        date: moment(i.createdAt).format("lll"),
+        transactionType: TransType[i.transaction?.actionType],
+        status: i.status,
+        statusInfo: StatusType[i.status],
+        note: i.transaction.note,
+        initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
+        dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
+        reference: i.transaction.transactionId,
+        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`
       }));
       query.totalCount = response.data.data.total;
     }

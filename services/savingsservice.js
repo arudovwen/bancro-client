@@ -38,10 +38,20 @@ export const completeTransfer = (data) => {
   return post(`${urls.TRANSFER}`, data, config);
 };
 
-export const getTransactions = (data) => {
+export const getSavingsTransactions = (data) => {
   return get(
     `${urls.GET_ALL_TRANSACTIONS_SAVING}/${
       data.savingsId
+    }?${new URLSearchParams(data)}`,
+    config
+  );
+};
+
+
+export const getTransactions = (data) => {
+  return get(
+    `${urls.GET_TRANSACTIONSS}/${
+      data.userId
     }?${new URLSearchParams(data)}`,
     config
   );
