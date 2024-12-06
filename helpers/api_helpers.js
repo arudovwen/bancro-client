@@ -19,7 +19,7 @@ axiosApi.interceptors.request.use(
     }
     config.headers.Accept = "application/json";
     config.headers.apiKey = runtimeConfig.public.PUBLIC_KEY
-    config.headers.tenantId = runtimeConfig.public.TENANT_ID
+    config.headers.tenantId = "BC142818" || runtimeConfig.public.TENANT_ID
     return config;
   },
   (error) => {

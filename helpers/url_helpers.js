@@ -22,6 +22,9 @@ const urls = {
 
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",
+  LOAN_REQUESTS: "/loan/loan-requests",
+  LOAN_REQUIREMENTS: "/loan/loan-requirements",
+  LOAN_OTHER_INFORMATION: "/loan/loan-other-information",
 
   // Onboarding urls
   SIGN_UP_USER: "/onboarding/sign-up-user",
@@ -69,5 +72,7 @@ const urls = {
 
   // Beneficiary
   BENEFICIARY: "/Beneficiary",
+
+  GET_LOAN_PRODUCTS: ""
 };
 export default urls;

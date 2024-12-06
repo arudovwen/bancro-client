@@ -14,7 +14,7 @@
           v-for="n in rows"
           :key="n"
         >
-          <Loan :title="n.name" :body="n.body" :url="n.url" />
+          <Loan :title="n.name" :body="n.description" :url="n.url" />
         </div>
       </div>
       <LoaderPageLoader v-else />
