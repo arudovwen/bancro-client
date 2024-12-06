@@ -44,13 +44,15 @@
 <script setup>
 import { Float } from "@headlessui-float/vue";
 import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import moment from "moment";
+import { getLoanRequests } from "~/services/loanservice";
 
 const isOpen = ref(false);
 const detail = ref(null);
 const columns = [
   {
     header: "Loan type",
-    key: "date",
+    key: "name",
     isHtml: false,
     isStatus: false,
   },
@@ -71,11 +73,16 @@ const columns = [
 
   {
     header: "Tenor",
-    key: "channel",
+    key: "tenor",
     isHtml: false,
     isStatus: false,
   },
-
+  {
+    header: "createdAt",
+    key: "createdAt",
+    isHtml: false,
+    isStatus: true,
+  },
   {
     header: "Status",
     key: "status",
@@ -89,7 +96,12 @@ const columns = [
     isStatus: true,
   },
 ];
-
+const queryParams = reactive({
+  Search: "",
+  SortOrder: "",
+  PageNumber: 1,
+  PageSize: 10,
+});
 const rows = ref([]);
 
 function handleReview(value) {
@@ -97,5 +109,19 @@ function handleReview(value) {
   detail.vlaue = value;
 }
 
-provide("isOpen", isOpen)
+async function getData() {
+  const response = await getLoanRequests(queryParams);
+  if (response.status === 200) {
+    rows.value = response.data.data.map((i) => ({
+      ...i,
+      amount: currencyFormat(i.amount),
+      tenor: i.tenor ? `${i.tenor} days` : "-",
+      createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+    }));
+  }
+}
+onMounted(() => {
+  getData();
+});
+provide("isOpen", isOpen);
 </script>

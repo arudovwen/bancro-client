@@ -27,7 +27,6 @@
         <div class="mb-3 mt-4 flex justify-end gap-x-4">
           <AppButton
             type="button"
-            :isLoading="isLoading"
             @click="activeForm--"
             text="Back"
             btnClass="text-primary bg-white border !py-[10px] px-20 min-w-[156px] !rounded-lg font-semibold"
@@ -44,7 +43,7 @@
       </div>
     </div>
   </form>
-  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false">
+  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false"  :canClose="false">
     <template #default>
       <div class="p-6 rounded-xl">
         <TransactionsStatus
@@ -105,8 +104,8 @@ const formData = computed(() => ({
 async function handleSubmit() {
   try {
     isLoading.value = true
-    const response = await postLoanRequest(formData.value);
-    if (response === 200) {
+    const response = await postLoanRequest({...formData.value, productId: formValues.value?.productId.toString()});
+    if (response.status === 200) {
       isOpen.value = true;
     }
   } catch (error) {
