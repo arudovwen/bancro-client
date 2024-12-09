@@ -7,6 +7,9 @@
       title="Loan Requests"
     >
       <template #table-row="{ row, column }">
+        <span class="flex gap-x-2 items-center" v-if="column.key === 'status'">
+        <AppStatusButton stattype="loan-status" :status="row.status" />
+        </span>
         <span class="flex gap-x-2 items-center" v-if="column.key === 'action'">
           <Menu class="" as="div">
             <Float placement="bottom-end" :offset="4">
@@ -29,6 +32,7 @@
             </Float>
           </Menu>
         </span>
+       
       </template>
     </Table>
   </div>
@@ -51,8 +55,8 @@ const isOpen = ref(false);
 const detail = ref(null);
 const columns = [
   {
-    header: "Loan type",
-    key: "name",
+    header: "Loan name",
+    key: "loanName",
     isHtml: false,
     isStatus: false,
   },
@@ -92,8 +96,8 @@ const columns = [
   {
     header: "",
     key: "action",
-    isHtml: false,
-    isStatus: true,
+    isHtml: true,
+    isStatus: false,
   },
 ];
 const queryParams = reactive({
@@ -106,7 +110,7 @@ const rows = ref([]);
 
 function handleReview(value) {
   isOpen.value = true;
-  detail.vlaue = value;
+  detail.value = value;
 }
 
 async function getData() {

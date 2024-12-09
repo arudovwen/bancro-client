@@ -98,6 +98,7 @@ const isLoading = ref(false)
 const formData = computed(() => ({
   ...formValues.one,
   documents:formValues.documents,
+  others:formValues.others,
   tempAmount: currencyFormat(formValues.one.amount),
   ...detail.value,
 }));

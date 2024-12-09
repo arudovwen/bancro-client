@@ -3,11 +3,14 @@
     <Table
       :columns="columns"
       :rows="rows"
-      :hasExport="false"
+      :hasFilter="true"
       title="Past Loans"
     >
       <template #table-row="{ row, column }">
-        <span class="flex gap-x-2 items-center" v-if="column.key === 'actions'">
+        <span class="flex gap-x-2 items-center" v-if="column.key === 'status'">
+        <AppStatusButton stattype="loan-status" :status="row.status" />
+        </span>
+        <span class="flex gap-x-2 items-center" v-if="column.key === 'action'">
           <Menu class="" as="div">
             <Float placement="bottom-end" :offset="4">
               <MenuButton class="outline-none">
@@ -29,13 +32,14 @@
             </Float>
           </Menu>
         </span>
+       
       </template>
     </Table>
   </div>
   <ModalCenter :isOpen="isOpen" @togglePopup="isOpen = false" v-if="isOpen">
     <template #default>
       <div class="h-full w-full bg-white rounded-lg p-6">
-        <!-- <RepayLoan :detail="detail" /> -->
+        <LoanComponentLoanReview :detail="detail" />
       </div>
     </template>
   </ModalCenter>
@@ -44,13 +48,15 @@
 <script setup>
 import { Float } from "@headlessui-float/vue";
 import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import moment from "moment";
+import { getLoanRequests } from "~/services/loanservice";
 
 const isOpen = ref(false);
 const detail = ref(null);
 const columns = [
   {
-    header: "Loan type",
-    key: "date",
+    header: "Loan name",
+    key: "loanName",
     isHtml: false,
     isStatus: false,
   },
@@ -71,11 +77,16 @@ const columns = [
 
   {
     header: "Tenor",
-    key: "channel",
+    key: "tenor",
     isHtml: false,
     isStatus: false,
   },
-
+  {
+    header: "createdAt",
+    key: "createdAt",
+    isHtml: false,
+    isStatus: true,
+  },
   {
     header: "Status",
     key: "status",
@@ -84,16 +95,37 @@ const columns = [
   },
   {
     header: "",
-    key: "actions",
-    isHtml: false,
-    isStatus: true,
+    key: "action",
+    isHtml: true,
+    isStatus: false,
   },
 ];
-
+const queryParams = reactive({
+  Search: "",
+  Statsu: 11,
+  PageNumber: 1,
+  PageSize: 10,
+});
 const rows = ref([]);
 
 function handleReview(value) {
   isOpen.value = true;
-  detail.vlaue = value;
+  detail.value = value;
 }
+
+async function getData() {
+  const response = await getLoanRequests(queryParams);
+  if (response.status === 200) {
+    rows.value = response.data.data.map((i) => ({
+      ...i,
+      amount: currencyFormat(i.amount),
+      tenor: i.tenor ? `${i.tenor} days` : "-",
+      createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+    }));
+  }
+}
+onMounted(() => {
+  getData();
+});
+provide("isOpen", isOpen);
 </script>

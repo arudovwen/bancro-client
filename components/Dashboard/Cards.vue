@@ -104,13 +104,9 @@ async function getData() {
   }
   if (response1.status === 200) {
     const data1 = response1.data.data.savingsAccounts[0];
-    console.log("🚀 ~ getData ~ data1:", data1);
     data.value = data.value.map((item, index) => {
       if (index === 0) {
-        item.balance = currencyFormat(
-          data1.accountBalance,
-          data1.currency.code
-        );
+        item.balance = currencyFormat(data1.accountBalance);
       }
       return item;
     });
