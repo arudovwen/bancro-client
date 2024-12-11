@@ -1,11 +1,11 @@
 <template>
   <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white h-full">
-    <div class="flex justify-between mb-5 px-6">
+    <div class="flex justify-between mb-5 px-6 gap-x-10">
       <span>
         <h2 class="text-lg font-semibold mb-[2px] capitalize">
           Recent transactions
         </h2>
-        <p class="text-sm text-[#71717A]">
+        <p class="text-xs LG:text-sm text-[#71717A]">
           Your most recent transactions from all accounts
         </p>
       </span>
@@ -13,7 +13,7 @@
         @click="navigateTo('/transactions')"
         class="text-xs text-primary-500 flex gap-x-2 items-center h-auto font-medium"
       >
-        See all transactions <AppIcon icon="fa6-solid:chevron-right" />
+      <span class="hidden lg:inline-block">  See all transactions</span> <AppIcon icon="fa6-solid:chevron-right" />
       </button>
     </div>
 

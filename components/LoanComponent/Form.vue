@@ -70,7 +70,6 @@ onMounted(() => {
         if (res.status === 200) {
           requirements.value = res.data.data;
           formValues.documents = requirements.value.map((i) => ({
-            ...i,
             documentName: i.name,
             narration: i.description,
             viewUrl: "",

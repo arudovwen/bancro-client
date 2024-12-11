@@ -43,7 +43,7 @@
       </div>
     </div>
   </form>
-  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false"  :canClose="false">
+  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false" :canClose="false">
     <template #default>
       <div class="p-6 rounded-xl">
         <TransactionsStatus
@@ -63,7 +63,7 @@ import { postLoanRequest } from "~/services/loanservice";
 const isOpen = ref(false);
 const detail = inject("detail");
 const formValues = inject("formValues");
-const activeForm = inject("activeForm")
+const activeForm = inject("activeForm");
 const formObject1 = [
   {
     label: "Loan type",
@@ -94,25 +94,32 @@ const formObject3 = [
     key: "",
   },
 ];
-const isLoading = ref(false)
+const isLoading = ref(false);
 const formData = computed(() => ({
   ...formValues.one,
-  documents:formValues.documents,
-  others:formValues.others,
+  documents: formValues.documents,
+  otherInformation: formValues.others.map(({ name, value, description }) => ({
+    name,
+    value,
+    description,
+  })),
   tempAmount: currencyFormat(formValues.one.amount),
   ...detail.value,
 }));
 async function handleSubmit() {
   try {
-    isLoading.value = true
-    const response = await postLoanRequest({...formData.value, productId: formValues.value?.productId.toString()});
+    isLoading.value = true;
+    const response = await postLoanRequest({
+      ...formData.value,
+      productId: formValues.value?.productId.toString(),
+    });
     if (response.status === 200) {
       isOpen.value = true;
     }
   } catch (error) {
     toast.error(error?.response?.data?.message || "Failed");
-  }finally{
-    isLoading.value = false
+  } finally {
+    isLoading.value = false;
   }
 }
 provide("isOpen", isOpen);

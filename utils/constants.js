@@ -261,10 +261,17 @@ export const BillerOptions = [
   {
     label: "Cable Bill",
     value: "2",
-  },  {
+  },
+  {
     label: "Betting",
     value: "3",
   },
 ];
 
 export const BillOptions = [];
+
+export const DocumentType = {
+  WordDocument: 0,
+  PDFDocument: 1,
+  ImageDocument: 2,
+};

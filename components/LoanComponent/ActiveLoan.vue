@@ -1,8 +1,8 @@
 <template>
-  <div
-    class="rounded-lg border border-[#F2F4F7] bg-white py-3 shadow-[0px_4px_8px_-2px_#1018281A] cursor-pointer"
+  <button
+    class="rounded-lg border border-[#F2F4F7] bg-white py-3 px-4 shadow-[0px_4px_8px_-2px_#1018281A] cursor-pointer w-full"
   >
-    <div class="px-4">
+    <span class="px-4">
       <div class="flex justify-between items-center mb-5">
         <span class="text-sm font-semibold capitalize text-[#344054]"
           >Simple Loan</span
@@ -36,12 +36,10 @@
             >{{ detail?.interestRate }}%</span
           ></span
         >
-        <span class="block text-[#667085]"
-          >{{ detail?.tenor }}</span
-        ></span
+        <span class="block text-[#667085]">{{ detail?.tenor }}</span></span
       >
-    </div>
-    <div
+    </span>
+    <span
       v-if="canRepay"
       class="flex justify-end px-4 pt-3 mt-3 border-t border-[#ECF1F6]"
     >
@@ -53,8 +51,8 @@
         btnClass="text-primary bg-[#9FE870] !py-1 !px-4 !rounded min-w-[100px] font-semibold"
         :isDisabled="isLoading"
       />
-    </div>
-  </div>
+    </span>
+  </button>
 </template>
 <script setup>
 defineProps(["detail", "canRepay"]);
