@@ -10,7 +10,7 @@
         :key="n.label"
       >
         <span class="block text-[#667085] mb-[2px]">{{ n.label }}</span>
-        <span class="block font-medium">-</span>
+        <span class="block font-medium">{{ detail?.[n.key] }}</span>
       </span>
     </div>
 
@@ -43,11 +43,11 @@ defineProps(["detail"]);
 const formObject = [
   {
     label: "Approved amount",
-    key: "",
+    key: "amount",
   },
   {
     label: "Loan Tenor",
-    key: "",
+    key: "tenor",
   },
 
   {

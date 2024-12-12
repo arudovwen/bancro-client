@@ -102,7 +102,7 @@ const columns = [
 ];
 const queryParams = reactive({
   Search: "",
-  Statsu: 11,
+  Status: 11,
   PageNumber: 1,
   PageSize: 10,
 });

@@ -23,7 +23,7 @@ const detail = ref(null);
 const queryParams = reactive({
   PageNumber: 1,
   PageSize: 10,
-  Status: 0,
+  Status: 10,
 });
 const docLoading = ref(true);
 

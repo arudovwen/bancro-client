@@ -19,15 +19,17 @@
               <MenuItems
                 class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[140px] rounded-xl overflow-hidden text-left text-[#454745] flex flex-col gap-y-1"
               >
+              <MenuItem>
                 <button
                   @click="handleReview(row)"
                   class="block py-2 px-4 cursor-pointer"
                 >
                   Review request
-                </button>
-                <span class="block py-2 px-4 cursor-pointer text-red-600"
-                  >Delete request</span
-                >
+                </button></MenuItem>
+             <MenuItem>
+              <button class="block py-2 px-4 cursor-pointer text-red-600"
+                  >Delete request</button
+                ></MenuItem>
               </MenuItems>
             </Float>
           </Menu>
@@ -47,7 +49,7 @@
 
 <script setup>
 import { Float } from "@headlessui-float/vue";
-import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Menu, MenuButton, MenuItems,MenuItem } from "@headlessui/vue";
 import moment from "moment";
 import { getLoanRequests } from "~/services/loanservice";
 
