@@ -23,6 +23,7 @@ const urls = {
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",
   LOAN_REQUESTS: "/loan/loan-requests",
+  LOAN_OFFERS: "/loan/offers",
   LOAN_REQUIREMENTS: "/loan/loan-requirements",
   LOAN_OTHER_INFORMATION: "/loan/loan-other-information",
   APPROVE_LOAN_OFFER: "/loan/approve-offers",

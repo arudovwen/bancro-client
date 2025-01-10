@@ -42,6 +42,7 @@
 import { toast } from "vue3-toastify";
 import { approveLoanOffer } from "~/services/loanservice";
 
+const emits = defineEmits(['close'])
 const isLoading = ref(false);
 const props = defineProps(["detail"]);
 const formObject = [
@@ -49,10 +50,7 @@ const formObject = [
     label: "Amount",
     key: "amount",
   },
-  {
-    label: "Approved amount",
-    key: "approvedAmount",
-  },
+
   {
     label: "Loan Tenor",
     key: "tenor",
@@ -91,6 +89,7 @@ function updateStatus(val) {
       if (res.status === 200) {
         toast.success("Request updated");
         isLoading.value = false;
+        emits('close')
       }
     })
     .catch((err) => {

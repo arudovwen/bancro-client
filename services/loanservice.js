@@ -17,6 +17,9 @@ export const getLoanProducts = (payload) => {
 export const getLoanRequests = (payload) => {
   return get(`${urls.LOAN_REQUESTS}?${new URLSearchParams(payload)}`, config);
 };
+export const getLoanOffers = (payload) => {
+  return get(`${urls.LOAN_OFFERS}?${new URLSearchParams(payload)}`, config);
+};
 export const postLoanRequest = (payload) => {
   return post(`${urls.LOAN_REQUESTS}`, payload, config);
 };

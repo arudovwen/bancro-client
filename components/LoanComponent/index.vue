@@ -13,6 +13,7 @@
       <LoanComponentActiveLoans v-if="active==='active'" />
       <LoanComponentPastLoans v-if="active==='past'" />
       <LoanComponentLoanRequests v-if="active==='request'" />
+      <LoanComponentLoanOffers v-if="active==='offers'" />
     </div>
 </template>
 
@@ -44,6 +45,9 @@ const tabs = [
     }, {
         title: "loan request",
         key: "request",
+    },{
+        title: "loan offers",
+        key: "offers",
     },
 ];
 provide("active", active);

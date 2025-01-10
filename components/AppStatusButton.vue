@@ -151,7 +151,21 @@ const LoanStatusText = {
   },
 };
 
+const OfferStatusText = {
+  0: {
+    text: "Pending",
+    className: StatusClass[0],
+  },
+  1: {
+    text: "Accepted",
+    className: StatusClass[1],
+  },
+  2: {
+    text: "Rejected",
+    className: StatusClass[4],
+  },
 
+};
 const Stats = computed(() => {
   if (props.stattype === "teams") {
     return TeamStatusText;
@@ -167,7 +181,9 @@ const Stats = computed(() => {
   if (props.stattype === "loan-status") {
     return LoanStatusText;
   }
-
+  if (props.stattype === "offer-status") {
+    return OfferStatusText;
+  }
   return StatusText;
 });
 </script>
