@@ -1,5 +1,5 @@
 import urls from "../helpers/url_helpers";
-import { del, get, post } from "../helpers/api_helpers";
+import { del, get, post, put } from "../helpers/api_helpers";
 
 const config = {
   // headers: { Authorization: `Bearer ${store.getters.accessToken}` },
@@ -37,7 +37,9 @@ export const getLoanOthers = (payload) => {
 export const postBeneficiary = (data) => {
   return post(`${urls.BENEFICIARY}`, data, config);
 };
-
+export const approveLoanOffer = (data) => {
+  return put(`${urls.APPROVE_LOAN_OFFER}?${new URLSearchParams(data)}`, data, config);
+};
 export const deleteBeneficiary = (data) => {
   return del(`${urls.BENEFICIARY}?${new URLSearchParams(data)}`, config);
 };

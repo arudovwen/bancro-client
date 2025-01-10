@@ -17,17 +17,18 @@
     <div class="mb-3 mt-4 flex justify-end gap-x-4">
       <AppButton
         type="button"
-        :isLoading="isLoading"
         text="Reject terms"
         btnClass="text-primary bg-white border !py-[10px] px-20 min-w-[156px] !rounded-lg font-semibold"
         :isDisabled="isLoading"
+        @click="updateStatus(false)"
       />
       <AppButton
-        type="submit"
-        :isLoading="isLoading"
+        type="button"
+      
         text="Accept terms"
         btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
         :isDisabled="isLoading"
+        @click="updateStatus(true)"
       />
     </div>
   </div>
@@ -38,12 +39,19 @@
   /> -->
 </template>
 <script setup>
+import { toast } from "vue3-toastify";
+import { approveLoanOffer } from "~/services/loanservice";
+
 const isLoading = ref(false);
-defineProps(["detail"]);
+const props = defineProps(["detail"]);
 const formObject = [
   {
-    label: "Approved amount",
+    label: "Amount",
     key: "amount",
+  },
+  {
+    label: "Approved amount",
+    key: "approvedAmount",
   },
   {
     label: "Loan Tenor",
@@ -52,7 +60,7 @@ const formObject = [
 
   {
     label: "Interest rate",
-    key: "",
+    key: "interestRate",
   },
   {
     label: "Due Date",
@@ -72,4 +80,22 @@ const formObject = [
     key: "",
   },
 ];
+
+function updateStatus(val) {
+  isLoading.value = true;
+  approveLoanOffer({
+    offerId: props.detail.id,
+    isApproved: val,
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        toast.success("Request updated");
+        isLoading.value = false;
+      }
+    })
+    .catch((err) => {
+      toast.error(err?.response?.data?.message);
+      isLoading.value = false;
+    });
+}
 </script>

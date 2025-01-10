@@ -111,7 +111,7 @@ async function handleSubmit() {
     isLoading.value = true;
     const response = await postLoanRequest({
       ...formData.value,
-      productId: formValues.value?.productId.toString(),
+      productId: formData.value?.productId.toString(),
     });
     if (response.status === 200) {
       isOpen.value = true;
