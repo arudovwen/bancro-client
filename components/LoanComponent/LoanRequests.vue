@@ -134,6 +134,7 @@ async function getData() {
       amount: currencyFormat(i.amount),
       approvedAmount: currencyFormat(i.approvedAmount),
       tenor: i.tenor ? `${i.tenor} days` : "-",
+      status: i.status?i.status:0,
       createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
     }));
   }
