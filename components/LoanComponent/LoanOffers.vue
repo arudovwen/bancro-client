@@ -20,7 +20,7 @@
               <MenuItems
                 class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[140px] rounded-xl overflow-hidden text-left text-[#454745] flex flex-col gap-y-1"
               >
-                <MenuItem>
+                <MenuItem v-if="row.status === 0">
                   <button
                     @click="handleReview(row)"
                     class="block py-2 px-4 cursor-pointer text-left"
@@ -29,7 +29,9 @@
                   </button></MenuItem
                 >
                 <MenuItem>
-                  <button class="block py-2 px-4 cursor-pointer text-red-600 text-left">
+                  <button
+                    class="block py-2 px-4 cursor-pointer text-red-600 text-left"
+                  >
                     Delete request
                   </button></MenuItem
                 >
