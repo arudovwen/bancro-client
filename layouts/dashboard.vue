@@ -1,6 +1,6 @@
 <template>
+  <IdleTimer />
   <section class="flex h-screen w-screen">
-    <IdleTimer />
     <div
       class="w-max h-full border-r border-[#ECECEC] bg-white min-w-[280px] hidden lg:inline"
     >
