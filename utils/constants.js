@@ -74,7 +74,7 @@ export const navigation = [
 
   {
     name: "Investments",
-    url: "/customers",
+    url: "/investments",
     icon: "lucide:users",
     key: "investment",
     disabled: true,
@@ -101,7 +101,7 @@ export const navigation = [
 
   {
     name: "Cards",
-    url: "/wallet",
+    url: "/cards",
     icon: "ion:wallet-outline",
     key: "card",
     disabled: true,

@@ -7,14 +7,14 @@
         },`"
         text="Welcome to your dashboard"
       />
-      <button
+      <!-- <button
         id="create-product-button"
         class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
         @click="() => router.push('/products/create')"
       >
         <AppIcon icon="lets-icons:add-square-duotone" />
         <span>Fund account</span>
-      </button>
+      </button> -->
     </div>
     <div class="mb-6">
       <TierInfo />

@@ -30,13 +30,13 @@
 
 <script setup>
 const tabs = [
-  {
-    title: "add money",
-    count: "0",
-    key: "numberofRequests",
-    className: "bg-[#FFC091] text-[#260A2F]",
-    icon: "add",
-  },
+  // {
+  //   title: "add money",
+  //   count: "0",
+  //   key: "numberofRequests",
+  //   className: "bg-[#FFC091] text-[#260A2F]",
+  //   icon: "add",
+  // },
   {
     title: "send money",
     count: "0",

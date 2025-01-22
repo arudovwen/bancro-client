@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "@nuxt/image",
     "@nuxt/devtools",
+    '@vueuse/nuxt',
   ],
 
   runtimeConfig: {
