@@ -56,3 +56,7 @@ export const getTransactions = (data) => {
     config
   );
 };
+
+export const getAccountTier = () => {
+  return get(`${urls.GET_ACCOUNT_TIER}`, config);
+};

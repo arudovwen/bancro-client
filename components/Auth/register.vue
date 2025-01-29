@@ -1,9 +1,9 @@
 <template>
   <div class="w-full">
-    <h1 class="text-[#344054] font-semibold mb-5 text-2xl lg:text-4xl">
-      Sign Up 👋
+
+    <h1 class="text-[#344054] font-medium mb-5 text-xl">
+     Complete your registration
     </h1>
-    <p class="text-[#667085] text-sm mb-6">Let’s get started</p>
     <div
       class="mb-[22px] border border-[#E4E7EC] rounded-[10px] bg-[#F9FAFB] flex items-center p-1"
     >
@@ -34,7 +34,7 @@
           :error="errors.companyName"
         />
       </div>
-      <div v-if="values?.customerType === 0">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-6 gap-x-4" v-if="values?.customerType === 0">
         <Textinput
           placeholder=""
           label="First name"
@@ -42,18 +42,18 @@
           v-bind="firstNameAtt"
           v-model="firstName"
           :error="errors.firstName"
-        />
-      </div>
-      <div v-if="values?.customerType === 0">
-        <Textinput
+          disabled
+        />  <Textinput
           placeholder=""
           label="Last name"
           name="lastName"
           v-bind="lastNameAtt"
           v-model="lastName"
           :error="errors.lastName"
+          disabled
         />
       </div>
+    
       <div>
         <Textinput
           icon="line-md:email"
@@ -117,6 +117,7 @@ import * as yup from "yup";
 import { toast } from "vue3-toastify";
 import { signupUser } from "~/services/authservices";
 
+const userData = inject("userData");
 const router = useRouter();
 const tabs = [
   { label: "personal account", value: 0 },
@@ -130,6 +131,10 @@ const formValues = {
   companyName: "",
   password: "",
   customerType: 0,
+  dateOfBirth: "",
+  phoneNumber: "",
+  verificationId: "",
+  bvn: "",
 };
 
 const schema = yup.object({
@@ -178,7 +183,9 @@ const onSubmit = handleSubmit((values) => {
           return;
         }
         toast.success("Signup successful");
-        navigateTo(`/auth/email-verification/${encodeURIComponent(values.email)}`);
+        navigateTo(
+          `/auth/email-verification/${encodeURIComponent(values.email)}`
+        );
         isLoading.value = true;
       }
     })
@@ -193,6 +200,16 @@ const onSubmit = handleSubmit((values) => {
     });
 
   isLoading.value = true;
+});
+
+watchEffect(() => {
+  setFieldValue("firstName", userData?.value?.firstName);
+  setFieldValue("lastName", userData?.value?.lastName);
+  setFieldValue("email", userData?.value?.email);
+  setFieldValue("phoneNumber", userData?.value?.phoneNumber1);
+  setFieldValue("bvn", userData?.value?.bvn);
+  setFieldValue("verificationId", userData?.value?.verificationId);
+  setFieldValue("dateOfBirth", userData?.value?.dateOfBirth);
 });
 </script>
 

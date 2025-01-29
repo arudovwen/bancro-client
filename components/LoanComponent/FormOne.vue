@@ -21,9 +21,9 @@
               />
               <span class="absolute right-4 text-sm text-[#344054]">NGN</span>
             </div>
-            <span class="block mt-[2px] text-sm text-[#5F738C]"
+            <!-- <span class="block mt-[2px] text-sm text-[#5F738C]"
               >Max Amount: {{ currencyFormat(100000) }}</span
-            >
+            > -->
           </FormGroup>
         </div>
 

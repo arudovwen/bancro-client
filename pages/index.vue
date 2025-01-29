@@ -16,7 +16,7 @@
         <span>Fund account</span>
       </button> -->
     </div>
-    <div class="mb-6">
+    <div class="mb-6" v-if="authStore.tierLevel !== 'tier3'">
       <TierInfo />
     </div>
     <!-- <AppTab :tabs="tabs" /> -->

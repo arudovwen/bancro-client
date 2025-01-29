@@ -7,10 +7,13 @@ export const useAuthStore = defineStore(
     const savingsInfo = ref("");
     const isPinSet = ref(false);
     const isBVNSet = ref(false);
+    const tierLevel = ref(null);
     const isLoggedIn = computed(() => !!loggedUser.value);
     const refresh_token = computed(() => loggedUser?.value?.token.refreshToken);
     const access_token = computed(() => loggedUser?.value?.token?.token);
-    const tenantId = computed(() => loggedUser?.value?.tenantId);
+    const tenantId = computed(
+      () => "BC4cad2992" || loggedUser?.value?.tenantId
+    );
     const userRole = computed(() => loggedUser?.value?.userRole);
     const userId = computed(() => loggedUser?.value?.id);
     const userInfo = computed(() => loggedUser?.value);
@@ -27,7 +30,7 @@ export const useAuthStore = defineStore(
       setPin(!!data?.pin);
       setBVN(!!data?.bvn);
     }
-    
+
     function setSavingsInfo(data) {
       savingsInfo.value = data;
     }
@@ -59,7 +62,9 @@ export const useAuthStore = defineStore(
     function setBVN(data) {
       isBVNSet.value = data;
     }
-
+    function setTier(data) {
+      tierLevel.value = data;
+    }
     const logOut = () => {
       localStorage.clear();
       setLoggedUser(null);
@@ -90,6 +95,8 @@ export const useAuthStore = defineStore(
       setBVN,
       setSavingsInfo,
       savingsInfo,
+      tierLevel,
+      setTier,
     };
   },
   {

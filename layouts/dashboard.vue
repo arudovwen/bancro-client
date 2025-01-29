@@ -25,6 +25,7 @@
 import {
   getSavingsAccountByUserid,
   getSavingsAccountClientByUserid,
+  getAccountTier,
 } from "~/services/savingsservice";
 
 definePageMeta({ middleware: ["auth", "onboarding"] });
@@ -41,13 +42,21 @@ async function getData() {
 
   if (response1.status === 200) {
     const data1 = response1.data.data.savingsAccounts[0];
-    console.log("🚀 ~ getData ~ data1:", data1);
+
     authStore.setSavingsInfo(data1);
   }
+}
+function getTier() {
+  getAccountTier().then((res) => {
+    if (res.status === 200) {
+      authStore.setTier(res.data.data?.toLowerCase());
+    }
+  });
 }
 
 onMounted(() => {
   getData();
+  getTier();
 });
 provide("isSigniningOut", isSigniningOut);
 </script>

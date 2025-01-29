@@ -17,8 +17,10 @@
         <div class="mb-6 bg-[#182230] py-2 px-4 rounded-lg">
           <div class="mb-[11px] text-xs text-white text-left">
             You are currently on a
-            <span class="font-bold underline">Tier 2</span> account. Upgrade
-            your account to increase your transaction limits
+            <span class="font-bold underline">{{
+              TierOptions[authStore.tierLevel]
+            }}</span>
+            account. Upgrade your account to increase your transaction limits
           </div>
           <div class="grid gap-y-2">
             <div
@@ -27,7 +29,7 @@
               class="flex justify-start gap-x-5 items-center text-xs text-white"
             >
               <span class="w-[154px]">{{ n.label }}</span>
-              <span class="font-medium">{{ currencyFormat(4744757) }}</span>
+              <span class="font-medium">{{ currencyFormat(0.00) }}</span>
             </div>
           </div>
           <div class="mt-4">
@@ -39,31 +41,6 @@
           </div>
         </div>
 
-        <!-- <div class="border border-[#D9E4F6] bg-[#2E90FA08] rounded-xl">
-          <div
-            class="flex justify-between py-4 px-6 border-b last:border-none border-[#D9E4F6]"
-            v-for="n in data"
-            :key="n.label"
-          >
-            <span class="text-[#344054] font-medium">{{ n.label }}</span>
-            <span>
-              <button
-                @click="openModal(n.key)"
-                v-if="n.status === 'none'"
-                class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
-              >
-                {{ n.buttonText }}
-              </button>
-
-              <AppStatusButton
-                v-else
-                :status="n.status"
-                :mini="true"
-                stattype="textstattus"
-              />
-            </span>
-          </div>
-        </div> -->
 
         <div class="grid gap-y-3">
           <div
@@ -81,7 +58,7 @@
               <span>
                 <button
                   v-if="n.status === 'upgrade'"
-                   @click="openTab(index)"
+                  @click="openTab(index)"
                   class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade

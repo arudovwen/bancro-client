@@ -32,7 +32,7 @@
 
           <span class="block text-left">
             <span class="block font-semibold text-[#212B36]">{{
-              uploadTitle
+            name ||  uploadTitle
             }}</span>
             <span class="block">{{ size }}</span>
           </span>
@@ -68,7 +68,7 @@ function handleFile(e) {
   const fileInput = e.target.files[0];
   if (!fileInput) return;
   file.value = fileInput;
-  name.value = file.name;
+  name.value = fileInput.name;
   size.value = `${parseInt(fileInput.size / 1000)}kb`;
   const fileExtension = getFileExtension(fileInput);
   if (!isValidFileType(fileExtension)) {

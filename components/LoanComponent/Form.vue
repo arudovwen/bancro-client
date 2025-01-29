@@ -45,7 +45,7 @@ const links = [
     url: "#",
   },
 ];
-const activeForm = ref(1);
+const activeForm = ref(2);
 const requirements = ref(null);
 const formValues = reactive({
   one: {

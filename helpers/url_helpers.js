@@ -20,6 +20,10 @@ const urls = {
   PIN_SETUP: "/customerprofile/pin-setup",
   CHANGE_PIN: "/customerprofile/pin/change",
 
+  KYC_VERIFY: "/customerprofile/kyc/verify",
+  VALIDATE_OTP: "/customerprofile/kyc/validate-otp",
+
+
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",
   LOAN_REQUESTS: "/loan/loan-requests",
@@ -38,7 +42,9 @@ const urls = {
   DEPOSIT: "/savingsaccount/deposit",
   WITHDRAWAL: "/savingsaccount/withdrawal",
   SAVINGS_ACCOUNT: "/savingsaccount",
+  GET_ACCOUNT_TIER: "/savingsaccount/tier",
 
+  
   // Transactions urls
   GET_TRANSACTION_BY_ID: (id) => `/transactions/${id}`,
   GET_ALL_TRANSACTIONS: "/transactions/transactions",

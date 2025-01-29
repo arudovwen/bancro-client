@@ -275,3 +275,9 @@ export const DocumentType = {
   PDFDocument: 1,
   ImageDocument: 2,
 };
+
+export const TierOptions = {
+  tier1: "Tier 1",
+  tier2: "Tier 2",
+  tier3: "Tier 3",
+};
