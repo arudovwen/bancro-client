@@ -3,7 +3,7 @@
     <div class="text-left">
       <h1 class="text-[#101828] text-[30px] font-bold mb-1">Get Started 👋</h1>
       <p class="mb-7 text-[#475467]">
-        To get started, we need to verify either your BVN or NIN to create an
+        To get started, we need to verify either your BVN to create an
         account for you
       </p>
     </div>
@@ -32,7 +32,7 @@
       <div class="w-full">
         <Textinput
           placeholder=""
-          label="Enter number"
+          label="Enter your Personal BVN Number "
           name="number"
           v-bind="numberAtt"
           v-model="number"

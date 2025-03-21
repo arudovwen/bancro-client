@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "@nuxt/image",
     "@nuxt/devtools",
-    '@vueuse/nuxt',
+    "@vueuse/nuxt",
   ],
 
   runtimeConfig: {
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
       APP_MONNIFYISTESTMODE: process.env.APP_MONNIFYISTESTMODE,
       TINY_MCE: process.env.APP_TINYMCE_KEY,
       PUBLIC_KEY: process.env.PUBLIC_KEY,
-      TENANT_ID: process.env.TENANT_ID
+      TENANT_ID: process.env.TENANT_ID,
     },
   },
   ssr: false,
@@ -124,6 +124,7 @@ export default defineNuxtConfig({
         { name: "robots", content: "index, follow" }, // Control search engine indexing
         { name: "theme-color", content: "#183329" }, // Set the theme color for mobile browsers
       ],
+      script: [{ src: "https://js.prembly.com/v1/inline/widget.js" }],
     },
   },
   routes: { "/": { prerender: true }, "/*": { cors: true } },

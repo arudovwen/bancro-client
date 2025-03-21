@@ -29,7 +29,7 @@
               class="flex justify-start gap-x-5 items-center text-xs text-white"
             >
               <span class="w-[154px]">{{ n.label }}</span>
-              <span class="font-medium">{{ currencyFormat(0.00) }}</span>
+              <span class="font-medium">{{ currencyFormat(0.0) }}</span>
             </div>
           </div>
           <div class="mt-4">
@@ -40,7 +40,6 @@
             </button>
           </div>
         </div>
-
 
         <div class="grid gap-y-3">
           <div
@@ -58,7 +57,7 @@
               <span>
                 <button
                   v-if="n.status === 'upgrade'"
-                  @click="openTab(index)"
+                  @click="clickVerify"
                   class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
@@ -311,6 +310,25 @@ function openModal(key) {
 function getData() {}
 function openTab(index) {
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
+}
+function onModalClose(){
+
+}
+
+
+function onSuccess(){
+
+}
+function clickVerify() {
+  const data = {
+    merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
+    first_name: "James",
+    last_name: "John",
+    email: "janeforster@yopmail.com",
+    config_id: "c6f1c16a-d293-4c2a-8c78-784eed886138",
+    user_ref: "236243634",
+  };
+  initiateVerify(data, onModalClose, onSuccess);
 }
 provide("isOpen", isOpen);
 </script>

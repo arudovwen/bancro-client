@@ -2,7 +2,7 @@
 import { useIdle, useTimestamp } from "@vueuse/core";
 import { computed, ref } from "vue";
 
-const IDLE_TIMEOUT =30 * 60 * 1000;
+const IDLE_TIMEOUT = 10 * 60 * 1000;
 const WARNING_THRESHOLD = 30;
 
 const authStore = useAuthStore()
