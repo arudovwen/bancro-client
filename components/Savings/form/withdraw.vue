@@ -111,7 +111,7 @@
   import * as yup from "yup";
   import { toast } from "vue3-toastify";
   // import { getWalletBalance, walletRepayment } from "~/services/walletservice";
-  import { payWithMonnify } from "~/utils/verification";
+  import { initiateVerify } from "~/utils/verification";
   
   const authStore = useAuthStore();
   const active = ref("monnify");
@@ -183,7 +183,7 @@
     };
   
     if (active.value === "monnify") {
-      payWithMonnify(data.value, onModalClose, onSuccess);
+      initiateVerify(data.value, onModalClose, onSuccess);
     } else {
       // walletRepayment({
       //   ...values,
