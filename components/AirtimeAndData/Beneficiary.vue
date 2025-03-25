@@ -9,7 +9,7 @@
         type="search"
       />
     </div>
-    <div class="grid grid-cols-1 gap-y-[10px] max-h-[300px] overflow-y-auto">
+    <!-- <div class="grid grid-cols-1 gap-y-[10px] max-h-[300px] overflow-y-auto">
       <div
         class="border border-[#21231D1A] bg-[#A0E1E11A] p-4 rounded-lg flex justify-between"
         v-for="n in 4"
@@ -36,7 +36,7 @@
           ><SvgTrash
         /></span>
       </div>
-    </div>
-     <!-- <EmptyData title="No beneficiary found" type="notfound" classIcon="w-[120px] h-auto" /> -->
+    </div> -->
+     <EmptyData title="No beneficiary found" type="notfound" classIcon="w-[120px] h-auto" />
   </section>
 </template>
