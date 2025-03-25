@@ -45,8 +45,8 @@
             <!-- <span class="text-sm text-[#667085]">@laketu</span
             > -->
             <span
-              class="border border-[#B2DDFF] bg-[#EFF8FF] text-xs text-[#175CD3] px-[6px] rounded-[6px] py-[2px]"
-              >Tier 2</span
+              class="border border-[#B2DDFF] bg-[#EFF8FF] text-xs text-[#175CD3] px-[6px] rounded-[6px] py-[2px] capitalize"
+              >{{ TierOptions[authStore.tierLevel] }}</span
             ></span
           >
         </div>
