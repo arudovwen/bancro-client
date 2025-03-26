@@ -3,7 +3,7 @@ import { useAuthStore } from "~/stores/auth";
 import { toast } from "vue3-toastify";
 
 const API_URL = "https://clientapi.streams.com.ng";
-const runtimeConfig = useRuntimeConfig()
+const runtimeConfig = useRuntimeConfig();
 const axiosApi = Axios.create({
   baseURL: API_URL,
   withCredentials: false,
@@ -15,11 +15,10 @@ axiosApi.interceptors.request.use(
     const authStore = useAuthStore();
     if (authStore?.access_token) {
       config.headers.Authorization = `Bearer ${authStore.access_token}`;
-    
     }
     config.headers.Accept = "application/json";
-    config.headers.apiKey = runtimeConfig.public.PUBLIC_KEY
-    config.headers.tenantId = "BC297900" || runtimeConfig.public.TENANT_ID
+    config.headers.apiKey = runtimeConfig.public.PUBLIC_KEY;
+    config.headers.tenantId = runtimeConfig.public.TENANT_ID;
     return config;
   },
   (error) => {
