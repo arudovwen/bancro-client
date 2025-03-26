@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <div class="mb-7">
+    <!-- <div class="mb-7">
       <Textinput
         placeholder="Search beneficiary"
         label=""
@@ -29,7 +29,7 @@
           ><SvgTrash
         /></span>
       </div>
-    </div>
-    <!-- <EmptyData title="No beneficiary found" type="notfound" classIcon="w-[120px] h-auto" /> -->
+    </div> -->
+    <EmptyData title="No beneficiary found" type="notfound" classIcon="w-[120px] h-auto" />
   </section>
 </template>

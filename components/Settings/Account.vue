@@ -34,7 +34,7 @@
           </div>
           <div class="mt-4">
             <button
-              class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[6px] text-xs rounded-[6px] active:scale-95"
+              class="text-primary-500 font-medium bg-white border border-white px-2 py-[6px] text-xs rounded-[6px] active:scale-95"
             >
               Upgrade
             </button>
@@ -58,7 +58,7 @@
                 <button
                   v-if="n.status === 'upgrade'"
                   @click="clickVerify"
-                  class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
+                  class="font-medium bg-gray-800 border border-gray-800 text-white px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
                 </button>

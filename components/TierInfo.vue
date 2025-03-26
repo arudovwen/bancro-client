@@ -12,7 +12,7 @@
     >
     <AppButton
       @click="navigateTo('/settings/verifications')"
-      btnClass="!text-xs !py-[6px] !px-3 bg-secondary-500 text-primary-500 !rounded font-medium"
+      btnClass="!text-xs !py-[6px] !px-3  bg-white text-primary-500 !rounded font-medium"
       text="Upgrade now"
     />
   </div>

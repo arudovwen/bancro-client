@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-1 gap-y-[10px]">
-    <div
+    <!-- <div
       class="border border-primary-100/20 bg-primary-100/20 p-4 rounded-lg flex justify-between"
       v-for="n in 4"
       :key="n"
@@ -19,10 +19,10 @@
       <span class="text-sm text-[#344054] font-semibold block leading-normal">{{
         currencyFormat(46578)
       }}</span>
-    </div>
+    </div> -->
   </div>
 
-  <!-- <EmptyData title="No transaction found" type="notfound" classIcon="w-[120px] h-auto" /> -->
+  <EmptyData title="No transaction found" type="notfound" classIcon="w-[120px] h-auto" />
 </template>
 
 <script setup>
