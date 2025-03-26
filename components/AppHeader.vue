@@ -17,11 +17,11 @@
     </div>
     <div class="flex gap-x-2 items-center">
       <Notifications />
-      <NuxtLink to="/settings/profile">
+      <!-- <NuxtLink to="/settings/profile">
         <span class="h-10 w-10 rounded-full flex items-center justify-center"
           ><SvgSettings
         /></span>
-      </NuxtLink>
+      </NuxtLink> -->
       <span class="hidden lg:inline"> <ProfileMenu /></span>
       <button class="lg:hidden outline-none" @click="isOpen = true">
         <AppIcon

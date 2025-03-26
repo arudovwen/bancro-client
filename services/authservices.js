@@ -77,3 +77,10 @@ export async function resend2FA(data) {
     data
   );
 }
+
+export async function verifyKyc(data) {
+  return await post(urls.KYC_VERIFY, data);
+}
+export async function verifyKycOtp(data) {
+  return await post(`${urls.VALIDATE_OTP}?${new URLSearchParams(data)}`, data);
+}

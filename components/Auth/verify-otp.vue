@@ -12,15 +12,15 @@
         OTP Verification
       </h1>
       <p class="text-[#637381] text-sm mb-6 text-center">
-        Enter the 6-Digit verification code sent to your registered email
-        address. Check your inbox.
+        Enter the 6-Digit verification code sent to your registered phone
+        number.
       </p>
       <form @submit.prevent="onSubmit">
         <div class="mb-5">
           <div class="flex gap-x-2 justify-center mb-8">
             <v-otp-input
               ref="otpInput"
-              v-model:value="otpToken"
+              v-model:value="code"
               :input-classes="`otp-input w-12 h-12 flex items-center border border-matta-black/20 focus:border-[#4A5578] outline-none mx-1 rounded-md text-center text-sm `"
               separator=" "
               :num-inputs="6"
@@ -35,7 +35,7 @@
             @click="resendOTP"
             :disabled="isResending"
             type="button"
-            class="text-danger-500 font-semibold text-sm"
+            class="text-primary-500 font-semibold text-sm"
           >
             Resend OTP
           </button>
@@ -48,12 +48,12 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Verify OTP"
-            btnClass="text-white bg-danger-500 !py-3 !rounded-lg font-semibold"
+            btnClass="text-primary-500 bg-[#9FE870] !py-3 !rounded-lg font-semibold"
           />
         </div>
       </form>
       <div class="text-center text-sm">
-        <span @click="active = 1" class="text-[#64748B] font-semibold">
+        <span @click="stage = 1" class="text-[#64748B] font-semibold">
           Go back
         </span>
       </div>
@@ -65,38 +65,33 @@
 import { useForm } from "vee-validate";
 import { toast } from "vue3-toastify";
 import * as yup from "yup";
-import { loginVerifyOtp, resend2FA } from "~/services/authservices";
+import { verifyKycOtp } from "~/services/authservices.js";
+
+import { resend2FA } from "~/services/authservices";
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import VOtpInput from "vue3-otp-input";
 
+const stage = inject('stage')
 const route = useRoute();
-const authStore = useAuthStore();
-const formValues = inject("formValues");
-console.log("🚀 ~ formValues:", formValues);
-const active = inject("active");
+const activeForm = inject("activeForm");
+
 const form = reactive({
-  otpToken: "",
-  username: formValues.username || route.query.email,
+  code: "",
 });
 
 const schema = yup.object({
-  otpToken: yup.string().required("Token is required").min(6).max(6),
-  username: yup
-    .string()
-    .required("Email is required")
-    .email("Please enter a valid email address"),
+  code: yup.string().required("Token is required").min(6).max(6),
 });
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: schema,
   initialValues: {
     ...form,
-    username: formValues.username || route.query.email,
   },
 });
 
-const [otpToken] = defineField("otpToken");
+const [code] = defineField("code");
 
 const countdown = ref(0);
 const isResending = ref(false);
@@ -105,7 +100,7 @@ const isLoading = ref(false);
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
 
-  loginVerifyOtp(values)
+  verifyKycOtp(values)
     .then((res) => {
       if (res.status === 200) {
         if (!res.data.succeeded) {
@@ -113,9 +108,7 @@ const onSubmit = handleSubmit((values) => {
           isLoading.value = false;
           return;
         }
-        authStore.setLoggedUser(res.data.data);
-        toast.success("Login successful");
-        window.location.replace("/");
+        activeForm.value = 2
       }
     })
     .catch((err) => {

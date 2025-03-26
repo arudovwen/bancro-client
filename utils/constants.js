@@ -74,7 +74,7 @@ export const navigation = [
 
   {
     name: "Investments",
-    url: "/customers",
+    url: "/investments",
     icon: "lucide:users",
     key: "investment",
     disabled: true,
@@ -101,7 +101,7 @@ export const navigation = [
 
   {
     name: "Cards",
-    url: "/wallet",
+    url: "/cards",
     icon: "ion:wallet-outline",
     key: "card",
     disabled: true,
@@ -261,10 +261,23 @@ export const BillerOptions = [
   {
     label: "Cable Bill",
     value: "2",
-  },  {
+  },
+  {
     label: "Betting",
     value: "3",
   },
 ];
 
 export const BillOptions = [];
+
+export const DocumentType = {
+  WordDocument: 0,
+  PDFDocument: 1,
+  ImageDocument: 2,
+};
+
+export const TierOptions = {
+  tier1: "Tier 1",
+  tier2: "Tier 2",
+  tier3: "Tier 3",
+};

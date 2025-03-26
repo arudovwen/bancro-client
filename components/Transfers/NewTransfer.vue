@@ -12,9 +12,10 @@
       </div>
     </div>
   </section>
-
 </template>
 <script setup>
+import { getSavingsAccountClientByUserid } from "~/services/savingsservice";
+
 const isOpen = ref(false);
 const active = ref(1);
 const authStore = useAuthStore();
@@ -27,6 +28,7 @@ const formData = reactive({
   recipientBankName: "",
   narration: "",
   shouldSaveBeneficiary: true,
+  pin: null,
 });
 
 const links = [
@@ -39,8 +41,22 @@ const links = [
     url: "#",
   },
 ];
+async function getData() {
+  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
+  if (response.status === 200) {
+    console.log("🚀 ~ getData ~ response.data.data:", response.data.data);
+  }
 
+  if (response1.status === 200) {
+    const data1 = response1.data.data.savingsAccounts[0];
+    authStore.setSavingsInfo(data1);
+  }
+}
+
+onMounted(() => {
+  getData();
+});
 provide("active", active);
 provide("isOpen", isOpen);
-provide("formData",formData)
+provide("formData", formData);
 </script>

@@ -5,8 +5,12 @@
       :rows="rows"
       :hasFilter="true"
       title="Loan Requests"
+      :queryParams="queryParams"
     >
       <template #table-row="{ row, column }">
+        <span class="flex gap-x-2 items-center" v-if="column.key === 'status'">
+          <AppStatusButton stattype="loan-status" :status="row.status" />
+        </span>
         <span class="flex gap-x-2 items-center" v-if="column.key === 'action'">
           <Menu class="" as="div">
             <Float placement="bottom-end" :offset="4">
@@ -16,14 +20,18 @@
               <MenuItems
                 class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[140px] rounded-xl overflow-hidden text-left text-[#454745] flex flex-col gap-y-1"
               >
-                <button
-                  @click="handleReview(row)"
-                  class="block py-2 px-4 cursor-pointer"
+                <MenuItem>
+                  <button
+                    @click="handleReview(row)"
+                    class="block py-2 px-4 cursor-pointer"
+                  >
+                    Review request
+                  </button></MenuItem
                 >
-                  Review request
-                </button>
-                <span class="block py-2 px-4 cursor-pointer text-red-600"
-                  >Delete request</span
+                <MenuItem>
+                  <button class="block py-2 px-4 cursor-pointer text-red-600">
+                    Delete request
+                  </button></MenuItem
                 >
               </MenuItems>
             </Float>
@@ -43,14 +51,16 @@
 
 <script setup>
 import { Float } from "@headlessui-float/vue";
-import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import moment from "moment";
+import { getLoanRequests } from "~/services/loanservice";
 
 const isOpen = ref(false);
 const detail = ref(null);
 const columns = [
   {
-    header: "Loan type",
-    key: "date",
+    header: "Loan name",
+    key: "loanName",
     isHtml: false,
     isStatus: false,
   },
@@ -58,6 +68,12 @@ const columns = [
   {
     header: "Amount",
     key: "amount",
+    isHtml: false,
+    isStatus: false,
+  },
+  {
+    header: "Approved Amount",
+    key: "approvedAmount",
     isHtml: false,
     isStatus: false,
   },
@@ -71,11 +87,16 @@ const columns = [
 
   {
     header: "Tenor",
-    key: "channel",
+    key: "tenor",
     isHtml: false,
     isStatus: false,
   },
-
+  {
+    header: "createdAt",
+    key: "createdAt",
+    isHtml: false,
+    isStatus: true,
+  },
   {
     header: "Status",
     key: "status",
@@ -85,17 +106,47 @@ const columns = [
   {
     header: "",
     key: "action",
-    isHtml: false,
-    isStatus: true,
+    isHtml: true,
+    isStatus: false,
   },
 ];
-
+const queryParams = reactive({
+  Search: "",
+  SortOrder: "",
+  PageNumber: 1,
+  PageSize: 10,
+  totalCount: 0,
+});
 const rows = ref([]);
 
 function handleReview(value) {
+  detail.value = value;
   isOpen.value = true;
-  detail.vlaue = value;
+ 
 }
 
-provide("isOpen", isOpen)
+async function getData() {
+  const response = await getLoanRequests(queryParams);
+  if (response.status === 200) {
+    queryParams.totalCount = response.data.totalCount
+    rows.value = response.data.data.map((i) => ({
+      ...i,
+      amount: currencyFormat(i.amount),
+      approvedAmount: currencyFormat(i.approvedAmount),
+      tenor: i.tenor ? `${i.tenor} days` : "-",
+      status: i.status?i.status:0,
+      createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+    }));
+  }
+}
+onMounted(() => {
+  getData();
+});
+watch(
+  () => [queryParams.pageNumber, queryParams.PageSize, queryParams.Search],
+  () => {
+    getData();
+  }
+);
+provide("isOpen", isOpen);
 </script>

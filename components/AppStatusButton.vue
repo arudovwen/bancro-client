@@ -100,6 +100,72 @@ const TeamStatusText = {
   },
 };
 
+const LoanStatusText = {
+  0: {
+    text: "Submitted",
+    className: StatusClass[0],
+  },
+  1: {
+    text: "Declined",
+    className: StatusClass[4],
+  },
+  2: {
+    text: "Assigned",
+    className: StatusClass[3],
+  },
+  3: {
+    text: "Approved",
+    className: StatusClass[1],
+  },
+  4: {
+    text: "Abandoned",
+    className: StatusClass[4],
+  },
+  5: {
+    text: "Accepted",
+    className: StatusClass[1],
+  },
+  6: {
+    text: "Rejected",
+    className: StatusClass[4],
+  },
+  7: {
+    text: "Disbursement",
+    className: StatusClass[5],
+  },
+  8: {
+    text: "Disbursed",
+    className: StatusClass[1],
+  },
+  9: {
+    text: "DeclineDisbursement",
+    className: StatusClass[4],
+  },
+  10: {
+    text: "Active",
+    className: StatusClass[1],
+  },
+  11: {
+    text: "Repaid",
+    className: StatusClass[5],
+  },
+};
+
+const OfferStatusText = {
+  0: {
+    text: "Pending",
+    className: StatusClass[0],
+  },
+  1: {
+    text: "Accepted",
+    className: StatusClass[1],
+  },
+  2: {
+    text: "Rejected",
+    className: StatusClass[4],
+  },
+
+};
 const Stats = computed(() => {
   if (props.stattype === "teams") {
     return TeamStatusText;
@@ -112,6 +178,12 @@ const Stats = computed(() => {
     return TextStatusText;
   }
 
+  if (props.stattype === "loan-status") {
+    return LoanStatusText;
+  }
+  if (props.stattype === "offer-status") {
+    return OfferStatusText;
+  }
   return StatusText;
 });
 </script>

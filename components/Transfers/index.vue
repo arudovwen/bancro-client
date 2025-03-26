@@ -25,6 +25,8 @@
     :hasDate="false"
     :hasExport="false"
     title="Transaction history"
+    :is-loading="isLoading"
+    :query-params="query"
     @filter-click="
       () => {
         showing = 1;
@@ -63,8 +65,7 @@
   >
     <template #default>
       <div class="p-6 rounded-xl">
-        <TransfersFilter />
-       
+        <TransfersFilter @apply="handleFilter" />
       </div>
     </template>
   </ModalCenter>
@@ -72,7 +73,7 @@
   <ModalSide :isOpen="isDetail" @togglePopup="isDetail = false" v-if="isDetail">
     <template #content>
       <div class="h-full bg-white rounded-lg py-6">
-        <TransfersDetail />
+        <TransfersDetail :detail="detail" />
       </div>
     </template>
   </ModalSide>
@@ -81,12 +82,22 @@
 <script setup>
 import { Float } from "@headlessui-float/vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import moment from "moment";
+import { getTransactions } from "~/services/savingsservice";
 
 const showing = ref(1);
 const isOpen = ref(false);
-const detail = ref(null)
-const isDetail = ref(false)
+const detail = ref(null);
+const isDetail = ref(false);
+const isLoading = ref(true);
 const router = useRouter();
+const query = reactive({
+  savingsId: useAuthStore().savingsInfo.id,
+  PageSize: 10,
+  PageNumber: 1,
+  pagecount: 10,
+  totalCount: 0,
+});
 const links = [
   {
     title: "Dashboard",
@@ -113,7 +124,7 @@ const columns = [
   },
   {
     header: "transaction type",
-    key: "paymentMethod",
+    key: "transactionType",
     isHtml: false,
     isStatus: false,
   },
@@ -137,21 +148,69 @@ const columns = [
   },
 ];
 
-const rows = ref([
-  {
-    beneficiary: "Success Ahon",
-    amount: "NGN 5,000",
-    paymentMethod: "Bank transfer",
-    date: "22 Jan,2024",
-    status: 0,
-  },
-]);
+const rows = ref([]);
 
 function openDetail(value) {
   console.log("🚀 ~ openDetail ~ value:", value);
-  detail.value  = value
-  isDetail.value = true
+  detail.value = value;
+  isDetail.value = true;
 }
+function handleFilter(value) {
+  console.log("🚀 ~ handleFilter ~ value:", value);
+}
+const authStore = useAuthStore();
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
+const StatusType = {
+  0: "Pending",
+  1: "Successful",
+  2: "Failed",
+};
+async function getData() {
+  try {
+    isLoading.value = true;
+    const response = await getTransactions({
+      ...query,
+      Offset: query.PageNumber - 1,
+      Limit: query.PageSize,
+      userId: authStore.userId,
+    });
+    if (response.status === 200) {
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        beneficiary: i.transaction.customerName,
+        amount: currencyFormat(i.transaction.amount),
+        paymentMethod: i.paymentMethod,
+        date: moment(i.createdAt).format("lll"),
+        transactionType: TransType[i.transaction?.actionType],
+        status: i.status,
+        statusInfo: StatusType[i.status],
+        note: i.transaction.note,
+        initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
+        dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
+        reference: i.transaction.transactionId,
+        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`
+      }));
+      query.totalCount = response.data.data.total;
+    }
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  getData();
+});
+
+watch(
+  () => [query.PageNumber],
+  () => {
+    getData();
+  }
+);
 provide("isOpen", isOpen);
 provide("showing", showing);
 </script>

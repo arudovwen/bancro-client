@@ -4,11 +4,12 @@
       :columns="columns"
       :rows="rows"
       :hasFilter="true"
-      title="Past Loans"
+      title="Loan Offers"
+      :queryParams="queryParams"
     >
       <template #table-row="{ row, column }">
         <span class="flex gap-x-2 items-center" v-if="column.key === 'status'">
-        <AppStatusButton stattype="loan-status" :status="row.status" />
+          <AppStatusButton stattype="offer-status" :status="row.status" />
         </span>
         <span class="flex gap-x-2 items-center" v-if="column.key === 'action'">
           <Menu class="" as="div">
@@ -19,27 +20,38 @@
               <MenuItems
                 class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[140px] rounded-xl overflow-hidden text-left text-[#454745] flex flex-col gap-y-1"
               >
-                <button
-                  @click="handleReview(row)"
-                  class="block py-2 px-4 cursor-pointer"
+                <MenuItem v-if="row.status === 0">
+                  <button
+                    @click="handleReview(row)"
+                    class="block py-2 px-4 cursor-pointer text-left"
+                  >
+                    Review request
+                  </button></MenuItem
                 >
-                  Review request
-                </button>
-                <span class="block py-2 px-4 cursor-pointer text-red-600"
-                  >Delete request</span
+                <MenuItem>
+                  <button
+                    class="block py-2 px-4 cursor-pointer text-red-600 text-left"
+                  >
+                    Delete request
+                  </button></MenuItem
                 >
               </MenuItems>
             </Float>
           </Menu>
         </span>
-       
       </template>
     </Table>
   </div>
   <ModalCenter :isOpen="isOpen" @togglePopup="isOpen = false" v-if="isOpen">
     <template #default>
       <div class="h-full w-full bg-white rounded-lg p-6">
-        <LoanComponentLoanReview :detail="detail" />
+        <LoanComponentLoanReview
+          :detail="detail"
+          @close="
+            isOpen = false;
+            getData();
+          "
+        />
       </div>
     </template>
   </ModalCenter>
@@ -47,9 +59,9 @@
 
 <script setup>
 import { Float } from "@headlessui-float/vue";
-import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import moment from "moment";
-import { getLoanRequests } from "~/services/loanservice";
+import { getLoanOffers } from "~/services/loanservice";
 
 const isOpen = ref(false);
 const detail = ref(null);
@@ -70,7 +82,7 @@ const columns = [
 
   {
     header: "Interest rate",
-    key: "channel",
+    key: "interestRate",
     isHtml: false,
     isStatus: false,
   },
@@ -102,24 +114,29 @@ const columns = [
 ];
 const queryParams = reactive({
   Search: "",
-  Status: 11,
+  SortOrder: "",
   PageNumber: 1,
   PageSize: 10,
+  totalCount: 0,
 });
 const rows = ref([]);
 
 function handleReview(value) {
-  isOpen.value = true;
   detail.value = value;
+  isOpen.value = true;
 }
 
 async function getData() {
-  const response = await getLoanRequests(queryParams);
+  const response = await getLoanOffers(queryParams);
   if (response.status === 200) {
+    queryParams.totalCount = response.data.totalCount;
     rows.value = response.data.data.map((i) => ({
       ...i,
-      amount: currencyFormat(i.amount),
-      tenor: i.tenor ? `${i.tenor} days` : "-",
+      status: i.termsStatus ? i.termsStatus : 0,
+      amount: currencyFormat(i.approvedAmount),
+      approvedAmount: currencyFormat(i.approvedAmount),
+      tenor: i.tenure ? `${i.tenure} days` : "-",
+      interestRate: i.interestRate ? `${i.interestRate}%` : "-",
       createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
     }));
   }
@@ -127,5 +144,11 @@ async function getData() {
 onMounted(() => {
   getData();
 });
+watch(
+  () => [queryParams.pageNumber, queryParams.PageSize, queryParams.Search],
+  () => {
+    getData();
+  }
+);
 provide("isOpen", isOpen);
 </script>

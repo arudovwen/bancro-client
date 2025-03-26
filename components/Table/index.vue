@@ -100,13 +100,6 @@
           </tr>
         </tbody>
       </table>
-      <Pagination
-        :total="queryParams.totalCount"
-        :current="queryParams.PageNumber"
-        :per-page="queryParams.PageSize"
-        :pageRange="5"
-        @page-changed="queryParams.PageNumber = $event"
-      />
     </div>
     <EmptyData
       v-if="!rows.length && !isLoading"
@@ -117,6 +110,14 @@
       :type="emptyType"
     />
     <TableLoader v-if="isLoading" />
+    <Pagination
+      v-if="!isLoading"
+      :total="queryParams.totalCount"
+      :current="queryParams.PageNumber"
+      :per-page="queryParams.PageSize"
+      :pageRange="5"
+      @page-changed="queryParams.PageNumber = $event"
+    />
   </div>
 </template>
 <script setup>

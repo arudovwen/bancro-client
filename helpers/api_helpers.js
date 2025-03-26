@@ -52,7 +52,7 @@ const handleTokenRefresh = async () => {
 axiosApi.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 403) {
+    if (error.response?.status === 401) {
       try {
         const newAccessToken = await handleTokenRefresh();
         error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;

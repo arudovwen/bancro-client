@@ -5,7 +5,7 @@
         v-for="(link, idx) in links"
         :key="idx"
         :class="` ${className} ${
-          link.title && `after:content-[\'\\00B7\'] after:text-4xl after:text-[#919EAB]`
+          link.title && `after:content-['>'] after:text-sm after:text-[#919EAB]`
         }  font-normal text-[10px] sm:text-xs lg:text-sm capitalize  last:after:content-[''] flex gap-x-2 items-center`"
       >
         <NuxtLink :to="link.url" class="">

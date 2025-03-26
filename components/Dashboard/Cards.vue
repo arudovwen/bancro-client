@@ -17,8 +17,11 @@
           <div>
             <span class="block text-xs mb-1">{{ n.label }}</span>
             <span class="flex gap-x-3 items-center text-xl"
-              ><span class="font-semibold">{{ n.balance }}</span
-              ><span v-if="n.canHide"
+              ><span class="font-semibold" v-if="!loading">{{
+                n.balance
+              }}</span>
+              <Skeleton :count="1" v-else containerClass="w-[100px] h-5" />
+              <span v-if="n.canHide"
                 ><AppIcon icon="solar:eye-bold-duotone" /></span
             ></span>
           </div>
@@ -29,14 +32,17 @@
           </span>
         </div>
         <div class="flex justify-between items-center gap-x-2 text-[10.5px]">
-          <span class="flex gap-x-2 items-center"
+          <span v-if="!loading" class="flex gap-x-2 items-center"
             >{{ n.rightBottom }}
             <span v-if="n.canCopy" @click="handleCopy">
               <AppIcon icon="solar:copy-bold-duotone"
             /></span>
             <span class="uppercase"> </span
           ></span>
-          <span class="uppercase"> {{ n.leftBottom }}</span>
+          <Skeleton :count="1" v-else containerClass="w-[150px]" />
+          <span class="uppercase" v-if="!loading"> {{ n.leftBottom }}</span>
+          <Skeleton :count="1" v-else containerClass="w-[100px]" />
+          <div></div>
         </div>
       </div>
     </div>
@@ -56,8 +62,8 @@ const data = ref([
     label: "Account balance",
     icon: "wallet",
     balance: 0,
-    rightBottom: "WEMA BANK - 0123454009",
-    leftBottom: "James Godwin",
+    rightBottom: "xxxxxxx - xxxxxxxxxxx",
+    leftBottom: "xxxx xxxxxx",
     canCopy: true,
     canHide: true,
     color: "#182132",
@@ -67,7 +73,7 @@ const data = ref([
     icon: "investment",
     balance: 0,
     rightBottom: "Next due payment",
-    leftBottom: "June 24, 2024",
+    leftBottom: "xxxxxxx",
     canCopy: false,
     canHide: false,
     color: "#57BE83",
@@ -77,7 +83,7 @@ const data = ref([
     icon: "investment",
     balance: 0,
     rightBottom: "Next due payment",
-    leftBottom: "June 24, 2024",
+    leftBottom: "xxxxxxx",
     canCopy: false,
     canHide: false,
     color: "#FFC091",
@@ -87,33 +93,46 @@ function handleCopy() {
   navigator.clipboard.writeText(accountNo.value);
   toast.info("Copied to clipboard!");
 }
+const loading = ref(true);
 async function getData() {
-  const response = await getSavingsAccountByUserid(authStore.userId);
-  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
-  if (response.status === 200) {
-    const { issuer, savingsAccountNo, firstName, lastName } =
-      response.data.data;
-    accountNo.value = savingsAccountNo;
-    data.value = data.value.map((item, index) => {
-      if (index === 0) {
-        item.rightBottom = `${issuer || "Wema Bank"} - ${savingsAccountNo}`;
-        item.leftBottom = `${ucFirst(firstName)}  ${ucFirst(lastName)}`;
-      }
-      return item;
-    });
-  }
-  if (response1.status === 200) {
-    const data1 = response1.data.data.savingsAccounts[0];
-    console.log("🚀 ~ getData ~ data1:", data1);
-    data.value = data.value.map((item, index) => {
-      if (index === 0) {
-        item.balance = currencyFormat(
-          data1.accountBalance,
-          data1.currency.code
-        );
-      }
-      return item;
-    });
+  try {
+    loading.value = true;
+
+    // Use Promise.all for concurrent API calls
+    const [accountResponse, clientResponse] = await Promise.all([
+      getSavingsAccountByUserid(authStore.userId),
+      getSavingsAccountClientByUserid(authStore.userId),
+    ]);
+
+    if (accountResponse.status === 200) {
+      const { issuer, savingsAccountNo, firstName, lastName } =
+        accountResponse.data.data;
+
+      accountNo.value = savingsAccountNo;
+      data.value = data.value.map((item, index) =>
+        index === 0
+          ? {
+              ...item,
+              rightBottom: `${issuer || "Wema Bank"} - ${savingsAccountNo}`,
+              leftBottom: `${ucFirst(firstName)} ${ucFirst(lastName)}`,
+            }
+          : item
+      );
+    }
+    if (clientResponse.status === 200) {
+      const clientAccount = clientResponse.data.data.savingsAccounts[0];
+
+      data.value = data.value.map((item, index) =>
+        index === 0
+          ? { ...item, balance: currencyFormat(clientAccount.accountBalance) }
+          : item
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching savings account data:", error);
+    toast.error("Failed to fetch account information");
+  } finally {
+    loading.value = false;
   }
 }
 

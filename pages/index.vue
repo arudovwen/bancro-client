@@ -7,14 +7,17 @@
         },`"
         text="Welcome to your dashboard"
       />
-      <button
+      <!-- <button
         id="create-product-button"
         class="flex items-center gap-x-2 bg-danger-500 text-white text-[14px]  rounded-lg py-[10px] px-[15px] font-medium"
         @click="() => navigateTo('/products/create')"
       >
         <AppIcon icon="lets-icons:add-square-duotone" />
         <span>Fund account</span>
-      </button>
+      </button> -->
+    </div>
+    <div class="mb-6" v-if="authStore.tierLevel !== 'tier3'">
+      <TierInfo />
     </div>
   
     <div class="flex flex-col lg:flex-row gap-5 mb-10">

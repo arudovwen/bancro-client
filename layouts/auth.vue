@@ -1,4 +1,5 @@
 <template>
+
   <div class="min-h-screen w-screen flex flex-col p-5">
     <div class="mb-10"><AppLogo imgClass="w-[160px] lg:!w-[180px]" /></div>
     <div class="flex-1 flex items-center justify-center">

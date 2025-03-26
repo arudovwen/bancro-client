@@ -100,14 +100,13 @@ const formData = inject("formData");
 provide("isOpen", isOpen);
 
 async function finanlizeTransfer() {
-
   try {
     if (!pin.value) {
       toast.error("Invalid transaction pin");
       return;
     }
     loading.value = true;
-    const response = await completeTransfer(formData);
+    const response = await completeTransfer({ ...formData, pin: pin.value });
     if (response.status === 200) {
       isOpen.value = true;
     }

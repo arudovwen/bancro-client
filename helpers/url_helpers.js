@@ -20,8 +20,17 @@ const urls = {
   PIN_SETUP: "/customerprofile/pin-setup",
   CHANGE_PIN: "/customerprofile/pin/change",
 
+  KYC_VERIFY: "/customerprofile/kyc/verify",
+  VALIDATE_OTP: "/customerprofile/kyc/validate-otp",
+
+
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",
+  LOAN_REQUESTS: "/loan/loan-requests",
+  LOAN_OFFERS: "/loan/offers",
+  LOAN_REQUIREMENTS: "/loan/loan-requirements",
+  LOAN_OTHER_INFORMATION: "/loan/loan-other-information",
+  APPROVE_LOAN_OFFER: "/loan/approve-offers",
 
   // Onboarding urls
   SIGN_UP_USER: "/onboarding/sign-up-user",
@@ -33,10 +42,14 @@ const urls = {
   DEPOSIT: "/savingsaccount/deposit",
   WITHDRAWAL: "/savingsaccount/withdrawal",
   SAVINGS_ACCOUNT: "/savingsaccount",
+  GET_ACCOUNT_TIER: "/savingsaccount/tier",
 
+  
   // Transactions urls
   GET_TRANSACTION_BY_ID: (id) => `/transactions/${id}`,
   GET_ALL_TRANSACTIONS: "/transactions/transactions",
+  GET_ALL_TRANSACTIONS_SAVING: "/transactions/savings",
+  GET_TRANSACTIONSS: "/transactions",
   GET_BANKS: "/transactions/banks",
   VALIDATE_ACCOUNT: "/transactions/account/validate",
   TRANSFER: "/transactions/transfer",
@@ -67,5 +80,8 @@ const urls = {
 
   // Beneficiary
   BENEFICIARY: "/Beneficiary",
+
+  GET_LOAN_PRODUCTS: "",
+
 };
 export default urls;

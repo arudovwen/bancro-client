@@ -226,23 +226,11 @@
   >
     <div class="my-6 w-full grid grid-cols-2 gap-x-6 gap-y-2">
       <div class="col-span-2">
-        <Textinput
-            placeholder=""
-            label="Reason"
-            type="text"
-            name="firstName"
-        />
+        <Textinput placeholder="" label="Reason" type="text" name="firstName" />
       </div>
       <div class="col-span-2">
-        <Textinput
-            placeholder=""
-            label="Notes"
-            type="text"
-            name="firstName"
-        />
+        <Textinput placeholder="" label="Notes" type="text" name="firstName" />
       </div>
-
-
     </div>
   </AppDialog>
   <AppDialog
@@ -267,26 +255,28 @@
   >
     <div class="border border-gray-400 rounded-md overflow-hidden my-6">
       <table class="w-full">
-        <tr class="bg-gray-100 border-b border-gray-300">
-          <td class="px-3 text-[14px] py-2">Amount</td>
-          <td class="px-3 text-[14px] py-2">Scheduled Date</td>
-          <td class="px-3 text-[14px] py-2">Repayment Date</td>
-        </tr>
-        <tr class="border-b border-gray-300">
-          <td class="px-3 text-[14px] py-5">N2,000</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-        </tr>
-        <tr class="border-b border-gray-300">
-          <td class="px-3 text-[14px] py-5">N2,000,000,000</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-        </tr>
-        <tr class="border-b border-gray-300">
-          <td class="px-3 text-[14px] py-5">N2,000</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-          <td class="px-3 text-[14px] py-5">10/4/2003</td>
-        </tr>
+        <tbody>
+          <tr class="bg-gray-100 border-b border-gray-300">
+            <td class="px-3 text-[14px] py-2">Amount</td>
+            <td class="px-3 text-[14px] py-2">Scheduled Date</td>
+            <td class="px-3 text-[14px] py-2">Repayment Date</td>
+          </tr>
+          <tr class="border-b border-gray-300">
+            <td class="px-3 text-[14px] py-5">N2,000</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+          </tr>
+          <tr class="border-b border-gray-300">
+            <td class="px-3 text-[14px] py-5">N2,000,000,000</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+          </tr>
+          <tr class="border-b border-gray-300">
+            <td class="px-3 text-[14px] py-5">N2,000</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+            <td class="px-3 text-[14px] py-5">10/4/2003</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </AppDialog>

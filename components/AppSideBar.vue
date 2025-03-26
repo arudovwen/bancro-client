@@ -39,11 +39,11 @@
               />
               <span class="flex items-center"> {{ item.name }}</span>
             </span>
-            <span
+            <!-- <span
               v-if="item.disabled"
               class="font-semibold bg-[#919EAB29] text-xs text-[#637381] rounded py-[2px] px-1"
               >Coming soon</span
-            >
+            > -->
           </span>
         </NuxtLink>
         <span
@@ -75,11 +75,11 @@
               />
               <span class="flex items-center"> {{ item.name }}</span>
             </span>
-            <span
+            <!-- <span
               v-if="item.disabled"
               class="font-semibold bg-[#919EAB29] text-xs text-[#637381] rounded py-[2px] px-1"
               >Coming soon</span
-            >
+            > -->
           </span>
         </span>
       </span>
