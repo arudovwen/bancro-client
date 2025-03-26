@@ -36,7 +36,7 @@
             type="submit"
             :isLoading="isLoading"
             text="submit"
-            btnClass="text-primary bg-[#9FE870] !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold"
+           btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold "
             :isDisabled="isLoading"
           />
         </div>

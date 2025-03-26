@@ -48,7 +48,7 @@
         type="button"
         :isLoading="isLoading"
         text="Repay loan"
-        btnClass="text-primary bg-[#9FE870] !py-1 !px-4 !rounded min-w-[100px] font-semibold"
+        btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold "
         :isDisabled="isLoading"
       />
     </span>
