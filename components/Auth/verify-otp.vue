@@ -48,7 +48,7 @@
             :isLoading="isLoading"
             :isDisabled="isLoading"
             text="Verify OTP"
-            btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold "
+            btnClass="text-white bg-danger-500  !py-3 !rounded-lg font-semibold w-full"
           />
         </div>
       </form>

@@ -41,7 +41,7 @@
             type="submit"
             :isLoading="isLoading"
             text="Next"
-            btnClass="text-white bg-danger-500 !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold "
+            btnClass="text-white bg-danger-500 border border-danger-500 !py-[10px] !px-10 !rounded-lg min-w-[156px] font-semibold "
             :isDisabled="isLoading"
           />
         </div>
