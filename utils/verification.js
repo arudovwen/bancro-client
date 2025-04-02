@@ -16,9 +16,11 @@ export function initiateVerify(data, onModalClose, onSuccess) {
         console.log("callback Response", response);  
         if(response.status =='success'){  
             alert('Information Verified')  
+            onSuccess(response)
         }  
         else{  
             alert(response.message)  
+            onModalClose(response)
         }  
 },  
 })
