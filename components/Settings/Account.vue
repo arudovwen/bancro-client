@@ -1,5 +1,6 @@
 <template>
   <div class="mb-7">
+    {{ config?.private?.PREMBLY_KEY }}
     <PageHeader title="Account Verifications" />
   </div>
   <section class="rounded-lg bg-white border border-[#EAECF0] pb-20">
@@ -32,13 +33,13 @@
               <span class="font-medium">{{ currencyFormat(0.0) }}</span>
             </div>
           </div>
-          <div class="mt-4">
+          <!-- <div class="mt-4">
             <button
               class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[6px] text-xs rounded-[6px] active:scale-95"
             >
               Upgrade
             </button>
-          </div>
+          </div> -->
         </div>
 
         <div class="grid gap-y-3">
@@ -57,7 +58,7 @@
               <span>
                 <button
                   v-if="n.status === 'upgrade'"
-                  @click="clickVerify"
+                  @click="clickVerify(n.config_id)"
                   class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
@@ -89,14 +90,22 @@
               >
                 <span class="text-[#344054] font-medium">{{ k.label }}</span>
                 <span>
-                  <button
-                    @click="openModal(k.key)"
-                    v-if="k.status === 'none'"
-                    class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
-                  >
-                    {{ k.buttonText }}
-                  </button>
-
+                  <span v-if="k.status === 'none'">
+                    <button
+                      v-if="k.config_id"
+                      @click="clickVerify(k.config_id)"
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
+                    >
+                      {{ k.buttonText }}
+                    </button>
+                    <button
+                      v-else
+                      @click="openModal(k.key)"
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
+                    >
+                      {{ k.buttonText }}
+                    </button>
+                  </span>
                   <AppStatusButton
                     v-else
                     :status="k.status"
@@ -116,7 +125,7 @@
       <div class="p-6 rounded-xl">
         <SettingsBvnForm v-if="showing === 'bvn'" />
         <SettingsNinForm v-if="showing === 'nin'" />
-        <SettingsIdentity v-if="showing === 'identity'" />
+        <SettingsIdentity v-if="showing === 'documents'" />
         <SettingsAddressForm v-if="showing === 'address'" />
       </div>
     </template>
@@ -130,50 +139,8 @@ import { toast } from "vue3-toastify";
 const showing = ref(1);
 const isOpen = ref(false);
 const authStore = useAuthStore();
-const data = [
-  {
-    label: "Bank Verification Number",
-    status: "pendingverification",
-    buttonText: "Provide BVN",
-    key: "bvn",
-  },
-  {
-    label: "National Identification Number",
-    status: "none",
-    buttonText: "Provide NIN",
-    key: "nin",
-  },
-  {
-    label: "Face  Verification",
-    status: "none",
-    buttonText: "Upload ID",
-    key: "identity",
-  },
-  {
-    label: "Date of Birth",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Resedential Address",
-    status: "none",
-    buttonText: "Upload Utility Bill",
-    key: "address",
-  },
-  {
-    label: "Next of Kin",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Sign an Indemnity agreement",
-    status: "verified",
-    buttonText: "Provide Phone number",
-    key: "phone",
-  },
-];
+const config = useRuntimeConfig();
+
 const companyData = [
   {
     label: "Bank Verification Number",
@@ -237,6 +204,7 @@ const TierData = ref([
         status: "verified",
         buttonText: "Provide BVN",
         key: "bvn",
+        config_id: config.public.BVN_KEY,
       },
     ],
     isOpen: false,
@@ -246,39 +214,45 @@ const TierData = ref([
     label: "Tier 2",
     options: [
       {
-        label: "National Identification Number",
-        status: "none",
-        buttonText: "Provide NIN",
-        key: "nin",
+        label: "Residential Address",
+        status: "verified",
+        buttonText: "Upload Utility Bill",
+        key: "address",
+        config_id: config.public.BVN_KEY,
       },
       {
         label: "Date of Birth",
         status: "verified",
         buttonText: "Provide your DOB",
         key: "dob",
+        config_id: config.public.BVN_KEY,
       },
+      {
+        label: "National Identification Number",
+        status: "none",
+        buttonText: "Provide NIN",
+        key: "nin",
+        config_id: config.public.NIN_KEY,
+      },
+
       {
         label: "Face  Verification",
         status: "none",
         buttonText: "Upload ID",
         key: "identity",
+        config_id: config.public.BVN_KEY,
       },
 
       {
-        label: "Residential Address",
-        status: "none",
-        buttonText: "Upload Utility Bill",
-        key: "address",
-      },
-      {
         label: "Government ID",
-        status: "verified",
-        buttonText: "Provide email address",
+        status: "none",
+        buttonText: "Provide Government ID",
         key: "govtId",
+        config_id: config.public.GOVT_KEY,
       },
     ],
     isOpen: false,
-    status: "upgrade",
+    status: "none",
   },
   {
     label: "Tier 3",
@@ -311,21 +285,16 @@ function getData() {}
 function openTab(index) {
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
 }
-function onModalClose(){
+function onModalClose() {}
 
-}
-
-
-function onSuccess(){
-
-}
-function clickVerify() {
+function onSuccess() {}
+function clickVerify(config_id) {
   const data = {
     merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
     first_name: "James",
     last_name: "John",
     email: "janeforster@yopmail.com",
-    config_id: "c6f1c16a-d293-4c2a-8c78-784eed886138",
+    config_id,
     user_ref: "236243634",
   };
   initiateVerify(data, onModalClose, onSuccess);

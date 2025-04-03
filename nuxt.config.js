@@ -40,7 +40,13 @@ export default defineNuxtConfig({
       TINY_MCE: process.env.APP_TINYMCE_KEY,
       PUBLIC_KEY: process.env.PUBLIC_KEY,
       TENANT_ID: process.env.TENANT_ID,
+      NIN_KEY: process.env.NIN_KEY,
+      BVN_KEY: process.env.BVN_KEY,
+      GOVT_KEY: process.env.GOVT_KEY,
     },
+    private:{
+      PREMBLY_KEY: process.env.PREMBLY_KEY
+    }
   },
   ssr: false,
   spaLoadingTemplate: true,
