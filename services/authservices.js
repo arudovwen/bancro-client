@@ -84,3 +84,12 @@ export async function verifyKyc(data) {
 export async function verifyKycOtp(data) {
   return await post(`${urls.VALIDATE_OTP}?${new URLSearchParams(data)}`, data);
 }
+
+
+export async function verifyTier2(data) {
+  return await post(urls.TIER_2_VERIFICATION, data);
+}
+
+export async function getTierStatus() {
+  return await get(urls.GET_TIER_VERIFICATION);
+}

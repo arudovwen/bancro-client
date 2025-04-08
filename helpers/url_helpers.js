@@ -22,7 +22,9 @@ const urls = {
 
   KYC_VERIFY: "/customerprofile/kyc/verify",
   VALIDATE_OTP: "/customerprofile/kyc/validate-otp",
-
+  
+  TIER_2_VERIFICATION: "/customerprofile/tier-two-upgrade",
+  GET_TIER_VERIFICATION: "/customerprofile/get-user-tier-status",
 
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",

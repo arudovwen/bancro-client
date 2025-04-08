@@ -58,7 +58,11 @@
               <span>
                 <button
                   v-if="n.status === 'upgrade'"
-                  @click="clickVerify(n.config_id)"
+                  @click="
+                    () => {
+                      clickVerify(n.config_id);
+                    }
+                  "
                   class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
@@ -93,7 +97,10 @@
                   <span v-if="k.status === 'none'">
                     <button
                       v-if="k.config_id"
-                      @click="clickVerify(k.config_id)"
+                      @click="
+                        type = k.type;
+                        clickVerify(k.config_id);
+                      "
                       class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
                     >
                       {{ k.buttonText }}
@@ -135,56 +142,13 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { toast } from "vue3-toastify";
+import { verifyTier2,getTierStatus } from "~/services/authservices";
 
 const showing = ref(1);
 const isOpen = ref(false);
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 
-const companyData = [
-  {
-    label: "Bank Verification Number",
-    status: "pendingverification",
-    buttonText: "Provide BVN",
-    key: "bvn",
-  },
-  {
-    label: "National Identification Number",
-    status: "none",
-    buttonText: "Provide NIN",
-    key: "nin",
-  },
-  {
-    label: "Company Profile",
-    status: "none",
-    buttonText: "Upload ID",
-    key: "identity",
-  },
-  {
-    label: "Certificate of Incorporation",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Memorandum & Articles of Association",
-    status: "none",
-    buttonText: "Upload Utility Bill",
-    key: "address",
-  },
-  {
-    label: "CAC Status Report",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Utility Bill",
-    status: "verified",
-    buttonText: "Provide Phone number",
-    key: "phone",
-  },
-];
 const limits = [
   {
     label: "Daily Transaction Limit:",
@@ -219,6 +183,7 @@ const TierData = ref([
         buttonText: "Upload Utility Bill",
         key: "address",
         config_id: config.public.BVN_KEY,
+        type: 1,
       },
       {
         label: "Date of Birth",
@@ -226,6 +191,7 @@ const TierData = ref([
         buttonText: "Provide your DOB",
         key: "dob",
         config_id: config.public.BVN_KEY,
+        type: 1,
       },
       {
         label: "National Identification Number",
@@ -233,6 +199,7 @@ const TierData = ref([
         buttonText: "Provide NIN",
         key: "nin",
         config_id: config.public.NIN_KEY,
+        type: 0,
       },
 
       {
@@ -241,6 +208,7 @@ const TierData = ref([
         buttonText: "Upload ID",
         key: "identity",
         config_id: config.public.BVN_KEY,
+        type: 2,
       },
 
       {
@@ -249,6 +217,7 @@ const TierData = ref([
         buttonText: "Provide Government ID",
         key: "govtId",
         config_id: config.public.GOVT_KEY,
+        type: 1,
       },
     ],
     isOpen: false,
@@ -262,6 +231,7 @@ const TierData = ref([
         status: "none",
         buttonText: "Upload Documents",
         key: "documents",
+        type: 1,
       },
     ],
     status: "none",
@@ -272,7 +242,7 @@ const open = ref(false);
 const img = ref("");
 const image = ref(null);
 const route = useRoute();
-
+const type = ref(null);
 const isLoading = ref(false);
 onMounted(() => {
   getData();
@@ -281,23 +251,34 @@ function openModal(key) {
   showing.value = key;
   isOpen.value = true;
 }
-function getData() {}
+function getData() {
+  getTierStatus()
+}
 function openTab(index) {
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
 }
 function onModalClose() {}
 
-function onSuccess() {}
+function onSuccess(response) {
+
+  const data = {
+    verificationType: type.value,
+    jsonResponse: response.channel,
+  };
+  console.log("Data", data);
+  verifyTier2(data);
+}
 function clickVerify(config_id) {
   const data = {
     merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
-    first_name: "James",
-    last_name: "John",
-    email: "janeforster@yopmail.com",
+    first_name: authStore.userInfo.firstName,
+    last_name: authStore.userInfo.lastName,
+    email: authStore.userInfo.email,
     config_id,
-    user_ref: "236243634",
+    user_ref: authStore.userInfo.id,
   };
-  initiateVerify(data, onModalClose, onSuccess);
+  console.log("Data", data);
+  initiateVerify(data, onSuccess, onModalClose);
 }
 provide("isOpen", isOpen);
 </script>
