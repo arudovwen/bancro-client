@@ -267,6 +267,7 @@ function onSuccess(response) {
   };
   console.log("Data", data);
   verifyTier2(data);
+  getData();
 }
 function clickVerify(config_id) {
   const data = {
@@ -275,7 +276,7 @@ function clickVerify(config_id) {
     last_name: authStore.userInfo.lastName,
     email: authStore.userInfo.email,
     config_id,
-    user_ref: authStore.userInfo.id,
+    user_ref: `${authStore.userInfo.id}_${type.value}`,
   };
   console.log("Data", data);
   initiateVerify(data, onSuccess, onModalClose);
