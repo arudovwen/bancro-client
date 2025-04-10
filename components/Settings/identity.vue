@@ -6,7 +6,7 @@
     <div class="mb-5 w-full">
       <Textinput
         placeholder=""
-        label="Type of ID"
+        label="Business Type"
         name="idType"
         v-bind="idTypeAtt"
         v-model="idType"
@@ -17,7 +17,7 @@
     <div class="mb-5 w-full">
       <Textinput
         placeholder=""
-        label="Identification Number"
+        label="Registration Number"
         name="idNumber"
         v-bind="idNumberAtt"
         v-model="idNumber"
@@ -25,7 +25,7 @@
       />
     </div>
     <div class="mb-5">
-      <FormsFileUploader title="Upload ID" />
+      <FormsFileUploader title="Upload Document" />
     </div>
 
     <div class="">

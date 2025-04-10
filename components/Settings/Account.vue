@@ -25,12 +25,14 @@
           </div>
           <div class="grid gap-y-2">
             <div
-              v-for="n in limits"
+              v-for="n in limitData"
               :key="n.label"
               class="flex justify-start gap-x-5 items-center text-xs text-white"
             >
               <span class="w-[154px]">{{ n.label }}</span>
-              <span class="font-medium">{{ currencyFormat(0.0) }}</span>
+              <span class="font-medium">{{
+                currencyFormat(limits?.[n.key] || 0)
+              }}</span>
             </div>
           </div>
           <!-- <div class="mt-4">
@@ -76,6 +78,7 @@
                 </button>
 
                 <AppStatusButton
+                  @click="openTab(index)"
                   v-if="n.status === 'verified'"
                   :status="n.status"
                   :mini="true"
@@ -94,28 +97,34 @@
               >
                 <span class="text-[#344054] font-medium">{{ k.label }}</span>
                 <span>
-                  <span v-if="k.status === 'none'">
+                  <span v-if="!profileData?.[k.valueKey]">
                     <button
                       v-if="k.config_id"
                       @click="
                         type = k.type;
                         clickVerify(k.config_id);
                       "
-                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
+                      :disabled="
+                        profileData.tierName.toLowerCase() !== n.prerequisite
+                      "
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {{ k.buttonText }}
                     </button>
                     <button
                       v-else
+                      :disabled="
+                        profileData.tierName.toLowerCase() !== n.prerequisite
+                      "
                       @click="openModal(k.key)"
-                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {{ k.buttonText }}
                     </button>
                   </span>
                   <AppStatusButton
                     v-else
-                    :status="k.status"
+                    status="verified"
                     :mini="true"
                     stattype="textstattus"
                   />
@@ -130,10 +139,14 @@
   <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false">
     <template #default>
       <div class="p-6 rounded-xl">
-        <SettingsBvnForm v-if="showing === 'bvn'" />
-        <SettingsNinForm v-if="showing === 'nin'" />
-        <SettingsIdentity v-if="showing === 'documents'" />
-        <SettingsAddressForm v-if="showing === 'address'" />
+        <Tier3Business
+          v-if="authStore.userInfo.customerType?.toLowerCase() === 'business'"
+          @close="getData()"
+        />
+        <Tier3Personal
+          v-if="authStore.userInfo.customerType?.toLowerCase() === 'individual'"
+          @close="getData()"
+        />
       </div>
     </template>
   </ModalCenter>
@@ -141,24 +154,46 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { toast } from "vue3-toastify";
-import { verifyTier2,getTierStatus } from "~/services/authservices";
+
+import {
+  verifyTier2,
+  getTierStatus,
+  getTierLimits,
+} from "~/services/authservices";
+import Tier3Business from "./Tier3Business.vue";
+import Tier3Personal from "./Tier3Personal.vue";
 
 const showing = ref(1);
 const isOpen = ref(false);
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 
-const limits = [
-  {
-    label: "Daily Transaction Limit:",
-    key: "",
-  },
-  {
-    label: "Maximum Account Balance:",
-    key: "",
-  },
-];
+// {
+//     "userId": "1569d141-9424-4c9b-961f-13861af9ec9b",
+//     "businessName": null,
+//     "bvn": "22152926188",
+//     "nin": null,
+//     "governmentId": null,
+//     "isFaceVerified": false,
+//     "residentialAddress": "",
+//     "businessAddress": null,
+//     "dateOfBirth": "1993-08-21T00:00:00",
+//     "isBvnVerified": true,
+//     "isBvnFaceVerified": false,
+//     "isNinVerified": false,
+//     "addressMatches": false,
+//     "isDOBVerified": false,
+//     "utilityBillWithinThreeMonths": false,
+//     "businessRegType": null,
+//     "registrationNumber": null,
+//     "isRegNumberConfirmed": false,
+//     "isConfirmedGovernmentId": false,
+//     "tinNumber": null,
+//     "isTINVerified": false,
+//     "hasRegistrationDocument": false,
+//     "tier": 0,
+//     "tierName": "Tier1"
+// }
 const TierData = ref([
   {
     label: "Tier 1",
@@ -169,10 +204,12 @@ const TierData = ref([
         buttonText: "Provide BVN",
         key: "bvn",
         config_id: config.public.BVN_KEY,
+        valueKey: "isBvnVerified",
       },
     ],
     isOpen: false,
     status: "verified",
+    prerequisite: "tier0",
   },
   {
     label: "Tier 2",
@@ -184,6 +221,7 @@ const TierData = ref([
         key: "address",
         config_id: config.public.BVN_KEY,
         type: 1,
+        valueKey: "residentialAddress",
       },
       {
         label: "Date of Birth",
@@ -192,6 +230,7 @@ const TierData = ref([
         key: "dob",
         config_id: config.public.BVN_KEY,
         type: 1,
+        valueKey: "isDOBVerified",
       },
       {
         label: "National Identification Number",
@@ -200,6 +239,7 @@ const TierData = ref([
         key: "nin",
         config_id: config.public.NIN_KEY,
         type: 0,
+        valueKey: "isNinVerified",
       },
 
       {
@@ -209,6 +249,7 @@ const TierData = ref([
         key: "identity",
         config_id: config.public.BVN_KEY,
         type: 2,
+        valueKey: "isBvnFaceVerified",
       },
 
       {
@@ -218,10 +259,12 @@ const TierData = ref([
         key: "govtId",
         config_id: config.public.GOVT_KEY,
         type: 1,
+        valueKey: "isConfirmedGovernmentId",
       },
     ],
     isOpen: false,
     status: "none",
+    prerequisite: "tier1",
   },
   {
     label: "Tier 3",
@@ -229,20 +272,34 @@ const TierData = ref([
       {
         label: "Documents verification",
         status: "none",
-        buttonText: "Upload Documents",
+        buttonText: "Upload Document",
         key: "documents",
         type: 1,
+        valueKey: "utilityBillWithinThreeMonths",
       },
     ],
     status: "none",
     isOpen: false,
+    prerequisite: "tier2",
   },
 ]);
+const profileData = ref(null);
 const open = ref(false);
 const img = ref("");
 const image = ref(null);
 const route = useRoute();
 const type = ref(null);
+const limitData = ref([
+  {
+    label: "Daily Transaction Limit:",
+    key: "DailyDebitLimit",
+  },
+  {
+    label: "Maximum Account Balance:",
+    key: "BalanceLimit",
+  },
+]);
+const limits = ref(null);
 const isLoading = ref(false);
 onMounted(() => {
   getData();
@@ -252,15 +309,27 @@ function openModal(key) {
   isOpen.value = true;
 }
 function getData() {
-  getTierStatus()
+  getTierStatus().then((res) => {
+    if (res.status === 200) {
+      profileData.value = res.data.data;
+    }
+  });
+  getTierLimits({
+    userType: authStore.userInfo.customerType === "individual" ? 0 : 1,
+    tierLevel: authStore.tierLevel,
+  }).then((res) => {
+    if (res.status === 200) {
+      limits.value = res.data;
+    }
+  });
 }
 function openTab(index) {
+  console.log(index);
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
 }
 function onModalClose() {}
 
 function onSuccess(response) {
-
   const data = {
     verificationType: type.value,
     jsonResponse: response.channel,
