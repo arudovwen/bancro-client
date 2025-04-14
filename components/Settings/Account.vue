@@ -221,7 +221,7 @@ const TierData = ref([
         key: "address",
         config_id: config.public.BVN_KEY,
         type: 1,
-        valueKey: "residentialAddress",
+        valueKey: "addressMatches",
       },
       {
         label: "Date of Birth",
