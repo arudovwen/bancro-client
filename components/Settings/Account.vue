@@ -105,21 +105,23 @@
                         clickVerify(k.config_id);
                       "
                       :disabled="
-                        profileData.tierName.toLowerCase() !== n.prerequisite
+                        profileData?.tierName?.toLowerCase() !==
+                          n.prerequisite || isVerifying
                       "
                       class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {{ k.buttonText }}
+                      {{ isVerifying ? "Verifying data .." : k.buttonText }}
                     </button>
                     <button
                       v-else
                       :disabled="
-                        profileData.tierName.toLowerCase() !== n.prerequisite
+                        profileData?.tierName?.toLowerCase() !==
+                          n.prerequisite || isVerifying
                       "
                       @click="openModal(k.key)"
                       class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {{ k.buttonText }}
+                      {{ isVerifying ? "Verifying data" : k.buttonText }}
                     </button>
                   </span>
                   <AppStatusButton
@@ -165,35 +167,10 @@ import Tier3Personal from "./Tier3Personal.vue";
 
 const showing = ref(1);
 const isOpen = ref(false);
+const isVerifying = ref(false);
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
 
-// {
-//     "userId": "1569d141-9424-4c9b-961f-13861af9ec9b",
-//     "businessName": null,
-//     "bvn": "22152926188",
-//     "nin": null,
-//     "governmentId": null,
-//     "isFaceVerified": false,
-//     "residentialAddress": "",
-//     "businessAddress": null,
-//     "dateOfBirth": "1993-08-21T00:00:00",
-//     "isBvnVerified": true,
-//     "isBvnFaceVerified": false,
-//     "isNinVerified": false,
-//     "addressMatches": false,
-//     "isDOBVerified": false,
-//     "utilityBillWithinThreeMonths": false,
-//     "businessRegType": null,
-//     "registrationNumber": null,
-//     "isRegNumberConfirmed": false,
-//     "isConfirmedGovernmentId": false,
-//     "tinNumber": null,
-//     "isTINVerified": false,
-//     "hasRegistrationDocument": false,
-//     "tier": 0,
-//     "tierName": "Tier1"
-// }
 const TierData = ref([
   {
     label: "Tier 1",
@@ -284,10 +261,7 @@ const TierData = ref([
   },
 ]);
 const profileData = ref(null);
-const open = ref(false);
-const img = ref("");
-const image = ref(null);
-const route = useRoute();
+
 const type = ref(null);
 const limitData = ref([
   {
@@ -312,6 +286,11 @@ function getData() {
   getTierStatus().then((res) => {
     if (res.status === 200) {
       profileData.value = res.data.data;
+      if (!TierData.value[res.data.data?.tier + 1].isOpen) {
+        openTab(res.data.data?.tier + 1);
+      }
+
+      isVerifying.value = false;
     }
   });
   getTierLimits({
@@ -320,11 +299,11 @@ function getData() {
   }).then((res) => {
     if (res.status === 200) {
       limits.value = res.data;
+      isVerifying.value = false;
     }
   });
 }
 function openTab(index) {
-  console.log(index);
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
 }
 function onModalClose() {}
@@ -335,6 +314,7 @@ function onSuccess(response) {
     jsonResponse: response.channel,
   };
   console.log("Data", data);
+  isVerifying.value = true;
   verifyTier2(data);
   getData();
 }
@@ -347,7 +327,6 @@ function clickVerify(config_id) {
     config_id,
     user_ref: `${authStore.userInfo.id}_${type.value}`,
   };
-  console.log("Data", data);
   initiateVerify(data, onSuccess, onModalClose);
 }
 provide("isOpen", isOpen);
