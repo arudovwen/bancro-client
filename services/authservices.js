@@ -59,7 +59,11 @@ export async function getUserProfile(userId, config = {}) {
   return await get(`${urls.USER_PROFILE(userId)}`, config);
 }
 export async function updateProfile(data, config = {}) {
-  return await post(`${urls.UPDATE_PROFILE}?userId=${data.userId}`, data, config);
+  return await post(
+    `${urls.UPDATE_PROFILE}?userId=${data.userId}`,
+    data,
+    config
+  );
 }
 export async function getRoles() {
   return await get(urls.GET_ROLES);
@@ -83,4 +87,19 @@ export async function verifyKyc(data) {
 }
 export async function verifyKycOtp(data) {
   return await post(`${urls.VALIDATE_OTP}?${new URLSearchParams(data)}`, data);
+}
+
+export async function verifyTier2(data) {
+  return await post(urls.TIER_2_VERIFICATION, data);
+}
+
+export async function getTierStatus() {
+  return await get(urls.GET_TIER_VERIFICATION);
+}
+export async function uploadKyc(data) {
+  return await post(urls.KYC_DOCUMENT_UPLOAD, data);
+}
+
+export async function getTierLimits(payload) {
+  return await get(`${urls.GET_LIMITS}?${new URLSearchParams(payload)}`);
 }

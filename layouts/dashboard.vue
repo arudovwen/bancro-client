@@ -27,11 +27,10 @@ import {
   getSavingsAccountClientByUserid,
   getAccountTier,
 } from "~/services/savingsservice";
-
+import { getTierStatus } from "~/services/authservices";
 definePageMeta({ middleware: ["auth", "onboarding"] });
 
 const authStore = useAuthStore();
-const route = useRoute();
 const isSigniningOut = ref(false);
 async function getData() {
   const response = await getSavingsAccountByUserid(authStore.userId);
@@ -47,9 +46,9 @@ async function getData() {
   }
 }
 function getTier() {
-  getAccountTier().then((res) => {
+  getTierStatus().then((res) => {
     if (res.status === 200) {
-      authStore.setTier(res.data.data?.toLowerCase());
+      authStore.setTier(res.data.data?.tierName?.toLowerCase());
     }
   });
 }

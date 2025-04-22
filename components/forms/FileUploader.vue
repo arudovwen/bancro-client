@@ -92,7 +92,7 @@ function processFile(file, extension) {
   const reader = new FileReader();
 
   reader.onload = (event) => {
-    const base64String = event.target.result.split(",")[1];
+    const base64String = event.target.result;
     loading.value = true;
 
     const data = { base64: base64String, ext: `.${extension}` };

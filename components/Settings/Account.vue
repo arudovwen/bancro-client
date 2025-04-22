@@ -1,5 +1,6 @@
 <template>
   <div class="mb-7">
+    {{ config?.private?.PREMBLY_KEY }}
     <PageHeader title="Account Verifications" />
   </div>
   <section class="rounded-lg bg-white border border-[#EAECF0] pb-20">
@@ -24,21 +25,23 @@
           </div>
           <div class="grid gap-y-2">
             <div
-              v-for="n in limits"
+              v-for="n in limitData"
               :key="n.label"
               class="flex justify-start gap-x-5 items-center text-xs text-white"
             >
               <span class="w-[154px]">{{ n.label }}</span>
-              <span class="font-medium">{{ currencyFormat(0.0) }}</span>
+              <span class="font-medium">{{
+                currencyFormat(limits?.[n.key] || 0)
+              }}</span>
             </div>
           </div>
-          <div class="mt-4">
+          <!-- <div class="mt-4">
             <button
-              class="text-primary-500 font-medium bg-white border border-white px-2 py-[6px] text-xs rounded-[6px] active:scale-95"
+              class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[6px] text-xs rounded-[6px] active:scale-95"
             >
               Upgrade
             </button>
-          </div>
+          </div> -->
         </div>
 
         <div class="grid gap-y-3">
@@ -57,8 +60,12 @@
               <span>
                 <button
                   v-if="n.status === 'upgrade'"
-                  @click="clickVerify"
-                  class="font-medium bg-gray-800 border border-gray-800 text-white px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
+                  @click="
+                    () => {
+                      clickVerify(n.config_id);
+                    }
+                  "
+                  class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
                 </button>
@@ -71,6 +78,7 @@
                 </button>
 
                 <AppStatusButton
+                  @click="openTab(index)"
                   v-if="n.status === 'verified'"
                   :status="n.status"
                   :mini="true"
@@ -89,17 +97,36 @@
               >
                 <span class="text-[#344054] font-medium">{{ k.label }}</span>
                 <span>
-                  <button
-                    @click="openModal(k.key)"
-                    v-if="k.status === 'none'"
-                    class="underline py-[1px] text-[#2E90FA] text-xs font-medium"
-                  >
-                    {{ k.buttonText }}
-                  </button>
-
+                  <span v-if="!profileData?.[k.valueKey]">
+                    <button
+                      v-if="k.config_id"
+                      @click="
+                        type = k.type;
+                        clickVerify(k.config_id);
+                      "
+                      :disabled="
+                        profileData?.tierName?.toLowerCase() !==
+                          n.prerequisite || isVerifying
+                      "
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {{ isVerifying ? "Verifying data .." : k.buttonText }}
+                    </button>
+                    <button
+                      v-else
+                      :disabled="
+                        profileData?.tierName?.toLowerCase() !==
+                          n.prerequisite || isVerifying
+                      "
+                      @click="openModal(k.key)"
+                      class="underline py-[1px] text-[#2E90FA] text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {{ isVerifying ? "Verifying data" : k.buttonText }}
+                    </button>
+                  </span>
                   <AppStatusButton
                     v-else
-                    :status="k.status"
+                    status="verified"
                     :mini="true"
                     stattype="textstattus"
                   />
@@ -114,10 +141,14 @@
   <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false">
     <template #default>
       <div class="p-6 rounded-xl">
-        <SettingsBvnForm v-if="showing === 'bvn'" />
-        <SettingsNinForm v-if="showing === 'nin'" />
-        <SettingsIdentity v-if="showing === 'identity'" />
-        <SettingsAddressForm v-if="showing === 'address'" />
+        <Tier3Business
+          v-if="authStore.userInfo.customerType?.toLowerCase() === 'business'"
+          @close="getData()"
+        />
+        <Tier3Personal
+          v-if="authStore.userInfo.customerType?.toLowerCase() === 'individual'"
+          @close="getData()"
+        />
       </div>
     </template>
   </ModalCenter>
@@ -125,109 +156,21 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { toast } from "vue3-toastify";
+
+import {
+  verifyTier2,
+  getTierStatus,
+  getTierLimits,
+} from "~/services/authservices";
+import Tier3Business from "./Tier3Business.vue";
+import Tier3Personal from "./Tier3Personal.vue";
 
 const showing = ref(1);
 const isOpen = ref(false);
+const isVerifying = ref(false);
 const authStore = useAuthStore();
-const data = [
-  {
-    label: "Bank Verification Number",
-    status: "pendingverification",
-    buttonText: "Provide BVN",
-    key: "bvn",
-  },
-  {
-    label: "National Identification Number",
-    status: "none",
-    buttonText: "Provide NIN",
-    key: "nin",
-  },
-  {
-    label: "Face  Verification",
-    status: "none",
-    buttonText: "Upload ID",
-    key: "identity",
-  },
-  {
-    label: "Date of Birth",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Resedential Address",
-    status: "none",
-    buttonText: "Upload Utility Bill",
-    key: "address",
-  },
-  {
-    label: "Next of Kin",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Sign an Indemnity agreement",
-    status: "verified",
-    buttonText: "Provide Phone number",
-    key: "phone",
-  },
-];
-const companyData = [
-  {
-    label: "Bank Verification Number",
-    status: "pendingverification",
-    buttonText: "Provide BVN",
-    key: "bvn",
-  },
-  {
-    label: "National Identification Number",
-    status: "none",
-    buttonText: "Provide NIN",
-    key: "nin",
-  },
-  {
-    label: "Company Profile",
-    status: "none",
-    buttonText: "Upload ID",
-    key: "identity",
-  },
-  {
-    label: "Certificate of Incorporation",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Memorandum & Articles of Association",
-    status: "none",
-    buttonText: "Upload Utility Bill",
-    key: "address",
-  },
-  {
-    label: "CAC Status Report",
-    status: "verified",
-    buttonText: "Provide email address",
-    key: "email",
-  },
-  {
-    label: "Utility Bill",
-    status: "verified",
-    buttonText: "Provide Phone number",
-    key: "phone",
-  },
-];
-const limits = [
-  {
-    label: "Daily Transaction Limit:",
-    key: "",
-  },
-  {
-    label: "Maximum Account Balance:",
-    key: "",
-  },
-];
+const config = useRuntimeConfig();
+
 const TierData = ref([
   {
     label: "Tier 1",
@@ -237,48 +180,68 @@ const TierData = ref([
         status: "verified",
         buttonText: "Provide BVN",
         key: "bvn",
+        config_id: config.public.BVN_KEY,
+        valueKey: "isBvnVerified",
       },
     ],
     isOpen: false,
     status: "verified",
+    prerequisite: "tier0",
   },
   {
     label: "Tier 2",
     options: [
       {
-        label: "National Identification Number",
-        status: "none",
-        buttonText: "Provide NIN",
-        key: "nin",
+        label: "Residential Address",
+        status: "verified",
+        buttonText: "Upload Utility Bill",
+        key: "address",
+        config_id: config.public.BVN_KEY,
+        type: 1,
+        valueKey: "addressMatches",
       },
       {
         label: "Date of Birth",
         status: "verified",
         buttonText: "Provide your DOB",
         key: "dob",
+        config_id: config.public.BVN_KEY,
+        type: 1,
+        valueKey: "isDOBVerified",
       },
+      {
+        label: "National Identification Number",
+        status: "none",
+        buttonText: "Provide NIN",
+        key: "nin",
+        config_id: config.public.NIN_KEY,
+        type: 0,
+        valueKey: "isNinVerified",
+      },
+
       {
         label: "Face  Verification",
         status: "none",
         buttonText: "Upload ID",
         key: "identity",
+        config_id: config.public.BVN_KEY,
+        type: 2,
+        valueKey: "isBvnFaceVerified",
       },
 
       {
-        label: "Residential Address",
-        status: "none",
-        buttonText: "Upload Utility Bill",
-        key: "address",
-      },
-      {
         label: "Government ID",
-        status: "verified",
-        buttonText: "Provide email address",
+        status: "none",
+        buttonText: "Provide Government ID",
         key: "govtId",
+        config_id: config.public.GOVT_KEY,
+        type: 1,
+        valueKey: "isConfirmedGovernmentId",
       },
     ],
     isOpen: false,
-    status: "upgrade",
+    status: "none",
+    prerequisite: "tier1",
   },
   {
     label: "Tier 3",
@@ -286,19 +249,31 @@ const TierData = ref([
       {
         label: "Documents verification",
         status: "none",
-        buttonText: "Upload Documents",
+        buttonText: "Upload Document",
         key: "documents",
+        type: 1,
+        valueKey: "utilityBillWithinThreeMonths",
       },
     ],
     status: "none",
     isOpen: false,
+    prerequisite: "tier2",
   },
 ]);
-const open = ref(false);
-const img = ref("");
-const image = ref(null);
-const route = useRoute();
+const profileData = ref(null);
 
+const type = ref(null);
+const limitData = ref([
+  {
+    label: "Daily Transaction Limit:",
+    key: "DailyDebitLimit",
+  },
+  {
+    label: "Maximum Account Balance:",
+    key: "BalanceLimit",
+  },
+]);
+const limits = ref(null);
 const isLoading = ref(false);
 onMounted(() => {
   getData();
@@ -307,28 +282,52 @@ function openModal(key) {
   showing.value = key;
   isOpen.value = true;
 }
-function getData() {}
+function getData() {
+  getTierStatus().then((res) => {
+    if (res.status === 200) {
+      profileData.value = res.data.data;
+      if (!TierData.value[res.data.data?.tier + 1].isOpen) {
+        openTab(res.data.data?.tier + 1);
+      }
+
+      isVerifying.value = false;
+    }
+  });
+  getTierLimits({
+    userType: authStore.userInfo.customerType === "individual" ? 0 : 1,
+    tierLevel: authStore.tierLevel,
+  }).then((res) => {
+    if (res.status === 200) {
+      limits.value = res.data;
+      isVerifying.value = false;
+    }
+  });
+}
 function openTab(index) {
   TierData.value[index].isOpen = !TierData.value[index].isOpen;
 }
-function onModalClose(){
+function onModalClose() {}
 
+function onSuccess(response) {
+  const data = {
+    verificationType: type.value,
+    jsonResponse: response.channel,
+  };
+  console.log("Data", data);
+  isVerifying.value = true;
+  verifyTier2(data);
+  getData();
 }
-
-
-function onSuccess(){
-
-}
-function clickVerify() {
+function clickVerify(config_id) {
   const data = {
     merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
-    first_name: "James",
-    last_name: "John",
-    email: "janeforster@yopmail.com",
-    config_id: "c6f1c16a-d293-4c2a-8c78-784eed886138",
-    user_ref: "236243634",
+    first_name: authStore.userInfo.firstName,
+    last_name: authStore.userInfo.lastName,
+    email: authStore.userInfo.email,
+    config_id,
+    user_ref: `${authStore.userInfo.id}_${type.value}`,
   };
-  initiateVerify(data, onModalClose, onSuccess);
+  initiateVerify(data, onSuccess, onModalClose);
 }
 provide("isOpen", isOpen);
 </script>
