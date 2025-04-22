@@ -65,7 +65,7 @@
                       clickVerify(n.config_id);
                     }
                   "
-                  class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
+                  class="text-[#163300] font-medium bg-gray-800 border border-gray-800  px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
                 >
                   Upgrade
                 </button>
