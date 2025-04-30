@@ -286,6 +286,7 @@ function getData() {
   getTierStatus().then((res) => {
     if (res.status === 200) {
       profileData.value = res.data.data;
+      authStore.setTier(res.data.data?.tierName?.toLowerCase());
       if (!TierData.value[res.data.data?.tier + 1].isOpen) {
         openTab(res.data.data?.tier + 1);
       }
