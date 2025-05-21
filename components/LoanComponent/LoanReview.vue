@@ -46,13 +46,17 @@ const emits = defineEmits(['close'])
 const isLoading = ref(false);
 const props = defineProps(["detail"]);
 const formObject = [
+   {
+    label: "Loan name",
+    key: "loanName",
+  },
   {
     label: "Amount",
     key: "amount",
   },
 
   {
-    label: "Loan Tenor",
+    label: "Loan Tenure",
     key: "tenor",
   },
 
@@ -62,20 +66,20 @@ const formObject = [
   },
   {
     label: "Due Date",
-    key: "",
+    key: "ueDate",
   },
 
   {
     label: "Penalty",
-    key: "",
+    key: "penalty",
   },
   {
     label: "Repayment Amount",
-    key: "",
+    key: "approvedAmount",
   },
   {
     label: "No of Repayment",
-    key: "",
+    key: "noOfRepayment",
   },
 ];
 

@@ -8,16 +8,24 @@
   <div>
     <AppTab :tabs="tabs" buttonClass="!normal-case" />
     <div>
-      <div v-if="!loading" class="grid gap-x-6 gap-y-16 grid-cols-3">
-        <div
-          @click="navigateTo(`/loans/apply-form/${n.id}`)"
-          v-for="n in rows"
-          :key="n"
-        >
-          <Loan :title="n.name" :body="n.description" :url="n.url" />
+      <div v-if="!loading">
+        <div v-if="rows.length" class="grid gap-x-6 gap-y-16 grid-cols-3">
+          <div
+            @click="navigateTo(`/loans/apply-form/${n.productId}/${n.id}`)"
+            v-for="n in rows"
+            :key="n"
+            class="cursor-pointer"
+          >
+            <Loan :title="n.name" :body="n.description" :url="n.url" />
+          </div>
+        </div>
+        <div v-else class="text-center text-sm text-gray-400 py-8">
+          No loan product available
         </div>
       </div>
-      <LoaderPageLoader v-else />
+     <div  v-else class="mt-10">
+      <LoaderPageLoader />
+     </div>
     </div>
   </div>
 </template>

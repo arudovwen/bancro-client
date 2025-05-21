@@ -103,7 +103,7 @@
         <div
           v-for="item of [
             { label: 'Amount Requested', value: 'N120,000' },
-            { label: 'Requested Tenor', value: '2 Months' },
+            { label: 'Requested Tenure', value: '2 Months' },
             { label: 'Product Name', value: 'Rent Home Loan' },
             { label: 'Loan Purpose', value: 'Rent' },
             { label: 'Debit Mandate', value: 'Yes' },

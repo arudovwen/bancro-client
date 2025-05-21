@@ -86,7 +86,7 @@ const columns = [
   },
 
   {
-    header: "Tenor",
+    header: "Tenure",
     key: "tenor",
     isHtml: false,
     isStatus: false,

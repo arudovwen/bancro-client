@@ -34,13 +34,9 @@ const authStore = useAuthStore();
 const isSigniningOut = ref(false);
 async function getData() {
   const response = await getSavingsAccountByUserid(authStore.userId);
-  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
-  if (response.status === 200) {
-    console.log("🚀 ~ getData ~ response.data.data:", response.data.data);
-  }
-
+ 
   if (response1.status === 200) {
-    const data1 = response1.data.data.savingsAccounts[0];
+    const data1 = response.data.data;
 
     authStore.setSavingsInfo(data1);
   }
