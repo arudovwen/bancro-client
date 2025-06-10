@@ -6,7 +6,7 @@
     <legend class="block text-[20px] font-bold mb-8 text-left">
       Loan Repayment
     </legend>
-    <form @submit.prevent="onSubmit" class="grid gap-y-4 w-full">
+    <form @submit.prevent="onSubmit" class="grid w-full gap-y-4">
       <FormGroup
         label="Repayment type"
         :error="errors.repaymentType"
@@ -31,26 +31,29 @@
         name="amount"
         :isCumpulsory="true"
       >
-       <div class="relative items-center flex">
-        <CurrencyInput
-          min="1"
-          :class="`outline-none px-[14px] py-[10px] min-w-[180px] w-full !bg-white disabled:bg-gray-50 border !rounded-lg !text-[#475467] !h-11 cursor-pointer placeholder:text-[14px] ${
-            errors.amount ? 'border-red-500' : 'border-[#D0D5DD]'
-          }`"
-          v-model="amount"
-          :options="{
-            currency: 'ngn',
-            currencyDisplay: 'hidden',
-          }"
-          :placeholder="`Amount left: ${currencyFormat(
-            detail?.repaymentAmount - detail?.totalPayed
-          )}`"
-          :disabled="repaymentType === 'full'"
-        />
-        <span class="absolute right-4 text-sm text-[#344054]">NGN</span>
-       </div>
+        <div class="relative flex items-center">
+          <CurrencyInput
+            min="1"
+            :class="`outline-none px-[14px] py-[10px] min-w-[180px] w-full !bg-white disabled:bg-gray-50 border !rounded-lg !text-[#475467] !h-11 cursor-pointer placeholder:text-[14px] ${
+              errors.amount ? 'border-red-500' : 'border-[#D0D5DD]'
+            }`"
+            v-model="amount"
+            :options="{
+              currency: 'ngn',
+              currencyDisplay: 'hidden',
+            }"
+            :placeholder="`Amount left: ${currencyFormat(
+              detail?.amount - (detail?.totalPayed || 0)
+            )}`"
+            :disabled="repaymentType === 'full'"
+          />
+          <span class="absolute right-4 text-sm text-[#344054]">NGN</span>
+        </div>
         <div
-          v-if="amount > balance?.availableBalance && active === 'wallet'"
+          v-if="
+            amount > authStore.savingsInfo?.accountBalance &&
+            active === 'wallet'
+          "
           class="mt-2 text-sm text-red-500"
         >
           amount is more than your wallet balance
@@ -58,7 +61,7 @@
       </FormGroup>
 
       <div class="grid gap-y-4">
-        <div
+        <button
           v-for="n in content"
           :key="n.label"
           @click="
@@ -66,15 +69,19 @@
               active = n.value;
             }
           "
-          class="border border-[#D0D5DD] rounded-xl p-5 flex justify-between items-center"
+          type="button"
+          :disabled="n.disabled"
+          class="border border-[#D0D5DD] rounded-xl p-5 flex justify-between items-center text-left disabled:opacity-65"
         >
-          <span class="flex gap-x-3 items-center">
+          <span class="flex items-center gap-x-3">
             <span class="text-xl"><AppIcon :icon="n.icon" /></span>
             <span class="text-sm font-medium">
               <span class="block font-medium">{{ n.label }}</span>
               <span v-if="n.value === 'wallet'" class="text-xs font-normal"
                 >Balance:
-                {{ currencyFormat(balance?.availableBalance || 0) }}</span
+                {{
+                  currencyFormat(authStore.savingsInfo?.accountBalance || 0)
+                }}</span
               >
             </span>
           </span>
@@ -87,10 +94,10 @@
                   : 'pepicons-pencil:circle-big'
               "
           /></span>
-        </div>
+        </button>
       </div>
       <div class="mt-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
           <AppButton
             type="button"
             :isDisabled="isLoading"
@@ -103,7 +110,8 @@
             :isLoading="isLoading"
             :isDisabled="
               isLoading ||
-              (amount > balance?.availableBalance && active === 'wallet')
+              (amount > authStore.savingsInfo?.accountBalance &&
+                active === 'wallet')
             "
             text="Make payment"
             btnClass="normal-case  !py-3 text-primary bg-[#9FE870] "
@@ -137,9 +145,10 @@ import * as yup from "yup";
 import { toast } from "vue3-toastify";
 // import { getWalletBalance, walletRepayment } from "~/services/walletservice";
 import { initiateVerify } from "~/utils/verification";
+import { repayLoan } from "~/services/loanservice";
 
 const authStore = useAuthStore();
-const active = ref("monnify");
+const active = ref("wallet");
 const isOpen = inject("isOpen");
 const isLoading = ref(false);
 const data = ref(null);
@@ -149,7 +158,7 @@ const formValues = {
   id: "",
   amount: null,
   repaymentType: "partial",
-  max: props.detail?.repaymentAmount - props.detail?.totalPayed,
+  max: props.detail?.amount - (props.detail?.totalPayed || 0),
 };
 const options = [
   {
@@ -178,6 +187,7 @@ const content = [
     label: "Pay with Bank Card",
     value: "monnify",
     icon: "bi:credit-card",
+    disabled: true,
   },
   {
     label: "Pay with Wallet Balance",
@@ -187,7 +197,7 @@ const content = [
 ];
 const loading = ref(false);
 function onSuccess(response) {
-  if (response.status.toLowerCase() === "success") {
+  if (response.status?.toLowerCase() === "success") {
     isSuccessOpen.value = true;
     loading.value = false;
   }
@@ -196,7 +206,7 @@ function onModalClose() {
   loading.value = false;
   toast.error("Payment cancelled");
 }
-function makePayment(values) {
+async function makePayment(values) {
   loading.value = true;
   data.value = {
     email: authStore.userInfo?.email,
@@ -206,24 +216,25 @@ function makePayment(values) {
     reference: `RPM-${props?.detail?.financeRequestNo}-${nanoid(6)}`,
     ...values,
   };
-
-  if (active.value === "monnify") {
-    initiateVerify(data.value, onModalClose, onSuccess);
-  } else {
-    // walletRepayment({
-    //   ...values,
-    //   financeRequestNo: props?.detail?.financeRequestNo,
-    // })
-    //   .then((res) => {
-    //     if (res.status === 200) {
-    //       isSuccessOpen.value = true;
-    //       loading.value = false;
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.response.data.message || err.response.data.Message);
-    //   });
+  const loanData = {
+    transactionAmount: values.amount,
+    loanRequestId: props.detail.id,
+  };
+  // if (active.value !== "monnify") {
+  //   initiateVerify(data.value, onModalClose, onSuccess);
+  // } else {
+  try {
+    const res = await repayLoan(loanData);
+    if (res.status === 200) {
+      isSuccessOpen.value = true;
+      loading.value = false;
+    }
+  } catch (err) {
+    toast.error(err.response?.data?.message || err?.response?.data?.Message);
+  } finally {
+    loading.value = false;
   }
+  // }
 }
 
 const onSubmit = handleSubmit((values) => {
@@ -240,7 +251,7 @@ onMounted(() => {
 
 watch(repaymentType, () => {
   if (repaymentType.value === "full") {
-    amount.value =  props.detail?.repaymentAmount - props.detail?.totalPayed;
+    amount.value = props.detail?.amount - (props.detail?.totalPayed || 0);
   }
 });
 </script>

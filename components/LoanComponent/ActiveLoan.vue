@@ -3,7 +3,7 @@
     class="rounded-lg border border-[#F2F4F7] bg-white py-3 px-4 shadow-[0px_4px_8px_-2px_#1018281A] cursor-pointer w-full"
   >
     <span class="px-4">
-      <div class="flex justify-between items-center mb-5">
+      <div class="flex items-center justify-between mb-5">
         <span class="text-sm font-semibold capitalize text-[#344054]"
           >{{detail?.loanName}}</span
         >
@@ -16,8 +16,8 @@
         class="flex justify-between items-center text-sm mb-1 text-[#475467]"
       >
         <span class="block text-sm text-[#667085]"
-          >Amount:<span class="font-medium ml-1">{{
-            detail?.amount
+          >Amount:<span class="ml-1 font-medium">{{
+            (detail?.amount)
           }}</span></span
         >
         <span class="block text-sm text-[#344054] font-medium">{{
@@ -29,7 +29,7 @@
           :value="getPercentage(detail?.totalPayed, detail?.repaymentAmount)"
         />
       </div>
-      <span class="flex justify-between items-center text-xs">
+      <span class="flex items-center justify-between text-xs">
         <span class="block text-[#667085]"
           >Interest rate:
           <span class="font-medium text-[#666666] ml-1"
@@ -61,4 +61,6 @@ const emits = defineEmits(["repayClick"]);
 function getPercentage(part, total) {
   return (part / total) * 100;
 }
+
+
 </script>

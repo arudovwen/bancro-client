@@ -6,12 +6,13 @@
       :hasFilter="true"
       title="Loan Offers"
       :queryParams="queryParams"
+      :isLoading="loading"
     >
       <template #table-row="{ row, column }">
-        <span class="flex gap-x-2 items-center" v-if="column.key === 'status'">
+        <span class="flex items-center gap-x-2" v-if="column.key === 'status'">
           <AppStatusButton stattype="offer-status" :status="row.status" />
         </span>
-        <span class="flex gap-x-2 items-center" v-if="column.key === 'action'">
+        <span class="flex items-center gap-x-2" v-if="column.key === 'action'">
           <Menu class="" as="div">
             <Float placement="bottom-end" :offset="4">
               <MenuButton class="outline-none">
@@ -23,14 +24,14 @@
                 <MenuItem v-if="row.status === 0">
                   <button
                     @click="handleReview(row)"
-                    class="block py-2 px-4 cursor-pointer text-left"
+                    class="block px-4 py-2 text-left cursor-pointer"
                   >
                     Review request
                   </button></MenuItem
                 >
                 <MenuItem>
                   <button
-                    class="block py-2 px-4 cursor-pointer text-red-600 text-left"
+                    class="block px-4 py-2 text-left text-red-600 cursor-pointer"
                   >
                     Delete request
                   </button></MenuItem
@@ -44,7 +45,7 @@
   </div>
   <ModalCenter :isOpen="isOpen" @togglePopup="isOpen = false" v-if="isOpen">
     <template #default>
-      <div class="h-full w-full bg-white rounded-lg p-6">
+      <div class="w-full h-full p-6 bg-white rounded-lg">
         <LoanComponentLoanReview
           :detail="detail"
           @close="
@@ -62,6 +63,8 @@ import { Float } from "@headlessui-float/vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import moment from "moment";
 import { getLoanOffers } from "~/services/loanservice";
+
+const loading = ref(true);
 
 const isOpen = ref(false);
 const detail = ref(null);
@@ -127,18 +130,23 @@ function handleReview(value) {
 }
 
 async function getData() {
-  const response = await getLoanOffers(queryParams);
-  if (response.status === 200) {
-    queryParams.totalCount = response.data.totalCount;
-    rows.value = response.data.data.map((i) => ({
-      ...i,
-      status: i.termsStatus ? i.termsStatus : 0,
-      amount: currencyFormat(i.approvedAmount),
-      approvedAmount: currencyFormat(i.approvedAmount),
-      tenor: i.tenure ? `${i.tenure} days` : "-",
-      interestRate: i.interestRate ? `${i.interestRate}%` : "-",
-      createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
-    }));
+  try {
+    loading.value = true;
+    const response = await getLoanOffers(queryParams);
+    if (response.status === 200) {
+      queryParams.totalCount = response.data.totalCount;
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        status: i.termsStatus ? i.termsStatus : 0,
+        amount: currencyFormat(i.approvedAmount),
+        approvedAmount: currencyFormat(i.approvedAmount),
+        tenor: i.tenure ? `${i.tenure} days` : "-",
+        interestRate: i.interestRate ? `${i.interestRate}%` : "-",
+        createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+      }));
+    }
+  } finally {
+    loading.value = false;
   }
 }
 onMounted(() => {

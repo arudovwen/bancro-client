@@ -87,6 +87,7 @@ const urls = {
   BENEFICIARY: "/Beneficiary",
 
   GET_LOAN_PRODUCTS: "",
+  REPAY_LOAN: "Loan/client-loan-repayment"
 
 };
 export default urls;

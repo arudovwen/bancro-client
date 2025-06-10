@@ -19,75 +19,90 @@
       <span>Request statement</span>
     </button>
   </div>
+ 
   <Table
     :columns="columns"
     :rows="rows"
     :hasSearch="false"
-    :hasFilter="true"
+    :hasFilter="false"
+    :hasFilterButton="true"
     :hasDate="false"
+    :hasExport="false"
     title="Transaction history"
+    :is-loading="isLoading"
+    :query-params="query"
+    @filter-click="
+      () => {
+        showing = 1;
+        isOpen = true;
+      }
+    "
   >
     <template #table-row="{ row, column }">
       <span class="status" v-if="column.header === 'status'">
         <AppStatusButton :status="row.status"
       /></span>
-      <span v-if="column.header === 'Actions'">
-        <Menu as="div" class="relative inline-block text-left">
-          <div>
-            <MenuButton
-              class="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-            >
+      <span class="relative" v-if="column.key === 'actions'">
+        <Menu class="z-10" as="div">
+          <Float placement="bottom-end" :offset="4">
+            <MenuButton class="outline-none">
               <AppIcon icon="heroicons:ellipsis-vertical-solid" />
             </MenuButton>
-          </div>
-
-          <transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0"
-          >
             <MenuItems
-              class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+              class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[160px] rounded-lg overflow-hidden text-left text-[#454745] flex flex-col gap-y-1 z-10"
             >
-              <div class="px-1 py-1">
-                <MenuItem v-slot="{ active }">
-                  <button
-                    :class="[
-                      active ? 'bg-[#9FE870] text-[#163300]' : 'text-gray-900',
-                      'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    ]"
-                    @click="() => router.push(`/transactions/12345`)"
-                  >
-                    View
-                  </button>
-                </MenuItem>
-              </div>
+              <span
+                class="block py-[10px] px-4 cursor-pointer"
+                @click="openDetail(row)"
+                >View detail</span
+              >
             </MenuItems>
-          </transition>
+          </Float>
         </Menu>
       </span>
     </template>
   </Table>
-  <ModalCenter :isOpen="isOpen" @toggleModal="isOpen = false" :canClose="showing === 1">
+  <ModalCenter
+    :isOpen="isOpen"
+    @toggleModal="isOpen = false"
+    :canClose="showing === 1"
+  >
     <template #default>
       <div class="p-6 rounded-xl">
-        <TransactionsRequestStatement v-if="showing === 1" />
-        <TransactionsStatus v-if="showing === 2" />
+        <TransfersFilter @apply="handleFilter" />
       </div>
     </template>
   </ModalCenter>
+
+  <ModalSide :isOpen="isDetail" @togglePopup="isDetail = false" v-if="isDetail">
+    <template #content>
+      <div class="h-full py-6 bg-white rounded-lg">
+        <TransfersDetail :detail="detail" />
+      </div>
+    </template>
+  </ModalSide>
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { Float } from "@headlessui-float/vue";
+import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import moment from "moment";
+import { getTransactions } from "~/services/savingsservice";
 
 const showing = ref(1);
 const isOpen = ref(false);
-
+const detail = ref(null);
+const isDetail = ref(false);
+const isLoading = ref(true);
 const router = useRouter();
+const query = reactive({
+  savingsId: useAuthStore().savingsInfo.id,
+  PageSize: 15,
+  Limit:15,
+  PageNumber: 1,
+  pagecount: 10,
+  totalCount: 0,
+});
 const links = [
   {
     title: "Dashboard",
@@ -101,7 +116,7 @@ const links = [
 const columns = [
   {
     header: "Beneficiary",
-    key: "customerName",
+    key: "beneficiary",
     isHtml: false,
     isStatus: false,
   },
@@ -113,8 +128,8 @@ const columns = [
     isStatus: false,
   },
   {
-    header: "transaction tpye",
-    key: "paymentMethod",
+    header: "transaction type",
+    key: "transactionType",
     isHtml: false,
     isStatus: false,
   },
@@ -139,6 +154,68 @@ const columns = [
 ];
 
 const rows = ref([]);
+
+function openDetail(value) {
+  console.log("🚀 ~ openDetail ~ value:", value);
+  detail.value = value;
+  isDetail.value = true;
+}
+function handleFilter(value) {
+  console.log("🚀 ~ handleFilter ~ value:", value);
+}
+const authStore = useAuthStore();
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
+const StatusType = {
+  0: "Pending",
+  1: "Successful",
+  2: "Failed",
+};
+async function getData() {
+  try {
+    isLoading.value = true;
+    const response = await getTransactions({
+      ...query,
+      Offset: query.PageNumber - 1,
+      Limit: query.PageSize,
+      userId: authStore.userId,
+    });
+    if (response.status === 200) {
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        beneficiary: i.transaction.customerName,
+        amount: currencyFormat(i.transaction.amount),
+        paymentMethod: i.paymentMethod,
+        date: moment(i.createdAt).format("lll"),
+        transactionType: TransType[i.transaction?.actionType],
+        status: i.status,
+        statusInfo: StatusType[i.status],
+        note: i.transaction.note,
+        initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
+        dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
+        reference: i.transaction.transactionId,
+        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`
+      }));
+      query.totalCount = response.data.data.total;
+    }
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  getData();
+});
+
+watch(
+  () => [query.PageNumber],
+  () => {
+    getData();
+  }
+);
 provide("isOpen", isOpen);
 provide("showing", showing);
 </script>

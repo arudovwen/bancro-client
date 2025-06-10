@@ -42,13 +42,11 @@ const links = [
   },
 ];
 async function getData() {
-  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
-  if (response.status === 200) {
-    console.log("🚀 ~ getData ~ response.data.data:", response.data.data);
-  }
+  const response = await getSavingsAccountByUserid(authStore.userId);
 
-  if (response1.status === 200) {
-    const data1 = response1.data.data.savingsAccounts[0];
+  if (response.status === 200) {
+    const data1 = response.data.data;
+
     authStore.setSavingsInfo(data1);
   }
 }

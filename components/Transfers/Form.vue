@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit" class="bg-white rounded-xl p-6">
+  <form @submit.prevent="onSubmit" class="p-6 bg-white rounded-xl">
     <h2 class="text-[#3C4A67] font-semibold text-xl mb-7">
       Transfer to Bank Account
     </h2>
@@ -72,7 +72,7 @@
                     ? 'bg-primary-500'
                     : 'bg-gray-200'
                 "
-                class="relative inline-flex h-4 w-8 items-center rounded-full transition-colors focus:outline-none"
+                class="relative inline-flex items-center w-8 h-4 transition-colors rounded-full focus:outline-none"
               >
                 <span
                   :class="
@@ -80,7 +80,7 @@
                       ? 'translate-x-4'
                       : 'translate-x-1'
                   "
-                  class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"
+                  class="inline-block w-3 h-3 transition-transform transform bg-white rounded-full"
                 />
               </Switch>
               <SwitchLabel class="!mb-0">Save beneficiary</SwitchLabel>
@@ -89,7 +89,7 @@
         </div>
         <div class="relative">
           <FormGroup label="Amount" :error="errors.amount" name="amount">
-            <div class="relative items-center flex">
+            <div class="relative flex items-center">
               <CurrencyInput
                 min="1"
                 :class="`outline-none px-[14px] py-[10px] min-w-[180px] w-full !bg-white disabled:bg-gray-50 border !rounded-lg !text-[#475467] !h-11 cursor-pointer placeholder:text-[14px] ${
@@ -122,7 +122,7 @@
             :error="errors.narration"
           />
         </div>
-        <div class="mb-3 mt-4">
+        <div class="mt-4 mb-3">
           <AppButton
             type="submit"
             :isLoading="isLoading"

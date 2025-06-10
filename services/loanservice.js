@@ -52,3 +52,7 @@ export const approveLoanOffer = (data) => {
 export const deleteBeneficiary = (data) => {
   return del(`${urls.BENEFICIARY}?${new URLSearchParams(data)}`, config);
 };
+
+export const repayLoan = (data) => {
+  return post(`${urls.REPAY_LOAN}?${new URLSearchParams(data)}`, data, config);
+};
