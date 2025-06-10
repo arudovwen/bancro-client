@@ -145,7 +145,7 @@ onMounted(() => {
   getData();
 });
 watch(
-  () => [queryParams.pageNumber, queryParams.PageSize, queryParams.Search],
+  () => [queryParams.PageNumber, queryParams.PageSize, queryParams.Search],
   () => {
     getData();
   }

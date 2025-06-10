@@ -20,14 +20,14 @@
               <MenuItems
                 class="bg-white shadow-[5px_12px_35px_rgba(44,44,44,0.12)] min-w-[140px] rounded-xl overflow-hidden text-left text-[#454745] flex flex-col gap-y-1"
               >
-                <MenuItem>
+                <!-- <MenuItem>
                   <button
                     @click="handleReview(row)"
                     class="block py-2 px-4 cursor-pointer"
                   >
                     Review request
                   </button></MenuItem
-                >
+                > -->
                 <MenuItem>
                   <button class="block py-2 px-4 cursor-pointer text-red-600">
                     Delete request
@@ -80,14 +80,14 @@ const columns = [
 
   {
     header: "Interest rate",
-    key: "channel",
+    key: "interestRate",
     isHtml: false,
     isStatus: false,
   },
 
   {
     header: "Tenure",
-    key: "tenor",
+    key: "tenure",
     isHtml: false,
     isStatus: false,
   },
@@ -116,6 +116,7 @@ const queryParams = reactive({
   PageNumber: 1,
   PageSize: 10,
   totalCount: 0,
+  // status:"submitted"
 });
 const rows = ref([]);
 
@@ -133,7 +134,8 @@ async function getData() {
       ...i,
       amount: currencyFormat(i.amount),
       approvedAmount: currencyFormat(i.approvedAmount),
-      tenor: i.tenor ? `${i.tenor} days` : "-",
+      tenure: i.tenure ? `${i.tenure} days` : "-",
+        interestRate: i.interestRate ? `${i.interestRate}%` : "-",
       status: i.status?i.status:0,
       createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
     }));
@@ -143,7 +145,7 @@ onMounted(() => {
   getData();
 });
 watch(
-  () => [queryParams.pageNumber, queryParams.PageSize, queryParams.Search],
+  () => [queryParams.PageNumber, queryParams.PageSize, queryParams.Search],
   () => {
     getData();
   }

@@ -5,7 +5,7 @@
     <span class="px-4">
       <div class="flex justify-between items-center mb-5">
         <span class="text-sm font-semibold capitalize text-[#344054]"
-          >Simple Loan</span
+          >{{detail?.loanName}}</span
         >
         <span
           class="text-xs px-[6px] py-[2px] rounded-[6px] bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647] font-medium"
