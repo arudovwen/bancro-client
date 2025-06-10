@@ -25,32 +25,34 @@ const isOpen = ref(false);
 
 const router = useRouter();
 const links = [
-    {
-        title: "Loans",
-        url: "#",
-    },
-    {
-        title: "Apply for loan",
-        url: "#",
-    },
+  {
+    title: "Loans",
+    url: "#",
+  },
+  {
+    title: "Apply for loan",
+    url: "#",
+  },
 ];
 const tabs = [
-    {
-        title: "active loans",
-        key: "active",
-    },
-    {
-        title: "past loans",
-        key: "past",
-    }, {
-        title: "loan request",
-        key: "request",
-    },{
-        title: "loan offers",
-        key: "offers",
-    },
+  {
+    title: "active loans",
+    key: "active",
+  },
+  {
+    title: "loan request",
+    key: "request",
+  },
+  {
+    title: "loan offers",
+    key: "offers",
+  },
+  {
+    title: "past loans",
+    key: "past",
+  },
 ];
 provide("active", active);
-provide("activeTab", activeTab)
-provide("networkTab", networkTab)
+provide("activeTab", activeTab);
+provide("networkTab", networkTab);
 </script>

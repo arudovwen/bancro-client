@@ -23,7 +23,7 @@ const detail = ref(null);
 const queryParams = reactive({
   PageNumber: 1,
   PageSize: 10,
-  Status: 10,
+  Status: 'disbursed',
 });
 const docLoading = ref(true);
 
@@ -33,8 +33,8 @@ async function getData() {
   if (response.status === 200) {
     rows.value = response.data.data.map((i) => ({
       ...i,
-      amount: currencyFormat(i.amount),
-      tenor: i.tenor ? `${i.tenor} days` : "-",
+      amount: currencyFormat(i.approvedAmount),
+      tenor: i.tenure ? `${i.tenure} days` : "-",
       createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
     }));
   }

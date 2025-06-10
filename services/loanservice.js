@@ -37,6 +37,12 @@ export const getLoanOthers = (payload) => {
   );
 };
 
+export const getCoreLoanProductById = (payload) => {
+  return get(
+    `${urls.GET_CORE_LOAN_PRODUCT_BY_ID}?loanId=${payload}`,
+    config
+  );
+};
 export const postBeneficiary = (data) => {
   return post(`${urls.BENEFICIARY}`, data, config);
 };

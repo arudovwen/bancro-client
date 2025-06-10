@@ -88,7 +88,7 @@ const columns = [
   },
 
   {
-    header: "Tenor",
+    header: "Tenure",
     key: "tenor",
     isHtml: false,
     isStatus: false,
@@ -145,7 +145,7 @@ onMounted(() => {
   getData();
 });
 watch(
-  () => [queryParams.pageNumber, queryParams.PageSize, queryParams.Search],
+  () => [queryParams.PageNumber, queryParams.PageSize, queryParams.Search],
   () => {
     getData();
   }

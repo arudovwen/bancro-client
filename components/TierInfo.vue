@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div v-if="authStore.tierLevel"
     class="flex gap-x-4 items-center bg-[#172031] text-white px-5 py-3 rounded-lg flex-col lg:flex-row gap-y-4 text-center lg:text-left"
   >
     <span class="text-xs text-white"

@@ -147,7 +147,6 @@
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Date of birth"
               name="dateOfBirth"
-              type="date"
               v-bind="dateOfBirthAtt"
               v-model="dateOfBirth"
               :error="errors.dateOfBirth"
@@ -202,6 +201,7 @@
   </section>
 </template>
 <script setup>
+import moment from "moment";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { getUserProfile, updateProfile } from "~/services/authservices";
@@ -226,7 +226,7 @@ const schema = yup.object().shape({
   email: yup.string().email("Invalid email").nullable(),
   phoneNumber: yup.string().nullable(),
   gender: yup.string().nullable(),
-  dateOfBirth: yup.string().nullable(),
+  dateOfBirth: yup.date().nullable(),
 });
 const { handleSubmit, defineField, errors, setFieldValue } = useForm({
   validationSchema: schema,
@@ -255,19 +255,19 @@ onMounted(() => {
         phoneNumber,
         email,
         companyName,
-        ...rest
       } = res.data.data;
-      Object.keys({
+      const tempData = {
         avatarUrl,
         firstName,
         lastName,
-        dateOfBirth,
+        dateOfBirth: moment(dateOfBirth).format('l'),
         gender,
         phoneNumber,
         email,
         companyName,
-      }).forEach((key) => {
-        setFieldValue(key, res.data.data[key]);
+      };
+      Object.keys(tempData).forEach((key) => {
+        setFieldValue(key, tempData[key]);
       });
     }
   });

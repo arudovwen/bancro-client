@@ -35,7 +35,8 @@ const urls = {
   LOAN_REQUIREMENTS: "/loan/loan-requirements",
   LOAN_OTHER_INFORMATION: "/loan/loan-other-information",
   APPROVE_LOAN_OFFER: "/loan/approve-offers",
-
+  GET_CORE_LOAN_PRODUCT_BY_ID:"Loan/get-product-details",
+  
   // Onboarding urls
   SIGN_UP_USER: "/onboarding/sign-up-user",
   RESEND_OTP_TO_EMAIL: "/onboarding/resend-otp-to-email",
