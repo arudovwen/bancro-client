@@ -35,11 +35,11 @@
             @click="resendOTP"
             :disabled="isResending"
             type="button"
-            class="text-sm font-semibold text-primary-500"
+            class="text-sm font-semibold text-primary-500 disabled:opacity-60 disabled:text-gray-500"
           >
             Resend OTP
           </button>
-          <span v-if="isResending"> ({{ countdown }} seconds)</span>
+          <span v-if="isResending" class="text-xs"> ({{ countdown }} seconds)</span>
         </div>
 
         <div class="grid gap-y-[22px] mb-7">
@@ -53,7 +53,11 @@
         </div>
       </form>
       <div class="text-sm text-center">
-        <button type="button" @click="stage = 1" class="text-[#64748B] font-semibold">
+        <button
+          type="button"
+          @click="stage = 1"
+          class="text-[#64748B] font-semibold"
+        >
           Go back
         </button>
       </div>
@@ -65,14 +69,15 @@
 import { useForm } from "vee-validate";
 import { toast } from "vue3-toastify";
 import * as yup from "yup";
-import { verifyKycOtp,signupValidateOtpPhone } from "~/services/authservices.js";
-
-import { resend2FA } from "~/services/authservices";
+import {
+  resendValidateOtp,
+  signupValidateOtpPhone,
+} from "~/services/authservices.js";
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import VOtpInput from "vue3-otp-input";
 
-const stage = inject('stage')
+const stage = inject("stage");
 const route = useRoute();
 const activeForm = inject("activeForm");
 const userData = inject("userData");
@@ -100,7 +105,7 @@ const isLoading = ref(false);
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
 
-  signupValidateOtpPhone({...values, smsPinId: userData.value.smsPinId})
+  signupValidateOtpPhone({ ...values, smsPinId: userData.value.smsPinId })
     .then((res) => {
       if (res.status === 200) {
         if (!res.data.succeeded) {
@@ -108,7 +113,7 @@ const onSubmit = handleSubmit((values) => {
           isLoading.value = false;
           return;
         }
-        activeForm.value = 2
+        activeForm.value = 2;
       }
     })
     .catch((err) => {
@@ -119,23 +124,21 @@ const onSubmit = handleSubmit((values) => {
 
 function resendOTP() {
   if (countdown.value === 0) {
-    resend2FA({ email: formValues.username || route.query.email }).then(
-      (res) => {
-        if (res.status === 200) {
-          // Start the countdown
-          toast.info("OTP sent , check your email");
-          countdown.value = 60;
-          isResending.value = true;
-          const interval = setInterval(() => {
-            countdown.value--;
-            if (countdown.value <= 0) {
-              clearInterval(interval);
-              isResending.value = false;
-            }
-          }, 1000);
-        }
+    resendValidateOtp(userData.value.number).then((res) => {
+      if (res.status === 200) {
+        toast.info("OTP sent , check your phone ");
+        countdown.value = 60;
+        userData.value.smsPinId = res.data.data;
+        isResending.value = true;
+        const interval = setInterval(() => {
+          countdown.value--;
+          if (countdown.value <= 0) {
+            clearInterval(interval);
+            isResending.value = false;
+          }
+        }, 1000);
       }
-    );
+    });
   }
 }
 </script>

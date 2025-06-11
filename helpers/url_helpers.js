@@ -4,6 +4,7 @@ const urls = {
   OTP_SIGN_IN: "/customerprofile/otp-sign-in",
   SETUP_PASSCODE: "/customerprofile/setup-passcode",
   VERIFY_PASSCODE: "/customerprofile/verify-passcode",
+  RESEND_VALIDATE_OTP: "/CustomerProfile/kyc/resend-otp?bvn=",
   SEND_RESET_PASSWORD_OTP: "/customerprofile/send-reset-password-otp",
   VALIDATE_RESET_PASSWORD_OTP: "/customerprofile/validate-reset-password-otp",
   RESET_PASSWORD_CUSTOMER: "/customerprofile/reset-password-customer",

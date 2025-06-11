@@ -117,6 +117,7 @@ const onSubmit = handleSubmit((values) => {
         toast.success("Validation successful");
         userData.value = {
           ...res.data.data?.data,
+          ...values,
           verificationId: res.data.data?.verification?.reference,
           smsPinId: res.data.data?.smsPinId,
         };

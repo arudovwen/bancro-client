@@ -106,3 +106,7 @@ export async function uploadKyc(data) {
 export async function getTierLimits(payload) {
   return await get(`${urls.GET_LIMITS}?${new URLSearchParams(payload)}`);
 }
+
+export async function resendValidateOtp(data) {
+  return await post(`${urls.RESEND_VALIDATE_OTP}${data}`, data);
+}
