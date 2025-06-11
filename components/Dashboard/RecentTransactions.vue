@@ -1,5 +1,5 @@
 <template>
-  <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white h-full">
+  <div class="border-[#EAECF0] border rounded-xl w-full pt-6 bg-white h-full">
     <div class="flex justify-between px-6 mb-5 gap-x-10">
       <span>
         <h2 class="text-lg font-semibold mb-[2px] capitalize">
@@ -18,7 +18,7 @@
       </button>
     </div>
 
-    <div class="max-h-[320px] overflow-auto no-scrollbar">
+    <div class="max-h-[380px] overflow-auto no-scrollbar">
       <table v-if="rows.length" class="w-full table-auto">
         <thead>
           <tr>
