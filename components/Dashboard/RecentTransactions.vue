@@ -18,8 +18,8 @@
       </button>
     </div>
 
-    <div>
-      <table class="w-full table-auto">
+    <div class="max-h-[320px] overflow-auto no-scrollbar">
+      <table v-if="rows.length" class="w-full table-auto">
         <thead>
           <tr>
             <th></th>
@@ -39,10 +39,11 @@
                   class="flex items-center justify-center rounded-full h-9 w-9 bg-gray-50"
                 >
                   <SvgDebit v-if="n.status == 0" />
+                     <SvgCredit v-if="n.status == 1" />
                 </span>
                 <span>
                   <span class="text-sm text-[#0E0F0C] font-medium block">{{
-                    n.name
+                    n.transaction.customerName
                   }}</span>
                   <span class="text-sm text-[#6A6C6A]">{{ n.action }}</span>
                 </span>
@@ -53,9 +54,9 @@
                 <span
                   class="text-sm text-[#0E0F0C] font-medium block"
                   :class="n.status === 1 ? '' : 'text-red-500'"
-                  >{{ currencyFormat(n.balance) }}</span
+                  >{{ currencyFormat(n.transaction?.amount) }}</span
                 >
-                <span class="text-sm text-[#6A6C6A]">{{ n.date }}</span>
+                <span class="text-sm text-[#6A6C6A]">{{ moment(n.transaction?.createdAt ).format("lll")}}</span>
               </span>
             </td>
             <td class="px-6 py-4">
@@ -64,7 +65,7 @@
           </tr>
         </tbody>
       </table>
-      <EmptyData />
+      <EmptyData v-if="!rows.length" />
     </div>
   </div>
 </template>
@@ -110,11 +111,21 @@ const columns = [
 ];
 const query = reactive({
   PageNumber: 1,
-  PageSize:8,
-  Limit: 8,
+  PageSize:5,
+  Limit: 5,
   userId: authStore.userId,
 });
 const rows = ref([]);
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
+const StatusType = {
+  0: "Pending",
+  1: "Successful",
+  2: "Failed",
+};
 async function getData() {
   try {
     isLoading.value = true;
