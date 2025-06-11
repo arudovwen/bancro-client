@@ -45,7 +45,7 @@
                   <span class="text-sm text-[#0E0F0C] font-medium block">{{
                     n.transaction.customerName
                   }}</span>
-                  <span class="text-sm text-[#6A6C6A]">{{ n.action }}</span>
+                  <span class="text-sm text-[#6A6C6A]">{{ n.paymentMethod }}</span>
                 </span>
               </span>
             </td>
