@@ -8,7 +8,12 @@
       :rows="rows"
       :hasExport="false"
       :queryParams="query"
-    />
+    >
+      <template #table-row="{ row, column }">
+        <span class="flex items-center gap-x-2" v-if="column.key === 'status'">
+          <AppStatusButton :status="row.status" />
+        </span> </template
+    ></Table>
   </div>
 </template>
 
@@ -60,9 +65,10 @@ async function getData() {
     if (response.status === 200) {
       rows.value = response.data.data.map((i) => ({
         ...i,
-        amount: currencyFormat(i.totalRepaidAmount),
+        amount: currencyFormat(i.transactionAmount),
         channel: "Web",
         createdAt: moment(i.createdAt).format("lll"),
+        status: 1,
       }));
       query.totalCount = response.data.data.total;
     }

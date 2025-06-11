@@ -118,7 +118,7 @@ const queryParams = reactive({
   PageNumber: 1,
   PageSize: 10,
   totalCount: 0,
-  // status:"submitted"
+status:0
 });
 const rows = ref([]);
 

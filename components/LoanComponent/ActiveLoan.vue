@@ -4,30 +4,35 @@
   >
     <span class="px-4">
       <div class="flex items-center justify-between mb-5">
-        <span class="text-sm font-semibold capitalize text-[#344054]"
-          >{{detail?.loanName}}</span
-        >
+        <span class="text-sm font-semibold capitalize text-[#344054]">{{
+          detail?.loanName
+        }}</span>
         <span
           class="text-xs px-[6px] py-[2px] rounded-[6px] bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647] font-medium"
           >Active</span
         >
       </div>
-   
+
       <span
         class="flex justify-between items-center text-sm mb-1 text-[#475467]"
       >
         <span class="block text-sm text-[#344054]"
           >Amount:<span class="ml-1 font-medium">{{
-            (detail?.amount)
+            currencyFormat(detail?.totalRepaymentAmount)
           }}</span></span
         >
-        <span class="block text-sm text-[#344054] font-medium">Left: {{
-          currencyFormat(detail?.approvedAmount - detail?.amountRepaid)
-        }}</span></span
+        <span class="block text-sm text-[#344054] font-medium"
+          >Left:
+          {{
+            currencyFormat(detail?.totalRepaymentAmount - detail?.amountRepaid)
+          }}</span
+        ></span
       >
       <div class="mb-4">
         <AppLine
-          :value="getPercentage(detail?.amountRepaid, detail?.amount)"
+          :value="
+            getPercentage(detail?.amountRepaid, detail?.totalRepaymentAmount)
+          "
         />
       </div>
       <span class="flex items-center justify-between text-xs">
@@ -62,6 +67,4 @@ const emits = defineEmits(["repayClick"]);
 function getPercentage(part, total) {
   return (part / total) * 100;
 }
-
-
 </script>
