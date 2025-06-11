@@ -14,7 +14,7 @@
       </span>
     </div>
 
-    <div class="mb-3 mt-4 flex justify-end gap-x-4">
+    <div class="flex justify-end mt-4 mb-3 gap-x-4">
       <AppButton
         type="button"
         text="Reject terms"
@@ -66,7 +66,7 @@ const formObject = [
   },
   {
     label: "Due Date",
-    key: "ueDate",
+    key: "dueDate",
   },
 
   {
@@ -75,7 +75,7 @@ const formObject = [
   },
   {
     label: "Repayment Amount",
-    key: "approvedAmount",
+    key: "totalRepaymentAmount",
   },
   {
     label: "No of Repayment",

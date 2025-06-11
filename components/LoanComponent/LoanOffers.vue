@@ -143,6 +143,8 @@ async function getData() {
         tenor: i.tenure ? `${i.tenure} days` : "-",
         interestRate: i.interestRate ? `${i.interestRate}%` : "-",
         createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+        dueDate: i.dueDate ? moment(i.dueDate).format("lll") : "-",
+        totalRepaymentAmount: currencyFormat(i.totalRepaymentAmount),
       }));
     }
   } finally {
