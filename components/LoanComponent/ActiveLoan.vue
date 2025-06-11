@@ -12,16 +12,17 @@
           >Active</span
         >
       </div>
+   
       <span
         class="flex justify-between items-center text-sm mb-1 text-[#475467]"
       >
-        <span class="block text-sm text-[#667085]"
+        <span class="block text-sm text-[#344054]"
           >Amount:<span class="ml-1 font-medium">{{
             (detail?.amount)
           }}</span></span
         >
-        <span class="block text-sm text-[#344054] font-medium">{{
-          currencyFormat(detail?.amount - detail?.amountRepaid)
+        <span class="block text-sm text-[#344054] font-medium">Left: {{
+          currencyFormat(detail?.approvedAmount - detail?.amountRepaid)
         }}</span></span
       >
       <div class="mb-4">
@@ -30,13 +31,13 @@
         />
       </div>
       <span class="flex items-center justify-between text-xs">
-        <span class="block text-[#667085]"
+        <span class="block text-[#344054]"
           >Interest rate:
-          <span class="font-medium text-[#666666] ml-1"
+          <span class="font-medium text-[#344054] ml-1"
             >{{ detail?.interestRate }}%</span
           ></span
         >
-        <span class="block text-[#667085]">{{ detail?.tenor }}</span></span
+        <span class="block text-[#344054]">{{ detail?.tenor }}</span></span
       >
     </span>
     <span

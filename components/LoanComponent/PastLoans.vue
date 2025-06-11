@@ -69,13 +69,13 @@ const columns = [
 
   {
     header: "Amount",
-    key: "amount",
+    key: "approvedAmount",
     isHtml: false,
     isStatus: false,
   },
   {
-    header: "Approved Amount",
-    key: "approvedAmount",
+    header: "Repaid Amount",
+    key: "amountRepaid",
     isHtml: false,
     isStatus: false,
   },
@@ -94,8 +94,8 @@ const columns = [
     isStatus: false,
   },
   {
-    header: "createdAt",
-    key: "createdAt",
+    header: "updated",
+    key: "modifiedAt",
     isHtml: false,
     isStatus: true,
   },
@@ -138,10 +138,11 @@ async function getData() {
         ...i,
         amount: currencyFormat(i.amount),
         approvedAmount: currencyFormat(i.approvedAmount),
+        amountRepaid: currencyFormat(i.amountRepaid),
         tenure: i.tenure ? `${i.tenure} days` : "-",
         interestRate: i.interestRate ? `${i.interestRate}%` : "-",
         status: 11,
-        createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+        modifiedAt: i.modifiedAt ? moment(i.modifiedAt).format("lll") : "-",
       }));
     }
   } finally {
