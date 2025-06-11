@@ -56,3 +56,11 @@ export const deleteBeneficiary = (data) => {
 export const repayLoan = (data) => {
   return post(`${urls.REPAY_LOAN}?${new URLSearchParams(data)}`, data, config);
 };
+
+export const getRepaymentHistory = (payload) => {
+  return get(
+    `${urls.REPAYMENT_HISTORY}?loanRequestId=${payload}&loanTransactionType=1
+`,
+    config
+  );
+};

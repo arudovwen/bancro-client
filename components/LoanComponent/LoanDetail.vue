@@ -33,6 +33,7 @@ import { getLoanRequests } from "~/services/loanservice";
 import RepayLoan from "./repay-loan";
 
 const { id } = useRoute().params;
+const refresh = ref(false);
 const isOpen = ref(false);
 const detail = ref(null);
 const links = [
@@ -49,12 +50,19 @@ const links = [
 async function getData() {
   const response = await getLoanRequests({ LoanId: id });
   if (response.status === 200) {
-    detail.value = {...response.data.data?.[0], amount: response.data.data?.[0].approvedAmount};
+    detail.value = {
+      ...response.data.data?.[0],
+      amount: response.data.data?.[0].approvedAmount,
+    };
   }
 }
 
 onMounted(() => {
   getData();
 });
+watch(refresh, () => {
+  getData();
+});
 provide("isOpen", isOpen);
+provide("refresh", refresh);
 </script>

@@ -17,16 +17,16 @@
       >
         <span class="block text-sm text-[#667085]"
           >Amount:<span class="font-medium ml-1">{{
-            currencyFormat(detail?.totalPayed)
+            currencyFormat(detail?.amountRepaid)
           }}</span></span
         >
         <span class="block text-sm text-[#344054] font-medium">{{
-          currencyFormat(detail?.repaymentAmount - detail?.totalPayed)
+          currencyFormat(detail?.amount - detail?.amountRepaid)
         }}</span></span
       >
       <div class="mb-4">
         <AppLine
-          :value="getPercentage(detail?.totalPayed, detail?.repaymentAmount)"
+          :value="getPercentage(detail?.amountRepaid, detail?.amount)"
         />
       </div>
       <div class="grid gap-y-2">

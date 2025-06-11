@@ -17,7 +17,7 @@
       </p>
       <form @submit.prevent="onSubmit">
         <div class="mb-5">
-          <div class="flex gap-x-2 justify-center mb-8">
+          <div class="flex justify-center mb-8 gap-x-2">
             <v-otp-input
               ref="otpInput"
               v-model:value="code"
@@ -30,12 +30,12 @@
             />
           </div>
         </div>
-        <div class="text-right mb-4">
+        <div class="mb-4 text-right">
           <button
             @click="resendOTP"
             :disabled="isResending"
             type="button"
-            class="text-primary-500 font-semibold text-sm"
+            class="text-sm font-semibold text-primary-500"
           >
             Resend OTP
           </button>
@@ -52,10 +52,10 @@
           />
         </div>
       </form>
-      <div class="text-center text-sm">
-        <span @click="stage = 1" class="text-[#64748B] font-semibold">
+      <div class="text-sm text-center">
+        <button type="button" @click="stage = 1" class="text-[#64748B] font-semibold">
           Go back
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@
 import { useForm } from "vee-validate";
 import { toast } from "vue3-toastify";
 import * as yup from "yup";
-import { verifyKycOtp } from "~/services/authservices.js";
+import { verifyKycOtp,signupValidateOtpPhone } from "~/services/authservices.js";
 
 import { resend2FA } from "~/services/authservices";
 import { ref, reactive } from "vue";
@@ -75,7 +75,7 @@ import VOtpInput from "vue3-otp-input";
 const stage = inject('stage')
 const route = useRoute();
 const activeForm = inject("activeForm");
-
+const userData = inject("userData");
 const form = reactive({
   code: "",
 });
@@ -100,7 +100,7 @@ const isLoading = ref(false);
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
 
-  verifyKycOtp(values)
+  signupValidateOtpPhone({...values, smsPinId: userData.value.smsPinId})
     .then((res) => {
       if (res.status === 200) {
         if (!res.data.succeeded) {
@@ -113,11 +113,7 @@ const onSubmit = handleSubmit((values) => {
     })
     .catch((err) => {
       isLoading.value = false;
-      if (err?.response?.data?.message || err?.response?.data?.Message) {
-        toast.error(
-          err?.response?.data?.message || err?.response?.data?.Message
-        );
-      }
+      toast.error(err?.response?.data);
     });
 });
 

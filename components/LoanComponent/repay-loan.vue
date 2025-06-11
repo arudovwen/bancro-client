@@ -43,7 +43,7 @@
               currencyDisplay: 'hidden',
             }"
             :placeholder="`Amount left: ${currencyFormat(
-              detail?.amount - (detail?.totalPayed || 0)
+              detail?.amount - (detail?.amountRepaid || 0)
             )}`"
             :disabled="repaymentType === 'full'"
           />
@@ -100,14 +100,14 @@
         <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
           <AppButton
             type="button"
-            :isDisabled="isLoading"
+            :isDisabled="loading"
             @click="isOpen = false"
             text="Cancel"
             btnClass="normal-case bg-transparent border border-[#D0D5DD] rounded-lg !py-3"
           />
           <AppButton
             type="submit"
-            :isLoading="isLoading"
+            :isLoading="loading"
             :isDisabled="
               isLoading ||
               (amount > authStore.savingsInfo?.accountBalance &&
@@ -147,6 +147,7 @@ import { toast } from "vue3-toastify";
 import { initiateVerify } from "~/utils/verification";
 import { repayLoan } from "~/services/loanservice";
 
+const refresh = inject("refresh");
 const authStore = useAuthStore();
 const active = ref("wallet");
 const isOpen = inject("isOpen");
@@ -158,7 +159,7 @@ const formValues = {
   id: "",
   amount: null,
   repaymentType: "partial",
-  max: props.detail?.amount - (props.detail?.totalPayed || 0),
+  max: props.detail?.amount - (props.detail?.amountRepaid || 0),
 };
 const options = [
   {
@@ -228,6 +229,7 @@ async function makePayment(values) {
     if (res.status === 200) {
       isSuccessOpen.value = true;
       loading.value = false;
+      refresh.value = !refresh.value;
     }
   } catch (err) {
     toast.error(err.response?.data?.message || err?.response?.data?.Message);
@@ -251,7 +253,7 @@ onMounted(() => {
 
 watch(repaymentType, () => {
   if (repaymentType.value === "full") {
-    amount.value = props.detail?.amount - (props.detail?.totalPayed || 0);
+    amount.value = props.detail?.amount - (props.detail?.amountRepaid || 0);
   }
 });
 </script>

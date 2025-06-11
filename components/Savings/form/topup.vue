@@ -25,7 +25,7 @@
               currencyDisplay: 'hidden',
             }"
             :placeholder="`Amount left: ${currencyFormat(
-              detail?.repaymentAmount - detail?.totalPayed
+              detail?.amount - detail?.amountRepaid
             )}`"
             :disabled="repaymentType === 'full'"
           />
@@ -94,7 +94,7 @@ const formValues = {
   id: "",
   amount: null,
   repaymentType: "partial",
-  max: props.detail?.repaymentAmount - props.detail?.totalPayed,
+  max: props.detail?.amount - props.detail?.amountRepaid,
 };
 const options = [
   {
@@ -185,7 +185,7 @@ onMounted(() => {
 
 watch(repaymentType, () => {
   if (repaymentType.value === "full") {
-    amount.value = props.detail?.repaymentAmount - props.detail?.totalPayed;
+    amount.value = props.detail?.amount - props.detail?.amountRepaid;
   }
 });
 </script>

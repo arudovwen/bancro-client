@@ -6,7 +6,7 @@
       <legend class="block text-[20px] font-bold mb-8 text-left">
         Savings Withdrawal
       </legend>
-      <form @submit.prevent="onSubmit" class="grid gap-y-4 w-full">
+      <form @submit.prevent="onSubmit" class="grid w-full gap-y-4">
         <FormGroup
           label="Withdrawal type"
           :error="errors.repaymentType"
@@ -37,7 +37,7 @@
           name="amount"
           :isCumpulsory="true"
         >
-         <div class="relative items-center flex">
+         <div class="relative flex items-center">
           <CurrencyInput
             min="1"
             :class="`outline-none px-[14px] py-[10px] min-w-[180px] w-full !bg-white disabled:bg-gray-50 border !rounded-lg !text-[#475467] !h-11 cursor-pointer placeholder:text-[14px] ${
@@ -49,7 +49,7 @@
               currencyDisplay: 'hidden',
             }"
             :placeholder="`Amount left: ${currencyFormat(
-              detail?.repaymentAmount - detail?.totalPayed
+              detail?.amount - detail?.amountRepaid
             )}`"
             :disabled="repaymentType === 'full'"
           />
@@ -65,7 +65,7 @@
   
 
         <div class="mt-8">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
             <AppButton
               type="button"
               :isDisabled="isLoading"
@@ -124,7 +124,7 @@
     id: "",
     amount: null,
     repaymentType: "partial",
-    max: props.detail?.repaymentAmount - props.detail?.totalPayed,
+    max: props.detail?.amount - props.detail?.amountRepaid,
   };
   const options = [
     {
@@ -215,7 +215,7 @@
   
   watch(repaymentType, () => {
     if (repaymentType.value === "full") {
-      amount.value =  props.detail?.repaymentAmount - props.detail?.totalPayed;
+      amount.value =  props.detail?.amount - props.detail?.amountRepaid;
     }
   });
   </script>

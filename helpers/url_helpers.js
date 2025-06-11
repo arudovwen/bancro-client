@@ -87,7 +87,9 @@ const urls = {
   BENEFICIARY: "/Beneficiary",
 
   GET_LOAN_PRODUCTS: "",
-  REPAY_LOAN: "Loan/client-loan-repayment"
+  REPAY_LOAN: "Loan/client-loan-repayment",
+  REPAYMENT_HISTORY: "Loan/loan-transactions",
 
+  SIGNUP_VALIDATE_OTP:"CustomerProfile/kyc/validate-otp"
 };
 export default urls;

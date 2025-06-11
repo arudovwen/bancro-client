@@ -13,7 +13,8 @@
         @click="navigateTo('/transactions')"
         class="flex items-center h-auto text-xs font-medium text-primary-500 gap-x-2"
       >
-      <span class="hidden lg:inline-block">  See all transactions</span> <AppIcon icon="fa6-solid:chevron-right" />
+        <span class="hidden lg:inline-block"> See all transactions</span>
+        <AppIcon icon="fa6-solid:chevron-right" />
       </button>
     </div>
 
@@ -73,7 +74,8 @@ import moment from "moment";
 import AppStatusButton from "../AppStatusButton.vue";
 import { getTransactions } from "~/services/savingsservice";
 
-const isLoading = ref(false)
+const authStore = useAuthStore()
+const isLoading = ref(false);
 const columns = [
   {
     header: "transaction ref",
@@ -106,7 +108,12 @@ const columns = [
     isStatus: true,
   },
 ];
-
+const query = reactive({
+  PageNumber: 1,
+  PageSize:8,
+  Limit: 8,
+  userId: authStore.userId,
+});
 const rows = ref([]);
 async function getData() {
   try {
@@ -131,7 +138,7 @@ async function getData() {
         initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
         dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
         reference: i.transaction.transactionId,
-        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`
+        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`,
       }));
       query.totalCount = response.data.data.total;
     }
@@ -140,7 +147,7 @@ async function getData() {
   }
 }
 
-onMounted(()=>{
-  getData()
-})
+onMounted(() => {
+  getData();
+});
 </script>
