@@ -28,7 +28,7 @@
           </span>
         </div>
 
-        <div class="mb-3 mt-4 flex justify-end gap-x-4">
+        <div class="flex justify-end mt-4 mb-3 gap-x-4">
           <AppButton
             type="button"
             @click="activeForm--"
@@ -79,10 +79,10 @@ const formObject1 = [
   },
 ];
 const formObject2 = [
-  {
-    label: "Interest rate",
-    key: "",
-  },
+  // {
+  //   label: "Interest rate",
+  //   key: "",
+  // },
   {
     label: "Tenure",
     key: "tenorText",
