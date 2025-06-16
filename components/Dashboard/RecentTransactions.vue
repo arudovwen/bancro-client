@@ -18,7 +18,7 @@
       </button>
     </div>
 
-    <div class="max-h-[380px] overflow-auto no-scrollbar">
+    <div class="max-h-[360px] overflow-auto no-scrollbar">
       <table v-if="rows.length" class="w-full table-auto">
         <thead>
           <tr>
@@ -56,7 +56,7 @@
                   :class="n.status === 1 ? '' : 'text-red-500'"
                   >{{ currencyFormat(n.transaction?.amount) }}</span
                 >
-                <span class="text-sm text-[#6A6C6A]">{{ moment(n.transaction?.createdAt ).format("lll")}}</span>
+                <span class="text-sm text-[#6A6C6A]">{{ moment(n.transaction?.transactionDate ).format("lll")}}</span>
               </span>
             </td>
             <td class="px-6 py-4">
@@ -98,7 +98,7 @@ const columns = [
   },
   {
     header: "date/time",
-    key: "date",
+    key: "transactionDate",
     isHtml: false,
     isStatus: false,
   },
@@ -141,7 +141,7 @@ async function getData() {
         beneficiary: i.transaction.customerName,
         amount: currencyFormat(i.transaction.amount),
         paymentMethod: i.paymentMethod,
-        date: moment(i.createdAt).format("lll"),
+        transactionDate: moment(i.transactionDate).format("lll"),
         transactionType: TransType[i.transaction?.actionType],
         status: i.status,
         statusInfo: StatusType[i.status],

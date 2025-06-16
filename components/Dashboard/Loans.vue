@@ -1,5 +1,5 @@
 <template>
-  <div class="grid h-full gap-y-3">
+  <div class="flex flex-col h-full gap-y-3">
     <div
       class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white flex justify-between gap-x-4"
     >
@@ -19,7 +19,7 @@
         <span class="font-medium text-[10px]">{{ n.title }}</span>
       </button>
     </div>
-    <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white">
+    <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white flex-1">
       <div>
         <h2 class="text-[#101828] text-base font-semibold block mb-4 px-6">
           Active Loans

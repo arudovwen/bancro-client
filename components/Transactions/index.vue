@@ -189,13 +189,13 @@ async function getData() {
         beneficiary: i.transaction.customerName,
         amount: currencyFormat(i.transaction.amount),
         paymentMethod: i.paymentMethod,
-        date: moment(i.createdAt).format("lll"),
+        date: moment(i.transactionDate).format("lll"),
         transactionType: TransType[i.transaction?.actionType],
         status: i.status,
         statusInfo: StatusType[i.status],
         note: i.transaction.note,
-        initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
-        dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
+        initiatedDate: `Inititated ${moment(i.transactionDate).format("lll")}`,
+        dateReceived: `Received ${moment(i.transactionDate).format("lll")}`,
         reference: i.transaction.transactionId,
         fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`
       }));

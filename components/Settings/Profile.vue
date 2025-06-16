@@ -41,7 +41,7 @@
           >
             {{ authStore.fullName || authStore.companyName }}
           </span>
-          <span class="flex gap-x-3 items-center text-sm">
+          <span class="flex items-center text-sm gap-x-3">
             <!-- <span class="text-sm text-[#667085]">@laketu</span
             > -->
             <span
@@ -186,7 +186,7 @@
           </div> -->
           <div></div>
 
-          <div class="flex justify-end mt-6">
+          <!-- <div class="flex justify-end mt-6">
             <AppButton
               type="submit"
               :isLoading="isLoading"
@@ -194,7 +194,7 @@
               text="Save changes"
               btnClass="text-primary-500 bg-[#9FE870] w-full !px-[114px] !py-[10px] !rounded-lg font-semibold "
             />
-          </div>
+          </div> -->
         </form>
       </div>
     </div>
