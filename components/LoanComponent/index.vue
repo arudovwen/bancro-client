@@ -3,9 +3,10 @@
     <PageHeader title="Loans" text="" />
     <button
       id="create-product-button"
-      class="flex items-center gap-x-2 bg-[#9FE870] text-[14px] text-[#163300] rounded-lg py-[10px] px-[15px] font-medium"
+      class="flex items-center gap-x-2 bg-danger-500 text-[14px] text-white rounded-lg py-[10px] px-[15px] font-medium"
       @click="navigateTo('/loans/apply')"
     >
+      >
       <AppIcon icon="iconoir:piggy-bank" />
       <span>Apply for loan</span>
     </button>

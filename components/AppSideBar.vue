@@ -10,14 +10,14 @@
           v-if="!item.disabled"
           :disabled="item.disabled"
           :to="item.disabled ? '#' : item.url"
-          class="text-sm flex items-center px-[10px] font-medium rounded-lg text-[#637381]"
+         class="text-sm flex items-center px-[10px] font-medium hover:bg-danger-100 hover:text-danger-500  rounded-lg text-[#637381]"
           :activeClass="`${
-            item.hasChildren ? '' : 'bg-[#9FE870]'
-          }  !text-primary-500 block font-semibold`"
+            item.hasChildren ? '' : 'bg-danger-100'
+          } text-danger-800  block font-semibold`"
           :class="
             item.disabled
               ? 'opacity-40'
-              : ' hover:bg-[#9FE870]/20 hover:text-primary-500'
+              : ' hover:bg-danger-50/20 hover:text-primary-500'
           "
         >
           <span
@@ -96,13 +96,13 @@
       <span
         v-else
         @click="handlOpen(item.name)"
-        class="text-sm flex items-center px-[10px] cursor-pointer font-medium hover:bg-[#9FE870]/20 hover:text-primary-500 rounded-lg text-[#637381]"
+        class="text-sm flex items-center px-[10px] cursor-pointer font-medium hover:bg-danger-500/20 hover:text-primary-500 rounded-lg text-[#637381]"
         :activeClass="`${
-          item.hasChildren ? '' : 'bg-[#9FE870]'
+          item.hasChildren ? '' : 'bg-danger-500'
         }  !text-primary-500 block font-semibold`"
         :class="
           openedlinks.includes(item.name)
-            ? 'bg-[#9FE870]/20 text-primary-500'
+            ? 'bg-danger-500/20 text-primary-500'
             : ''
         "
       >
@@ -156,7 +156,7 @@
                     <span
                       :class="
                         route.path === child.url && !child.disabled
-                          ? 'w-2 h-2 rounded-full bg-[#9FE870]'
+                          ? 'w-2 h-2 rounded-full bg-danger-500'
                           : 'w-1 h-1 rounded-full bg-[#637381]'
                       "
                     ></span>
