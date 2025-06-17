@@ -302,43 +302,7 @@ onMounted(() => {
     }
   });
 });
-function handleEvent(e) {
-  const file = e.target.files[0];
 
-  if (!file) return;
-
-  const allowedExtensions = ["jpeg", "png", "jpg"];
-  const fileExtension = file.name.split(".").pop().toLowerCase();
-
-  if (!allowedExtensions.includes(fileExtension)) {
-    toast.error("Invalid file type. Please upload a document.");
-    return;
-  }
- 
-  const reader = new FileReader();
-
-  reader.onload = function (event) {
-    const base64String = event.target.result.split(",")[1];
-    loading.value = true;
-    const data = { base64: base64String, ext: `.${fileExtension}` };
- console.log('data',data)
-    // uploaddocument(data)
-    //   .then((res) => {
-    //     loading.value = false;
-    //     handleChange(props.id, res.data.message);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error uploading file:", error);
-    //     loading.value = false;
-    //   });
-  };
-
-  reader.onerror = function (error) {
-    console.error("Error reading file:", error);
-  };
-
-  reader.readAsDataURL(file);
-}
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
   updateProfile(values)
@@ -360,7 +324,14 @@ async function handleEvent(e) {
   imageLoading.value = true;
   const file = e.target.files?.[0];
   if (!file) return;
+  const allowedExtensions = ["jpeg", "png", "jpg", "svg"];
+  const fileExtension = file.name.split(".").pop().toLowerCase();
 
+  if (!allowedExtensions.includes(fileExtension)) {
+    toast.error("Invalid file type. Please upload a document.");
+    return;
+  }
+ 
   const formData = new FormData();
   formData.append("file", file);
   formData.append("userId", authStore.userId);
