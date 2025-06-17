@@ -89,7 +89,10 @@ export async function verifyKycOtp(data) {
   return await post(`${urls.VALIDATE_OTP}?${new URLSearchParams(data)}`, data);
 }
 export async function signupValidateOtpPhone(data) {
-  return await post(`${urls.SIGNUP_VALIDATE_OTP}?${new URLSearchParams(data)}`, data);
+  return await post(
+    `${urls.SIGNUP_VALIDATE_OTP}?${new URLSearchParams(data)}`,
+    data
+  );
 }
 
 export async function verifyTier2(data) {
@@ -109,4 +112,19 @@ export async function getTierLimits(payload) {
 
 export async function resendValidateOtp(data) {
   return await post(`${urls.RESEND_VALIDATE_OTP}${data}`, data);
+}
+
+export async function addUserPic(data, config = {}) {
+  return await post(
+    `${urls.UPLOAD_PROFILE_IMAGE}?${new URLSearchParams(data)}`,
+    data,
+    config
+  );
+}
+
+export async function getUserPic(data) {
+  return await get(
+    `${urls.GET_PROFILE_IMAGE}?${new URLSearchParams(data)}`,
+    {}
+  );
 }
