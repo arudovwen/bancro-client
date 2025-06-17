@@ -185,7 +185,7 @@ const TierData = ref([
       },
     ],
     isOpen: false,
-    status: "verified",
+    status: "none",
     prerequisite: "tier0",
   },
   {
@@ -282,26 +282,33 @@ function openModal(key) {
   showing.value = key;
   isOpen.value = true;
 }
-function getData() {
-  getTierStatus().then((res) => {
-    if (res.status === 200) {
-      profileData.value = res.data.data;
-      if (!TierData.value[res.data.data?.tier + 1].isOpen) {
-        openTab(res.data.data?.tier + 1);
+async function getData() {
+  try {
+    const tierStatusResponse = await getTierStatus();
+    if (tierStatusResponse.status === 200) {
+      const tier = tierStatusResponse.data.data?.tierName?.toLowerCase();
+      profileData.value = tierStatusResponse.data.data;
+      authStore.setTier(tier);
+
+      const nextTierIndex = tierStatusResponse.data.data?.tier + 1;
+      if (!TierData.value[nextTierIndex]?.isOpen) {
+        openTab(nextTierIndex);
       }
 
-      isVerifying.value = false;
+      const tierLimitsResponse = await getTierLimits({
+        userType: authStore.userInfo.customerType === "individual" ? 0 : 1,
+        tierLevel: tier,
+      });
+
+      if (tierLimitsResponse.status === 200) {
+        limits.value = tierLimitsResponse.data;
+      }
     }
-  });
-  getTierLimits({
-    userType: authStore.userInfo.customerType === "individual" ? 0 : 1,
-    tierLevel: authStore.tierLevel,
-  }).then((res) => {
-    if (res.status === 200) {
-      limits.value = res.data;
-      isVerifying.value = false;
-    }
-  });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    isVerifying.value = false;
+  }
 }
 function openTab(index) {
   TierData.value[index].isOpen = !TierData.value[index].isOpen;

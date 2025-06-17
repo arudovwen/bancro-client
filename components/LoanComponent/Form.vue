@@ -17,6 +17,7 @@
       <FormSummary v-if="activeForm == 4" />
     </div>
   </div>
+  <LoaderPageLoader v-else />
 </template>
 <script setup>
 import FormOne from "./FormOne";
@@ -26,13 +27,13 @@ import FormSummary from "./FormSummary";
 import FormDetail from "./FormDetail";
 import {
   getLoanOthers,
-  getLoanProductById,
+  getCoreLoanProductById,
   getLoanProducts,
   getLoanRequirements,
 } from "~/services/loanservice";
 
 const showRequirement = ref(false);
-const showOthers = ref(false)
+const showOthers = ref(false);
 const route = useRoute();
 const detail = ref(null);
 const links = [
@@ -42,9 +43,13 @@ const links = [
   },
   {
     title: "Apply for loan",
+    url: "/loans/apply",
+  }, {
+    title: "New Loan",
     url: "#",
   },
 ];
+const productDetail = ref(null);
 const activeForm = ref(1);
 const requirements = ref(null);
 const formValues = reactive({
@@ -58,11 +63,11 @@ const formValues = reactive({
   others: [],
 });
 onMounted(() => {
-  // getLoanProductById(route.params.id).then((res) => {
-  //   if (res.status === 200) {
-  //     detail.value = res.data.data;
-  //   }
-  // });
+  getCoreLoanProductById(route.params.productId).then((res) => {
+    if (res.status === 200) {
+      productDetail.value = res.data.data;
+    }
+  });
   getLoanProducts({ PageSize: 10000 }).then((res) => {
     if (res.status === 200) {
       detail.value = res.data.data.find((i) => i.id == route.params.id);
@@ -85,7 +90,7 @@ onMounted(() => {
             ...i,
             label: i.name,
 
-            value: '',
+            value: "",
           }));
           showOthers.value = true;
         }
@@ -97,4 +102,5 @@ provide("activeForm", activeForm);
 provide("detail", detail);
 provide("formValues", formValues);
 provide("requirements", requirements);
+provide("productDetail", productDetail);
 </script>

@@ -1,6 +1,5 @@
 <template>
   <h2 class="text-xl font-medium text-[#182230] mb-3">Summary</h2>
-
   <div class="border-b mt-2 mb-7 border-[#D0D5DD]" />
   <form @submit.prevent="handleSubmit" class="bg-white rounded-xl">
     <div>
@@ -22,9 +21,14 @@
             <span class="block text-[#667085] mb-[2px]">{{ n.label }}</span>
             <span class="block font-medium">{{ formData[n.key] || "-" }}</span>
           </span>
+            <div class="col-span-2 border-b border-[#3440541A]" />
+          <span class="block" v-for="n in formData?.otherInformation" :key="n.label">
+            <span class="block text-[#667085] mb-[2px]">{{ n.name }}</span>
+            <span class="block font-medium">{{ n.value || "-" }}</span>
+          </span>
         </div>
 
-        <div class="mb-3 mt-4 flex justify-end gap-x-4">
+        <div class="flex justify-end mt-4 mb-3 gap-x-4">
           <AppButton
             type="button"
             @click="activeForm--"
@@ -75,13 +79,13 @@ const formObject1 = [
   },
 ];
 const formObject2 = [
+  // {
+  //   label: "Interest rate",
+  //   key: "",
+  // },
   {
-    label: "Interest rate",
-    key: "",
-  },
-  {
-    label: "Tenor",
-    key: "tenor",
+    label: "Tenure",
+    key: "tenorText",
   },
 ];
 const formObject3 = [
@@ -89,10 +93,7 @@ const formObject3 = [
     label: "Loan purpose",
     key: "purpose",
   },
-  {
-    label: "Identification",
-    key: "",
-  },
+
 ];
 const isLoading = ref(false);
 const formData = computed(() => ({
@@ -104,6 +105,7 @@ const formData = computed(() => ({
     description,
   })),
   tempAmount: currencyFormat(formValues.one.amount),
+  tenorText:`${formValues.one?.tenor} days`,
   ...detail.value,
 }));
 async function handleSubmit() {

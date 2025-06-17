@@ -14,7 +14,7 @@
       </span>
     </div>
 
-    <div class="mb-3 mt-4 flex justify-end gap-x-4">
+    <div class="flex justify-end mt-4 mb-3 gap-x-4">
       <AppButton
         type="button"
         text="Reject terms"
@@ -46,13 +46,17 @@ const emits = defineEmits(['close'])
 const isLoading = ref(false);
 const props = defineProps(["detail"]);
 const formObject = [
+   {
+    label: "Loan name",
+    key: "loanName",
+  },
   {
     label: "Amount",
     key: "amount",
   },
 
   {
-    label: "Loan Tenor",
+    label: "Loan Tenure",
     key: "tenor",
   },
 
@@ -62,20 +66,24 @@ const formObject = [
   },
   {
     label: "Due Date",
-    key: "",
+    key: "dueDate",
   },
 
   {
     label: "Penalty",
-    key: "",
+    key: "penalty",
   },
   {
     label: "Repayment Amount",
-    key: "",
+    key: "totalRepaymentAmount",
+  },
+  {
+    label: "Repay every",
+    key: "repayEvery",
   },
   {
     label: "No of Repayment",
-    key: "",
+    key: "noOfRepayment",
   },
 ];
 

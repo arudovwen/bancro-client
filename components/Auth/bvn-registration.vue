@@ -3,8 +3,8 @@
     <div class="text-left">
       <h1 class="text-[#101828] text-[30px] font-bold mb-1">Get Started 👋</h1>
       <p class="mb-7 text-[#475467]">
-        To get started, we need to verify either your BVN to create an
-        account for you
+        To get started, we need to verify either your BVN to create an account
+        for you
       </p>
     </div>
     <form
@@ -56,7 +56,7 @@
         Already have an account?
         <span
           @click="() => navigateTo('/auth/login')"
-          class="cursor-pointer font-semibold text-primary-500"
+          class="font-semibold cursor-pointer text-primary-500"
           >Login</span
         >
       </span>
@@ -117,7 +117,9 @@ const onSubmit = handleSubmit((values) => {
         toast.success("Validation successful");
         userData.value = {
           ...res.data.data?.data,
+          ...values,
           verificationId: res.data.data?.verification?.reference,
+          smsPinId: res.data.data?.smsPinId,
         };
         stage.value = 2;
 

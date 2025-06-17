@@ -17,7 +17,7 @@
       </p>
       <form @submit.prevent="onSubmit">
         <div class="mb-5">
-          <div class="flex gap-x-2 justify-center mb-8">
+          <div class="flex justify-center mb-8 gap-x-2">
             <v-otp-input
               ref="otpInput"
               v-model:value="code"
@@ -30,16 +30,16 @@
             />
           </div>
         </div>
-        <div class="text-right mb-4">
+        <div class="mb-4 text-right">
           <button
             @click="resendOTP"
             :disabled="isResending"
             type="button"
-            class="text-primary-500 font-semibold text-sm"
+            class="text-sm font-semibold text-primary-500 disabled:opacity-60 disabled:text-gray-500"
           >
             Resend OTP
           </button>
-          <span v-if="isResending"> ({{ countdown }} seconds)</span>
+          <span v-if="isResending" class="text-xs"> ({{ countdown }} seconds)</span>
         </div>
 
         <div class="grid gap-y-[22px] mb-7">
@@ -52,10 +52,14 @@
           />
         </div>
       </form>
-      <div class="text-center text-sm">
-        <span @click="stage = 1" class="text-[#64748B] font-semibold">
+      <div class="text-sm text-center">
+        <button
+          type="button"
+          @click="stage = 1"
+          class="text-[#64748B] font-semibold"
+        >
           Go back
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -65,17 +69,18 @@
 import { useForm } from "vee-validate";
 import { toast } from "vue3-toastify";
 import * as yup from "yup";
-import { verifyKycOtp } from "~/services/authservices.js";
-
-import { resend2FA } from "~/services/authservices";
+import {
+  resendValidateOtp,
+  signupValidateOtpPhone,
+} from "~/services/authservices.js";
 import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import VOtpInput from "vue3-otp-input";
 
-const stage = inject('stage')
+const stage = inject("stage");
 const route = useRoute();
 const activeForm = inject("activeForm");
-
+const userData = inject("userData");
 const form = reactive({
   code: "",
 });
@@ -100,7 +105,7 @@ const isLoading = ref(false);
 const onSubmit = handleSubmit((values) => {
   isLoading.value = true;
 
-  verifyKycOtp(values)
+  signupValidateOtpPhone({ ...values, smsPinId: userData.value.smsPinId })
     .then((res) => {
       if (res.status === 200) {
         if (!res.data.succeeded) {
@@ -108,38 +113,32 @@ const onSubmit = handleSubmit((values) => {
           isLoading.value = false;
           return;
         }
-        activeForm.value = 2
+        activeForm.value = 2;
       }
     })
     .catch((err) => {
       isLoading.value = false;
-      if (err?.response?.data?.message || err?.response?.data?.Message) {
-        toast.error(
-          err?.response?.data?.message || err?.response?.data?.Message
-        );
-      }
+      toast.error(err?.response?.data);
     });
 });
 
 function resendOTP() {
   if (countdown.value === 0) {
-    resend2FA({ email: formValues.username || route.query.email }).then(
-      (res) => {
-        if (res.status === 200) {
-          // Start the countdown
-          toast.info("OTP sent , check your email");
-          countdown.value = 60;
-          isResending.value = true;
-          const interval = setInterval(() => {
-            countdown.value--;
-            if (countdown.value <= 0) {
-              clearInterval(interval);
-              isResending.value = false;
-            }
-          }, 1000);
-        }
+    resendValidateOtp(userData.value.number).then((res) => {
+      if (res.status === 200) {
+        toast.info("OTP sent , check your phone ");
+        countdown.value = 60;
+        userData.value.smsPinId = res.data.data;
+        isResending.value = true;
+        const interval = setInterval(() => {
+          countdown.value--;
+          if (countdown.value <= 0) {
+            clearInterval(interval);
+            isResending.value = false;
+          }
+        }, 1000);
       }
-    );
+    });
   }
 }
 </script>

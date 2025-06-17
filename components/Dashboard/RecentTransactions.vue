@@ -1,6 +1,6 @@
 <template>
-  <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white h-full">
-    <div class="flex justify-between mb-5 px-6 gap-x-10">
+  <div class="border-[#EAECF0] border rounded-xl w-full pt-6 bg-white h-full">
+    <div class="flex justify-between px-6 mb-5 gap-x-10">
       <span>
         <h2 class="text-lg font-semibold mb-[2px] capitalize">
           Recent transactions
@@ -11,14 +11,15 @@
       </span>
       <button
         @click="navigateTo('/transactions')"
-        class="text-xs text-primary-900 flex gap-x-2 items-center h-auto font-medium"
+        class="flex items-center h-auto text-xs font-medium text-primary-500 gap-x-2"
       >
-      <span class="hidden lg:inline-block">  See all transactions</span> <AppIcon icon="fa6-solid:chevron-right" />
+        <span class="hidden lg:inline-block"> See all transactions</span>
+        <AppIcon icon="fa6-solid:chevron-right" />
       </button>
     </div>
 
-    <div>
-      <table class="w-full table-auto">
+    <div class="max-h-[360px] overflow-auto no-scrollbar">
+      <table v-if="rows.length" class="w-full table-auto">
         <thead>
           <tr>
             <th></th>
@@ -32,38 +33,39 @@
             :key="id"
             class="border-b border-[#DFE5EC] last:border-none"
           >
-            <td class="py-4 px-6">
-              <span class="flex gap-x-3 items-center">
+            <td class="px-6 py-4">
+              <span class="flex items-center gap-x-3">
                 <span
-                  class="h-9 w-9 rounded-full bg-gray-50 flex items-center justify-center"
+                  class="flex items-center justify-center rounded-full h-9 w-9 bg-gray-50"
                 >
                   <SvgDebit v-if="n.status == 0" />
+                     <SvgCredit v-if="n.status == 1" />
                 </span>
                 <span>
                   <span class="text-sm text-[#0E0F0C] font-medium block">{{
-                    n.name
+                    n.transaction.customerName
                   }}</span>
-                  <span class="text-sm text-[#6A6C6A]">{{ n.action }}</span>
+                  <span class="text-sm text-[#6A6C6A]">{{ n.paymentMethod }}</span>
                 </span>
               </span>
             </td>
-            <td class="py-4 px-6">
+            <td class="px-6 py-4">
               <span>
                 <span
                   class="text-sm text-[#0E0F0C] font-medium block"
                   :class="n.status === 1 ? '' : 'text-red-500'"
-                  >{{ currencyFormat(n.balance) }}</span
+                  >{{ currencyFormat(n.transaction?.amount) }}</span
                 >
-                <span class="text-sm text-[#6A6C6A]">{{ n.date }}</span>
+                <span class="text-sm text-[#6A6C6A]">{{ moment(n.transaction?.transactionDate ).format("lll")}}</span>
               </span>
             </td>
-            <td class="py-4 px-6">
+            <td class="px-6 py-4">
               <AppStatusButton :status="n.status" />
             </td>
           </tr>
         </tbody>
       </table>
-      <EmptyData />
+      <EmptyData v-if="!rows.length" />
     </div>
   </div>
 </template>
@@ -71,7 +73,10 @@
 <script setup>
 import moment from "moment";
 import AppStatusButton from "../AppStatusButton.vue";
+import { getTransactions } from "~/services/savingsservice";
 
+const authStore = useAuthStore()
+const isLoading = ref(false);
 const columns = [
   {
     header: "transaction ref",
@@ -93,7 +98,7 @@ const columns = [
   },
   {
     header: "date/time",
-    key: "date",
+    key: "transactionDate",
     isHtml: false,
     isStatus: false,
   },
@@ -104,6 +109,56 @@ const columns = [
     isStatus: true,
   },
 ];
-
+const query = reactive({
+  PageNumber: 1,
+  PageSize:5,
+  Limit: 5,
+  userId: authStore.userId,
+});
 const rows = ref([]);
+const TransType = {
+  0: "Debit",
+  1: "Credit",
+  2: "Refund",
+};
+const StatusType = {
+  0: "Pending",
+  1: "Successful",
+  2: "Failed",
+};
+async function getData() {
+  try {
+    isLoading.value = true;
+    const response = await getTransactions({
+      ...query,
+      Offset: query.PageNumber - 1,
+      Limit: 8,
+      userId: authStore.userId,
+    });
+    if (response.status === 200) {
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        beneficiary: i.transaction.customerName,
+        amount: currencyFormat(i.transaction.amount),
+        paymentMethod: i.paymentMethod,
+        transactionDate: moment(i.transactionDate).format("lll"),
+        transactionType: TransType[i.transaction?.actionType],
+        status: i.status,
+        statusInfo: StatusType[i.status],
+        note: i.transaction.note,
+        initiatedDate: `Inititated ${moment(i.createdAt).format("lll")}`,
+        dateReceived: `Received ${moment(i.createdAt).format("lll")}`,
+        reference: i.transaction.transactionId,
+        fullBeneficiary: `${i.transaction.customerName} | ${i.transaction.accountNumber} | Access Bank`,
+      }));
+      query.totalCount = response.data.data.total;
+    }
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  getData();
+});
 </script>

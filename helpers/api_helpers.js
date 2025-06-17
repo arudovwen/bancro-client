@@ -1,6 +1,5 @@
 import Axios from "axios";
 import { useAuthStore } from "~/stores/auth";
-import { toast } from "vue3-toastify";
 
 const API_URL = "https://clientapi.streams.com.ng";
 const runtimeConfig = useRuntimeConfig();

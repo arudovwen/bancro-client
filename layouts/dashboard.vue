@@ -1,6 +1,6 @@
 <template>
   <IdleTimer />
-  <section class="flex h-screen w-screen">
+  <section class="flex w-screen h-screen">
     <div
       class="w-max h-full border-r border-[#ECECEC] bg-white min-w-[280px] hidden lg:inline"
     >
@@ -14,7 +14,7 @@
     </div>
     <div class="flex-1 bg-[#EFF2F4] h-full overflow-y-auto">
       <AppHeader />
-      <div class="py-8 px-5 lg:px-8">
+      <div class="px-5 py-8 lg:px-8">
         <slot />
       </div>
     </div>
@@ -34,14 +34,9 @@ const authStore = useAuthStore();
 const isSigniningOut = ref(false);
 async function getData() {
   const response = await getSavingsAccountByUserid(authStore.userId);
-  const response1 = await getSavingsAccountClientByUserid(authStore.userId);
+
   if (response.status === 200) {
-    console.log("🚀 ~ getData ~ response.data.data:", response.data.data);
-  }
-
-  if (response1.status === 200) {
-    const data1 = response1.data.data.savingsAccounts[0];
-
+    const data1 = response.data.data;
     authStore.setSavingsInfo(data1);
   }
 }

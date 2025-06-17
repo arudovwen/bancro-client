@@ -1,12 +1,12 @@
 <template>
-  <div class="grid gap-y-3 h-full">
+  <div class="flex flex-col h-full gap-y-3">
     <div
       class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white flex justify-between gap-x-4"
     >
       <button
         v-for="n in tabs"
         :key="n.title"
-        class="text-center flex flex-col gap-y-1 capitalize"
+        class="flex flex-col text-center capitalize gap-y-1"
         @click="navigateTo(n.url)"
       >
         <span
@@ -19,12 +19,55 @@
         <span class="font-medium text-[10px]">{{ n.title }}</span>
       </button>
     </div>
-    <div class="border-[#EAECF0] border rounded-xl w-full p-6 bg-white">
+    <div class="border-[#EAECF0] border rounded-xl w-full py-6 bg-white flex-1">
       <div>
-        <h2 class="text-[#101828] text-base font-semibold block mb-4">
+        <h2 class="text-[#101828] text-base font-semibold block mb-4 px-6">
           Active Loans
         </h2>
-        <div class="flex items-center justify-center">
+        <div class="grid grid-cols-1 gap-y-4" v-if="rows.length && !loading">
+          <div
+            @click="navigateTo(`/loans/detail/${detail.id}`)"
+            v-for="(detail, id) in rows"
+            :key="id"
+            class="border-b border-[#DFE5EC] last:border-none px-6"
+          >
+            <span class="flex items-center justify-between">
+              <div class="flex flex-col mb-3 gap-y-1">
+                <span class="text-sm font-semibold capitalize text-[#344054]">{{
+                  detail?.loanName
+                }}</span>
+                
+              <span class="flex items-center text-xs gap-x-1">
+                <span class="block text-[#667085]"
+                  >Interest rate:
+                  <span class="font-medium text-[#666666] ml-1"
+                    >{{ detail?.interestRate }}%</span
+                  ></span
+                >,
+                <span class="block text-[#667085]">{{
+                  detail?.tenor
+                }}</span></span
+              >
+              </div>
+              <span
+                class="flex justify-between items-center text-sm mb-1 text-[#475467]"
+              >
+                <span></span>
+                <span class="block text-sm text-[#344054] font-medium">{{
+                  detail?.amount
+                }}</span></span
+              >
+
+            </span>
+          </div>
+        </div>
+        <div v-if="loading">
+          <TableLoader />
+        </div>
+        <div
+          v-if="!rows.length && !loading"
+          class="flex items-center justify-center"
+        >
           <SvgEmpty />
         </div>
       </div>
@@ -33,6 +76,10 @@
 </template>
 
 <script setup>
+import moment from "moment";
+import { getLoanRequests } from "~/services/loanservice";
+import ActiveLoan from "../LoanComponent/ActiveLoan.vue";
+
 const tabs = [
   // {
   //   title: "add money",
@@ -66,6 +113,35 @@ const tabs = [
     url: "/bill-payment",
   },
 ];
-
+const loading = ref(false);
+const queryParams = reactive({
+  PageNumber: 1,
+  PageSize: 10,
+  Status: 10,
+});
 const stats = ref(null);
+const rows = ref([]);
+async function getData() {
+  try {
+    loading.value = true;
+    const response = await getLoanRequests(queryParams);
+    if (response.status === 200) {
+      rows.value = response.data.data.map((i) => ({
+        ...i,
+        amount: currencyFormat(i.approvedAmount),
+        tenor: i.tenure ? `${i.tenure} days` : "-",
+        createdAt: i.createdAt ? moment(i.createdAt).format("lll") : "-",
+      }));
+    }
+  } finally {
+    loading.value = false;
+  }
+}
+function getPercentage(part, total) {
+  return (part / total) * 100;
+}
+
+onMounted(() => {
+  getData();
+});
 </script>

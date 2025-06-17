@@ -1,6 +1,5 @@
 <template>
   <h2 class="text-xl font-medium text-[#182230] mb-3">Loan Details</h2>
-
   <div class="border-b mt-2 mb-7 border-[#D0D5DD]" />
   <form @submit.prevent="onSubmit" class="bg-white rounded-xl">
     <div>
@@ -21,9 +20,10 @@
               />
               <span class="absolute right-4 text-sm text-[#344054]">NGN</span>
             </div>
-            <!-- <span class="block mt-[2px] text-sm text-[#5F738C]"
-              >Max Amount: {{ currencyFormat(100000) }}</span
-            > -->
+            <span class="block mt-[2px] text-sm text-[#5F738C]"
+              >Min Amount:
+              {{ currencyFormat(productDetail?.minPrincipal) }}</span
+            >
           </FormGroup>
         </div>
 
@@ -37,12 +37,12 @@
             :error="errors.purpose"
           />
         </div>
-        <FormGroup label="Tenor" :error="errors.tenor" name="tenor">
+        <FormGroup label="Tenure" :error="errors.tenor" name="tenor">
           <SelectVueSelect
             v-model="tenor"
             :options="TenorOptions"
             :reduce="(tenor) => tenor.value"
-            placeholder="Select tenor"
+            placeholder="Select Tenure"
             :classInput="`min-w-[180px] !bg-white  !rounded-lg !text-[#475467] !h-11 cursor-pointer ${
               errors.status ? 'border-red-500' : 'border-[#D0D5DD]'
             }`"
@@ -88,26 +88,9 @@ import CurrencyInput from "../CurrencyInput.vue";
 
 const detail = inject("detail");
 const formValues = inject("formValues");
-
-console.log("🚀 ~ detail:", detail.value?.tenors);
+const productDetail = inject("productDetail");
 const isOpen = ref(false);
-// ample payload : {
-//   "id": 0,
-//   "name": "NYSC Loan",
-//   "productId": "1",
-//   "amount": 50000,
-//   "purpose": "urgent 2k",
-//   "tenor": 70,
-//   "document": [
-//     {
-//       "documentName": "Signature",
-//       "narration": "Testing document",
-//       "viewUrl": "https://dev.gateway.matta.trade/uploads/c5a0484c-f86a-48f4-af4e-2d433e51537e.png",
-//       "downloadUrl": "https://dev.gateway.matta.trade/uploads/c5a0484c-f86a-48f4-af4e-2d433e51537e.png",
-//       "documentType": 0
-//     }
-//   ]
-// }
+
 const activeForm = inject("activeForm");
 const TenorOptions = computed(() => {
   const ParsedTenors = detail.value?.tenors
@@ -122,24 +105,39 @@ const TenorOptions = computed(() => {
 const isLoading = ref(false);
 
 const schema = yup.object().shape({
-  amount: yup.string().required("Specify an amount"),
+  amount: yup
+    .number()
+    .required("Specify an amount")
+    .when("minAmount", {
+      is: (v) => v !== null && v !== undefined,
+      then: (schema) => schema.min(yup.ref("minAmount")),
+    }),
   purpose: yup.string().required("Specify your purpose"),
   tenor: yup.string().required("Select a tenor"),
-  document: yup.string(),
+  minAmount: yup.number(),
+  maxAmount: yup.number(),
 });
 
-const { handleSubmit, defineField, errors, setValues, setFieldValue } = useForm(
-  {
-    validationSchema: schema,
-    initialValues: formValues.one,
-  }
-);
-const [amount, amountAtt] = defineField("amount");
+const { handleSubmit, defineField, errors, values, setFieldValue } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    ...formValues.one,
+    minAmount: productDetail.value?.minPrincipal,
+  },
+});
+const [amount] = defineField("amount");
 const [purpose, purposeAtt] = defineField("purpose");
-const [tenor, tenorAtt] = defineField("tenor");
-const [document] = defineField("document");
+const [tenor] = defineField("tenor");
 const onSubmit = handleSubmit((values) => {
   formValues.one = values;
   activeForm.value = 2;
 });
+watch(
+  () => productDetail.value?.minPrincipal,
+  (newMinPrincipal) => {
+    if (newMinPrincipal) {
+      setFieldValue("minAmount", newMinPrincipal);
+    }
+  }
+);
 </script>

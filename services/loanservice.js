@@ -37,6 +37,12 @@ export const getLoanOthers = (payload) => {
   );
 };
 
+export const getCoreLoanProductById = (payload) => {
+  return get(
+    `${urls.GET_CORE_LOAN_PRODUCT_BY_ID}?loanId=${payload}`,
+    config
+  );
+};
 export const postBeneficiary = (data) => {
   return post(`${urls.BENEFICIARY}`, data, config);
 };
@@ -45,4 +51,16 @@ export const approveLoanOffer = (data) => {
 };
 export const deleteBeneficiary = (data) => {
   return del(`${urls.BENEFICIARY}?${new URLSearchParams(data)}`, config);
+};
+
+export const repayLoan = (data) => {
+  return post(`${urls.REPAY_LOAN}?${new URLSearchParams(data)}`, data, config);
+};
+
+export const getRepaymentHistory = (payload) => {
+  return get(
+    `${urls.REPAYMENT_HISTORY}?loanRequestId=${payload}&loanTransactionType=1
+`,
+    config
+  );
 };

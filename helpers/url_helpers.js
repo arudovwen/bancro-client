@@ -4,6 +4,7 @@ const urls = {
   OTP_SIGN_IN: "/customerprofile/otp-sign-in",
   SETUP_PASSCODE: "/customerprofile/setup-passcode",
   VERIFY_PASSCODE: "/customerprofile/verify-passcode",
+  RESEND_VALIDATE_OTP: "/CustomerProfile/kyc/resend-otp?bvn=",
   SEND_RESET_PASSWORD_OTP: "/customerprofile/send-reset-password-otp",
   VALIDATE_RESET_PASSWORD_OTP: "/customerprofile/validate-reset-password-otp",
   RESET_PASSWORD_CUSTOMER: "/customerprofile/reset-password-customer",
@@ -22,11 +23,14 @@ const urls = {
 
   KYC_VERIFY: "/customerprofile/kyc/verify",
   VALIDATE_OTP: "/customerprofile/kyc/validate-otp",
-  
+
   TIER_2_VERIFICATION: "/customerprofile/tier-two-upgrade",
   GET_LIMITS: "/customerprofile/tiers",
   GET_TIER_VERIFICATION: "/customerprofile/get-user-tier-status",
   KYC_DOCUMENT_UPLOAD: "/customerprofile/kyc/document-upload",
+
+  UPLOAD_PROFILE_IMAGE: "/customerprofile/upload-profile-image",
+  GET_PROFILE_IMAGE: "/customerprofile/get-user-pic",
 
   // Loan urls
   LOAN_PRODUCTS: "/loan/loan-products",
@@ -35,6 +39,7 @@ const urls = {
   LOAN_REQUIREMENTS: "/loan/loan-requirements",
   LOAN_OTHER_INFORMATION: "/loan/loan-other-information",
   APPROVE_LOAN_OFFER: "/loan/approve-offers",
+  GET_CORE_LOAN_PRODUCT_BY_ID: "Loan/get-product-details",
 
   // Onboarding urls
   SIGN_UP_USER: "/onboarding/sign-up-user",
@@ -48,7 +53,6 @@ const urls = {
   SAVINGS_ACCOUNT: "/savingsaccount",
   GET_ACCOUNT_TIER: "/savingsaccount/tier",
 
-  
   // Transactions urls
   GET_TRANSACTION_BY_ID: (id) => `/transactions/${id}`,
   GET_ALL_TRANSACTIONS: "/transactions/transactions",
@@ -86,6 +90,9 @@ const urls = {
   BENEFICIARY: "/Beneficiary",
 
   GET_LOAN_PRODUCTS: "",
+  REPAY_LOAN: "Loan/client-loan-repayment",
+  REPAYMENT_HISTORY: "Loan/loan-transactions",
 
+  SIGNUP_VALIDATE_OTP: "CustomerProfile/kyc/validate-otp",
 };
 export default urls;

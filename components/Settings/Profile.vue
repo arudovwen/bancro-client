@@ -15,16 +15,16 @@
       />
       <div class="flex gap-x-4 items-end absolute z-10 left-[48px] top-[110px]">
         <div class="flex items-center">
-          <label for="upload" class="!mb-0">
+          <label for="upload" class="!mb-0 cursor-pointer" v-if="!imageLoading">
             <span
               v-if="!image"
-              class="h-[120px] w-[120px] p-1 rounded-full flex items-center text-sm justify-center bg-gray-200 border-2 border-white"
+              class="h-[100px] w-[100px] p-1 rounded-full flex items-center text-sm justify-center bg-gray-200 border-2 border-white"
               >Photo</span
             >
             <img
               v-else
               :src="image"
-              class="h-full w-full rounded-full flex items-center justify-center bg-[#F1F3F5]"
+              class="h-[100px] w-[100px] object-cover rounded-full flex items-center justify-center bg-[#F1F3F5]"
             />
             <input
               @change="handleEvent($event)"
@@ -34,14 +34,20 @@
               class="hidden"
             />
           </label>
+          <div
+            v-else
+            class="h-[100px] w-[100px] object-cover rounded-full flex items-center justify-center bg-[#F1F3F5]"
+          >
+            <LoaderPageLoader />
+          </div>
         </div>
         <div class="pb-1">
           <span
-            class="text-[#182230] block rounded-full text-xl font-semibold cursor-pointer mb-1"
+            class="text-[#182230] block rounded-full text-lg font-semibold cursor-pointer mb-1"
           >
             {{ authStore.fullName || authStore.companyName }}
           </span>
-          <span class="flex gap-x-3 items-center text-sm">
+          <span class="flex items-center text-sm gap-x-3">
             <!-- <span class="text-sm text-[#667085]">@laketu</span
             > -->
             <span
@@ -58,7 +64,7 @@
     >
       <PageHeader
         title="Personal Information"
-        text="Update your personal details"
+        text=""
         className="!text-lg !text-[#3C4A67] mb-1"
         subClass=" !text-sm !text-[#667085]"
       />
@@ -147,7 +153,6 @@
               :placeholder="isLoading ? 'Fetching...' : ''"
               label="Date of birth"
               name="dateOfBirth"
-              type="date"
               v-bind="dateOfBirthAtt"
               v-model="dateOfBirth"
               :error="errors.dateOfBirth"
@@ -187,7 +192,7 @@
           </div> -->
           <div></div>
 
-          <div class="flex justify-end mt-6">
+          <!-- <div class="flex justify-end mt-6">
             <AppButton
               type="submit"
               :isLoading="isLoading"
@@ -195,16 +200,22 @@
               text="Save changes"
               btnClass="text-white bg-danger-500 w-full !px-[114px] !py-[10px] !rounded-lg font-semibold "
             />
-          </div>
+          </div> -->
         </form>
       </div>
     </div>
   </section>
 </template>
 <script setup>
+import moment from "moment";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
-import { getUserProfile, updateProfile } from "~/services/authservices";
+import {
+  addUserPic,
+  getUserPic,
+  getUserProfile,
+  updateProfile,
+} from "~/services/authservices";
 
 const authStore = useAuthStore();
 const isLoading = ref(false);
@@ -219,6 +230,7 @@ const formValues = reactive({
   companyName: "",
 });
 const image = ref(null);
+const imageLoading = ref(false);
 const schema = yup.object().shape({
   companyName: yup.string().nullable(),
   lastName: yup.string().nullable(),
@@ -226,7 +238,7 @@ const schema = yup.object().shape({
   email: yup.string().email("Invalid email").nullable(),
   phoneNumber: yup.string().nullable(),
   gender: yup.string().nullable(),
-  dateOfBirth: yup.string().nullable(),
+  dateOfBirth: yup.date().nullable(),
 });
 const { handleSubmit, defineField, errors, setFieldValue } = useForm({
   validationSchema: schema,
@@ -239,9 +251,27 @@ const [lastName, lastNameAtt] = defineField("lastName");
 const [gender] = defineField("gender");
 const [dateOfBirth, dateOfBirthAtt] = defineField("dateOfBirth");
 const [companyName, companyNameAtt] = defineField("companyName");
+const loading = ref(false);
 
+async function getData() {
+  imageLoading.value = true;
+  try {
+    const res = await getUserPic({ userId: authStore.userId });
+    if (res.status === 200 && res.data?.url) {
+      image.value = res.data.url;
+    } else {
+      image.value = null;
+    }
+  } catch (error) {
+    image.value = null;
+    toast.error("Failed to fetch profile image");
+  } finally {
+    imageLoading.value = false;
+  }
+}
 onMounted(() => {
   isLoading.value = true;
+  getData();
   getUserProfile(authStore.userId).then((res) => {
     if (res.status === 200) {
       isLoading.value = false;
@@ -255,26 +285,25 @@ onMounted(() => {
         phoneNumber,
         email,
         companyName,
-        ...rest
       } = res.data.data;
-      Object.keys({
+      const tempData = {
         avatarUrl,
         firstName,
         lastName,
-        dateOfBirth,
+        dateOfBirth: moment(dateOfBirth).format("l"),
         gender,
         phoneNumber,
         email,
         companyName,
-      }).forEach((key) => {
-        setFieldValue(key, res.data.data[key]);
+      };
+      Object.keys(tempData).forEach((key) => {
+        setFieldValue(key, tempData[key]);
       });
     }
   });
 });
 
 const onSubmit = handleSubmit((values) => {
-  console.log("🚀 ~ onSubmit ~ values:", values);
   isLoading.value = true;
   updateProfile(values)
     .then((res) => {
@@ -290,4 +319,30 @@ const onSubmit = handleSubmit((values) => {
       }
     });
 });
+
+async function handleEvent(e) {
+  imageLoading.value = true;
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const allowedExtensions = ["jpeg", "png", "jpg", "svg"];
+  const fileExtension = file.name.split(".").pop().toLowerCase();
+
+  if (!allowedExtensions.includes(fileExtension)) {
+    toast.error("Invalid file type. Please upload a document.");
+    return;
+  }
+ 
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("userId", authStore.userId);
+
+  try {
+    await addUserPic(formData);
+    await getData();
+  } catch (error) {
+    toast.error("Failed to upload image");
+  } finally {
+    imageLoading.value = false;
+  }
+}
 </script>

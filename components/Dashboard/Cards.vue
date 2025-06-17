@@ -99,13 +99,12 @@ async function getData() {
     loading.value = true;
 
     // Use Promise.all for concurrent API calls
-    const [accountResponse, clientResponse] = await Promise.all([
+    const [accountResponse] = await Promise.all([
       getSavingsAccountByUserid(authStore.userId),
-      getSavingsAccountClientByUserid(authStore.userId),
     ]);
 
     if (accountResponse.status === 200) {
-      const { issuer, savingsAccountNo, firstName, lastName } =
+      const { issuer, savingsAccountNo, firstName, lastName, accountBalance } =
         accountResponse.data.data;
 
       accountNo.value = savingsAccountNo;
@@ -113,18 +112,10 @@ async function getData() {
         index === 0
           ? {
               ...item,
+              balance: currencyFormat(accountBalance),
               rightBottom: `${issuer || "Wema Bank"} - ${savingsAccountNo}`,
               leftBottom: `${ucFirst(firstName)} ${ucFirst(lastName)}`,
             }
-          : item
-      );
-    }
-    if (clientResponse.status === 200) {
-      const clientAccount = clientResponse.data.data.savingsAccounts[0];
-
-      data.value = data.value.map((item, index) =>
-        index === 0
-          ? { ...item, balance: currencyFormat(clientAccount.accountBalance) }
           : item
       );
     }

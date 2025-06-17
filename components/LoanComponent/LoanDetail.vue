@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-y-1 mb-6">
+  <div class="flex flex-col mb-6 gap-y-1">
     <PageHeader title="Loans" text="" />
     <div class="">
       <Breadcrumbs :links="links" />
@@ -8,26 +8,32 @@
   <div class="border-t border-[#DFE5EC] flex gap-x-[22px] py-5">
     <div class="max-w-[345px] w-full">
       <LoanComponentActiveLoan
-        :detail="detail"
+        :detail="{
+          ...detail,
+          amount: currencyFormat(detail?.amount),
+        }"
         :canRepay="true"
         @repayClick="isOpen = true"
       />
     </div>
-  <div class="flex-1">
-    <LoanComponentHistory  />
-  </div>
+    <div class="flex-1">
+      <LoanComponentHistory />
+    </div>
   </div>
   <ModalCenter :isOpen="isOpen" @togglePopup="isOpen = false" v-if="isOpen">
     <template #default>
-      <div class="h-full w-full bg-white rounded-lg p-6">
+      <div class="w-full h-full p-6 bg-white rounded-lg">
         <RepayLoan :detail="detail" />
       </div>
     </template>
   </ModalCenter>
 </template>
 <script setup>
+import { getLoanRequests } from "~/services/loanservice";
 import RepayLoan from "./repay-loan";
 
+const { id } = useRoute().params;
+const refresh = ref(false);
 const isOpen = ref(false);
 const detail = ref(null);
 const links = [
@@ -40,5 +46,23 @@ const links = [
     url: "#",
   },
 ];
+
+async function getData() {
+  const response = await getLoanRequests({ LoanId: id });
+  if (response.status === 200) {
+    detail.value = {
+      ...response.data.data?.[0],
+      amount: response.data.data?.[0].approvedAmount,
+    };
+  }
+}
+
+onMounted(() => {
+  getData();
+});
+watch(refresh, () => {
+  getData();
+});
 provide("isOpen", isOpen);
+provide("refresh", refresh);
 </script>
