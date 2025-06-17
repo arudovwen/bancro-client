@@ -64,7 +64,7 @@
     >
       <PageHeader
         title="Personal Information"
-        text="Update your personal details"
+        text=""
         className="!text-lg !text-[#3C4A67] mb-1"
         subClass=" !text-sm !text-[#667085]"
       />
