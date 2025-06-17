@@ -239,6 +239,7 @@ const [lastName, lastNameAtt] = defineField("lastName");
 const [gender] = defineField("gender");
 const [dateOfBirth, dateOfBirthAtt] = defineField("dateOfBirth");
 const [companyName, companyNameAtt] = defineField("companyName");
+const loading = ref(false);
 
 onMounted(() => {
   isLoading.value = true;
@@ -272,7 +273,43 @@ onMounted(() => {
     }
   });
 });
+function handleEvent(e) {
+  const file = e.target.files[0];
 
+  if (!file) return;
+
+  const allowedExtensions = ["jpeg", "png", "jpg"];
+  const fileExtension = file.name.split(".").pop().toLowerCase();
+
+  if (!allowedExtensions.includes(fileExtension)) {
+    toast.error("Invalid file type. Please upload a document.");
+    return;
+  }
+ 
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const base64String = event.target.result.split(",")[1];
+    loading.value = true;
+    const data = { base64: base64String, ext: `.${fileExtension}` };
+ console.log('data',data)
+    // uploaddocument(data)
+    //   .then((res) => {
+    //     loading.value = false;
+    //     handleChange(props.id, res.data.message);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error uploading file:", error);
+    //     loading.value = false;
+    //   });
+  };
+
+  reader.onerror = function (error) {
+    console.error("Error reading file:", error);
+  };
+
+  reader.readAsDataURL(file);
+}
 const onSubmit = handleSubmit((values) => {
   console.log("🚀 ~ onSubmit ~ values:", values);
   isLoading.value = true;

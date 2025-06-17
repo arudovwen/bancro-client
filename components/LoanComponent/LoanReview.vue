@@ -78,6 +78,10 @@ const formObject = [
     key: "totalRepaymentAmount",
   },
   {
+    label: "Repay every",
+    key: "repayEvery",
+  },
+  {
     label: "No of Repayment",
     key: "noOfRepayment",
   },
