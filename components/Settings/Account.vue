@@ -27,7 +27,7 @@
             <div
               v-for="n in limitData"
               :key="n.label"
-              class="flex justify-start gap-x-5 items-center text-xs text-white"
+              class="flex items-center justify-start text-xs text-white gap-x-5"
             >
               <span class="w-[154px]">{{ n.label }}</span>
               <span class="font-medium">{{
@@ -50,7 +50,7 @@
             :key="n.label"
             class="py-4 border rounded-lg border-[#D9E4F6] bg-[#F9FCFF]"
           >
-            <div class="flex justify-between items-center px-6">
+            <div class="flex items-center justify-between px-6">
               <span class="flex gap-x-[10px] items-center">
                 <img src="~/assets/images/svg/tier.svg" :alt="n.label" />
                 <span class="text-[#344054] font-medium text-sm">{{
@@ -62,7 +62,7 @@
                   v-if="n.status === 'upgrade'"
                   @click="
                     () => {
-                      clickVerify(n.config_id);
+                      clickVerify(n.config_id, index);
                     }
                   "
                   class="text-[#163300] font-medium bg-[#9FE870] border border-[#9FE870] px-2 py-[3px] text-xs rounded-[6px] active:scale-95"
@@ -96,13 +96,13 @@
                 :key="k.label"
               >
                 <span class="text-[#344054] font-medium">{{ k.label }}</span>
-                <span>
+                <span v-if="!verifying">
                   <span v-if="!profileData?.[k.valueKey]">
                     <button
                       v-if="k.config_id"
                       @click="
                         type = k.type;
-                        clickVerify(k.config_id);
+                        clickVerify(k.config_id, index);
                       "
                       :disabled="
                         profileData?.tierName?.toLowerCase() !==
@@ -131,6 +131,11 @@
                     stattype="textstattus"
                   />
                 </span>
+                <span
+                  v-if="verifying && currentindex == index"
+                  class="text-sm font-medium text-blue-500"
+                  >Initializing ...</span
+                >
               </div>
             </div>
           </div>
@@ -152,6 +157,12 @@
       </div>
     </template>
   </ModalCenter>
+
+  <ModalVerification
+    :open="verificationOpen"
+    @close="verificationOpen = false"
+    :widget_id="widget_id"
+  />
 </template>
 
 <script setup>
@@ -164,13 +175,17 @@ import {
 } from "~/services/authservices";
 import Tier3Business from "./Tier3Business.vue";
 import Tier3Personal from "./Tier3Personal.vue";
+import { toast } from "vue3-toastify";
 
+const currentindex = ref(null);
+const verifying = ref(false);
 const showing = ref(1);
 const isOpen = ref(false);
 const isVerifying = ref(false);
 const authStore = useAuthStore();
 const config = useRuntimeConfig();
-
+const verificationOpen = ref(false);
+const widget_id = ref(null);
 const TierData = ref([
   {
     label: "Tier 1",
@@ -325,16 +340,28 @@ function onSuccess(response) {
   verifyTier2(data);
   getData();
 }
-function clickVerify(config_id) {
+async function clickVerify(config_id, index) {
+  currentindex.value = index;
   const data = {
-    merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
+    // merchant_key: "live_pk_PgbSjJl15Wt95osJXhfgQt2KqRJHaWv0ZhSTN2t",
     first_name: authStore.userInfo.firstName,
     last_name: authStore.userInfo.lastName,
     email: authStore.userInfo.email,
     config_id,
     user_ref: `${authStore.userInfo.id}_${type.value}`,
   };
-  initiateVerify(data, onSuccess, onModalClose);
+  try {
+    verifying.value = true;
+    await initiateVerify(data, (value) => {
+      const url = `https://sdk-view.prembly.com/${value}`;
+      const newwindow = window.open("", "_blank");
+      newwindow.location.href = url;
+    });
+  } catch (err) {
+    toast.error(err.response?.data?.message);
+  } finally {
+    verifying.value = false;
+  }
 }
 provide("isOpen", isOpen);
 </script>

@@ -2,86 +2,154 @@ import Axios from "axios";
 import { useAuthStore } from "~/stores/auth";
 
 const API_URL = "https://clientapi.streams.com.ng";
-const runtimeConfig = useRuntimeConfig()
+const runtimeConfig = useRuntimeConfig();
+
 const axiosApi = Axios.create({
   baseURL: API_URL,
   withCredentials: false,
 });
 
-// Set up request interceptor
+/* =========================================================
+   🔐 ENCRYPT SELECTED HEADERS
+   (Feel free to choose ANY headers you want encrypted)
+   ========================================================= */
+function encryptHeaders(headers) {
+  return headers
+  const encryptedHeaders = { ...headers };
+
+  const keysToEncrypt = ["apiKey", "tenantId"]; // 🔐 your choice
+
+  keysToEncrypt.forEach((key) => {
+    if (encryptedHeaders[key]) {
+      encryptedHeaders[key] = encryptAny(encryptedHeaders[key]);
+    }
+  });
+
+  return encryptedHeaders;
+}
+
+/* =========================================================
+   🔐 ENCRYPT QUERY PARAMS
+   ========================================================= */
+function encryptQueryParams(params) {
+  if (!params) return params;
+
+  const encrypted = {};
+
+  Object.keys(params).forEach((key) => {
+    encrypted[key] = encryptAny(params[key]);
+  });
+
+  return encrypted;
+}
+
+/* =========================================================
+   🔐 REQUEST INTERCEPTOR
+   Encrypt:
+     ✔ headers
+     ✔ query params
+     ✔ body
+   ========================================================= */
 axiosApi.interceptors.request.use(
   (config) => {
     const authStore = useAuthStore();
+
+    // Add access token
     if (authStore?.access_token) {
       config.headers.Authorization = `Bearer ${authStore.access_token}`;
-    
     }
+
     config.headers.Accept = "application/json";
-    config.headers.apiKey = runtimeConfig.public.PUBLIC_KEY
-    config.headers.tenantId = runtimeConfig.public.TENANT_ID
+
+    // Encrypt headers
+    config.headers = encryptHeaders({
+      ...config.headers,
+      apiKey: runtimeConfig.public.PUBLIC_KEY,
+      tenantId: runtimeConfig.public.TENANT_ID,
+    });
+
+    // // Encrypt query params
+    // if (config.params) {
+    //   config.params = encryptQueryParams(config.params);
+    // }
+
+    // // Encrypt request body
+    // if (config.data) {
+    //   config.data = {
+    //     payload: encryptAny(config.data),
+    //   };
+    // }
+
     return config;
   },
-  (error) => {
+  (error) => Promise.reject(error)
+);
+
+/* =========================================================
+   🔄 TOKEN REFRESH
+   ========================================================= */
+const handleTokenRefresh = async () => {
+  const authStore = useAuthStore();
+  const refreshResponse = await axiosApi.post("/v1/Account/refreshtoken", {
+    token: authStore.refresh_token,
+    ipAddress: "",
+  });
+
+  const { jwToken, refreshToken } = refreshResponse.data;
+
+  authStore.setAccessToken(jwToken);
+  authStore.setRefreshToken(refreshToken);
+
+  axiosApi.defaults.headers.Authorization = `Bearer ${jwToken}`;
+
+  return jwToken;
+};
+
+/* =========================================================
+   🔐 RESPONSE INTERCEPTOR
+   Automatically decrypts:
+     ✔ success responses
+     ✔ error responses
+   ========================================================= */
+axiosApi.interceptors.response.use(
+  (response) => {
+    // if (response.data?.payload) {
+    //   response.data = decryptAny(response.data.payload);
+    // }
+    return response;
+  },
+
+  async (error) => {
+    const original = error.config;
+
+    // Token expired
+    if (error.response?.status === 401 && !original._retry) {
+      original._retry = true;
+      try {
+        const newToken = await handleTokenRefresh();
+        original.headers.Authorization = `Bearer ${newToken}`;
+        return axiosApi(original);
+      } catch (refreshError) {
+        const authStore = useAuthStore();
+        authStore.logOut();
+        window.location.href = `/auth/login?info=session_expired&redirected_from=${window.location.href}`;
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // Decrypt error response
+    // if (error.response?.data?.payload) {
+    //   error.response.data = decryptAny(error.response.data.payload);
+    // }
+
     return Promise.reject(error);
   }
 );
 
-// Define a function to handle token refresh
-const handleTokenRefresh = async () => {
-  try {
-    const authStore = useAuthStore();
-    const refreshResponse = await axiosApi.post("/v1/Account/refreshtoken", {
-      token: authStore.refresh_token,
-      ipAddress: "",
-    });
-    const { jwToken: newAccessToken, refreshToken: newRefreshToken } =
-      refreshResponse.data;
-    authStore.setAccessToken(newAccessToken);
-    authStore.setRefreshToken(newRefreshToken);
-    axiosApi.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${newAccessToken}`;
-    return newAccessToken;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// Set up response interceptor to handle token refresh and retry requests
-axiosApi.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      try {
-        const newAccessToken = await handleTokenRefresh();
-        error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return axiosApi.request(error.config);
-      } catch (refreshError) {
-        const authStore = useAuthStore();
-        authStore.logOut();
-        const redirectedUrl = `/auth/login?info=session_expired&redirected_from=${window.location.href}`;
-        window.location.href = redirectedUrl;
-        return Promise.reject(refreshError);
-      }
-    } else {
-      return Promise.reject(error);
-    }
-  }
-);
-
-// Define API functions
-export async function get(url, config = {}) {
-  return await axiosApi.get(url, config);
-}
-
-export async function post(url, data, config = {}) {
-  return axiosApi.post(url, data, config);
-}
-
-export async function put(url, data, config = {}) {
-  return axiosApi.put(url, data, config);
-}
-
-export async function del(url, config = {}) {
-  return await axiosApi.delete(url, config);
-}
+/* =========================================================
+   Export API Methods
+   ========================================================= */
+export const get = (url, config = {}) => axiosApi.get(url, config);
+export const post = (url, data, config = {}) => axiosApi.post(url, data, config);
+export const put = (url, data, config = {}) => axiosApi.put(url, data, config);
+export const del = (url, config = {}) => axiosApi.delete(url, config);
