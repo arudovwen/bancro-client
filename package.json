@@ -47,6 +47,7 @@
     "aos": "^2.3.4",
     "axios-cache-interceptor": "^1.3.2",
     "country-list-with-dial-code-and-flag": "^1.0.3",
+    "crypto-js": "^4.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "nuxt-clipboard": "^0.0.7",
