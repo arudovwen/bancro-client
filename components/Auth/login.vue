@@ -8,7 +8,7 @@
     </p>
 
     <form @submit.prevent="onSubmit">
-      <div class="mb-5 w-full">
+      <div class="w-full mb-5">
         <Textinput
           icon="line-md:email"
           placeholder=""
@@ -21,7 +21,7 @@
         />
       </div>
 
-      <div class="mb-10 w-full">
+      <div class="w-full mb-10">
         <Textinput
           hasicon
           placeholder=""
@@ -33,7 +33,7 @@
           :error="errors.password"
         />
       </div>
-      <span class="flex items-center text-sm mb-5">
+      <span class="flex items-center mb-5 text-sm">
         <span class="font-semibold text-primary hover:underline pb-[1px]">
           <NuxtLink to="/auth/forgot-password">Forgot password?</NuxtLink></span
         >
@@ -54,7 +54,7 @@
         Don't have an account?
         <span
           @click="() => router.push('/auth/register')"
-          class="cursor-pointer font-semibold text-primary-500"
+          class="font-semibold cursor-pointer text-primary-500"
           >Sign Up</span
         >
       </span>

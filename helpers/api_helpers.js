@@ -9,87 +9,81 @@ const axiosApi = Axios.create({
   withCredentials: false,
 });
 
-/* =========================================================
-   🔐 ENCRYPT SELECTED HEADERS
-   (Feel free to choose ANY headers you want encrypted)
-   ========================================================= */
-function encryptHeaders(headers) {
-  return headers
-  const encryptedHeaders = { ...headers };
-
-  const keysToEncrypt = ["apiKey", "tenantId"]; // 🔐 your choice
-
-  keysToEncrypt.forEach((key) => {
-    if (encryptedHeaders[key]) {
-      encryptedHeaders[key] = encryptAny(encryptedHeaders[key]);
-    }
-  });
-
-  return encryptedHeaders;
-}
-
-/* =========================================================
-   🔐 ENCRYPT QUERY PARAMS
-   ========================================================= */
-function encryptQueryParams(params) {
-  if (!params) return params;
-
+/* ============================================================
+   🔐 PROPERLY ASYNC: ENCRYPT HEADERS
+   ============================================================ */
+async function encryptHeaders(headers) {
   const encrypted = {};
 
-  Object.keys(params).forEach((key) => {
-    encrypted[key] = encryptAny(params[key]);
-  });
+  for (const key of Object.keys(headers)) {
+    encrypted[key] = await encryptAny(headers[key]);
+  }
 
   return encrypted;
 }
 
-/* =========================================================
-   🔐 REQUEST INTERCEPTOR
-   Encrypt:
-     ✔ headers
-     ✔ query params
-     ✔ body
-   ========================================================= */
+/* ============================================================
+   🔐 PROPERLY ASYNC: ENCRYPT QUERY PARAMS
+   ============================================================ */
+async function encryptQueryParams(params) {
+  if (!params) return params;
+
+  const encrypted = {};
+
+  for (const key of Object.keys(params)) {
+    encrypted[key] = await encryptAny(params[key]);
+  }
+
+  return encrypted;
+}
+
+/* ============================================================
+   🔐 ASYNC REQUEST INTERCEPTOR (REQUIRED)
+   ============================================================ */
 axiosApi.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const authStore = useAuthStore();
 
-    // Add access token
+    // Add bearer token
     if (authStore?.access_token) {
       config.headers.Authorization = `Bearer ${authStore.access_token}`;
     }
 
     config.headers.Accept = "application/json";
 
-    // Encrypt headers
-    config.headers = encryptHeaders({
-      ...config.headers,
+    // Encrypt selected headers
+    const encryptedHeaderValues = await encryptHeaders({
       apiKey: runtimeConfig.public.PUBLIC_KEY,
       tenantId: runtimeConfig.public.TENANT_ID,
     });
 
-    // // Encrypt query params
-    // if (config.params) {
-    //   config.params = encryptQueryParams(config.params);
-    // }
+    config.headers = {
+      ...config.headers,
+      ...encryptedHeaderValues,
+    };
 
-    // // Encrypt request body
-    // if (config.data) {
-    //   config.data = {
-    //     payload: encryptAny(config.data),
-    //   };
-    // }
+    // Encrypt query params
+    if (config.params) {
+      config.params = await encryptQueryParams(config.params);
+    }
+
+    // Encrypt body
+    if (config.data) {
+      const encryptedPayload = await encryptAny(JSON.stringify(config.data));
+      config.data = { Data: encryptedPayload };
+    }
 
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-/* =========================================================
+/* ============================================================
    🔄 TOKEN REFRESH
-   ========================================================= */
+   ============================================================ */
 const handleTokenRefresh = async () => {
   const authStore = useAuthStore();
+
   const refreshResponse = await axiosApi.post("/v1/Account/refreshtoken", {
     token: authStore.refresh_token,
     ipAddress: "",
@@ -105,21 +99,20 @@ const handleTokenRefresh = async () => {
   return jwToken;
 };
 
-/* =========================================================
-   🔐 RESPONSE INTERCEPTOR
-   Automatically decrypts:
-     ✔ success responses
-     ✔ error responses
-   ========================================================= */
+/* ============================================================
+   🔐 RESPONSE INTERCEPTOR WITH DECRYPTION
+   ============================================================ */
 axiosApi.interceptors.response.use(
-  (response) => {
-    // if (response.data?.payload) {
-    //   response.data = decryptAny(response.data.payload);
-    // }
+  async (response) => {
+    if (response.data?.Data) {
+      const decrypted = await decryptAny(response.data.Data);
+      response.data = JSON.parse(decrypted);
+    }
     return response;
   },
 
   async (error) => {
+  
     const original = error.config;
 
     // Token expired
@@ -138,17 +131,20 @@ axiosApi.interceptors.response.use(
     }
 
     // Decrypt error response
-    // if (error.response?.data?.payload) {
-    //   error.response.data = decryptAny(error.response.data.payload);
-    // }
+    if (error.response?.data?.Data) {
+        console.log({error:error.response?.data});
+    
+      const decrypted = await decryptAny(error.response.data.Data);
+      error.response.data = JSON.parse(decrypted);
+    }
 
     return Promise.reject(error);
   }
 );
 
-/* =========================================================
-   Export API Methods
-   ========================================================= */
+/* ============================================================
+   EXPORT API
+   ============================================================ */
 export const get = (url, config = {}) => axiosApi.get(url, config);
 export const post = (url, data, config = {}) => axiosApi.post(url, data, config);
 export const put = (url, data, config = {}) => axiosApi.put(url, data, config);

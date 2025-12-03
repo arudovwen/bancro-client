@@ -1,41 +1,72 @@
-import CryptoJS from "crypto-js";
-
-// MUST be exact length
-const SECRET_KEY = "your-32-length-secret-key!!!!!!!!!"; 
-const IV = "your-16-char-iv!";
-
-const keyUtf = CryptoJS.enc.Utf8.parse(SECRET_KEY);
-const ivUtf = CryptoJS.enc.Utf8.parse(IV);
-
-export function encryptAny(data) {
-  if (data === null || data === undefined) return null;
-  if (typeof data === "boolean") data = data.toString();
-  if (typeof data !== "string") data = JSON.stringify(data);
-
-  return CryptoJS.AES.encrypt(data, keyUtf, {
-    iv: ivUtf,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
-  }).toString();
+// Helpers
+function base64ToBytes(base64) {
+  return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
 }
 
-export function decryptAny(encryptedValue) {
-  try {
-    const bytes = CryptoJS.AES.decrypt(encryptedValue, keyUtf, {
-      iv: ivUtf,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    });
+function bytesToBase64(bytes) {
+  let binary = "";
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+  return btoa(binary);
+}
 
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+// --- VALIDATION ---
+(function validateKeyAndIV() {
+  const config = useRuntimeConfig();
+  const keyBytes = base64ToBytes(config.public.SECRET_KEY);
+  const ivBytes = base64ToBytes(config.public.IV_KEY);
 
-    try {
-      return JSON.parse(decrypted);
-    } catch {
-      return decrypted;
-    }
-  } catch (e) {
-    console.warn("Failed to decrypt (might be plain text):", encryptedValue);
-    return encryptedValue;
+  if (![16, 24, 32].includes(keyBytes.length)) {
+    console.error("❌ AES KEY LENGTH INVALID:", keyBytes.length, "bytes");
+  } else {
+    console.log("✔ AES key length OK:", keyBytes.length, "bytes");
   }
+
+  if (ivBytes.length !== 16) {
+    console.error("❌ AES IV LENGTH INVALID:", ivBytes.length, "bytes");
+  } else {
+    console.log("✔ AES IV length OK:", ivBytes.length, "bytes");
+  }
+})();
+export async function encryptAny(plainText) {
+  const config = useRuntimeConfig();
+  const keyBytes = base64ToBytes(config.public.SECRET_KEY);
+  const ivBytes = base64ToBytes(config.public.IV_KEY);
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyBytes,
+    { name: "AES-CBC" },
+    false,
+    ["encrypt"]
+  );
+
+  const encryptedBuffer = await crypto.subtle.encrypt(
+    { name: "AES-CBC", iv: ivBytes },
+    cryptoKey,
+    new TextEncoder().encode(plainText)
+  );
+
+  return bytesToBase64(new Uint8Array(encryptedBuffer));
+}
+export async function decryptAny(encryptedText) {
+  const encryptedBytes = base64ToBytes(encryptedText);
+  const config = useRuntimeConfig();
+  const keyBytes = base64ToBytes(config.public.SECRET_KEY);
+  const ivBytes = base64ToBytes(config.public.IV_KEY);
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyBytes,
+    { name: "AES-CBC" },
+    false,
+    ["decrypt"]
+  );
+
+  const decryptedBuffer = await crypto.subtle.decrypt(
+    { name: "AES-CBC", iv: ivBytes },
+    cryptoKey,
+    encryptedBytes
+  );
+
+  return new TextDecoder().decode(decryptedBuffer);
 }
