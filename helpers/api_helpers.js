@@ -60,6 +60,7 @@ axiosApi.interceptors.request.use(
     config.headers = {
       ...config.headers,
       ...encryptedHeaderValues,
+        "X-Eppeck-Y": "cYINMgopQIg==",
     };
 
     // Encrypt query params
@@ -112,7 +113,6 @@ axiosApi.interceptors.response.use(
   },
 
   async (error) => {
-  
     const original = error.config;
 
     // Token expired
@@ -132,8 +132,8 @@ axiosApi.interceptors.response.use(
 
     // Decrypt error response
     if (error.response?.data?.Data) {
-        console.log({error:error.response?.data});
-    
+      console.log({ error: error.response?.data });
+
       const decrypted = await decryptAny(error.response.data.Data);
       error.response.data = JSON.parse(decrypted);
     }
@@ -146,6 +146,7 @@ axiosApi.interceptors.response.use(
    EXPORT API
    ============================================================ */
 export const get = (url, config = {}) => axiosApi.get(url, config);
-export const post = (url, data, config = {}) => axiosApi.post(url, data, config);
+export const post = (url, data, config = {}) =>
+  axiosApi.post(url, data, config);
 export const put = (url, data, config = {}) => axiosApi.put(url, data, config);
 export const del = (url, config = {}) => axiosApi.delete(url, config);
